@@ -37,9 +37,9 @@ export default {
   text-align: center;
   color: #2c3e50;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - 33px);
   position: fixed;
-  top: 40px;
+  top: 33px;
   left: 0px;
 }
 

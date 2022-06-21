@@ -129,20 +129,32 @@
         <br/>
         <h4>KML/KMZ File Upload</h4>
         <p>Upload a KML or KMZ from your local file system</p>
-        <b-form-file
-            no-drop
-            id="file"
-            ref="file"
-            @change="handleFileUpload"
-            placeholder="Choose a file..."
-        ></b-form-file>
 
+        <div class="invisible">
+          <b-form-file
+              no-traverse
+              id="file"
+              ref="file"
+              @change="handleFileUpload"
+              placeholder="Upload a KML/KMZ file"
+          ></b-form-file>
 
-        <b-button @click="submitFile()">Submit</b-button>
-        <div v-for="entry in kmlLayers" :key="entry">
-          <div class="fileEntry">
-            <input type="checkbox" v-model="entry.active" @change="kmlLayerChange(entry)"> <span
-              style="font-size: 15px; color: #222222">{{ entry.name }}</span><br>
+          <b-button @click="submitFile()">Submit</b-button>
+        </div>
+
+        <div class="w-100 p-2">
+          <b-button variant="outline-secondary" class="file-upload-button w-100" v-on:click="triggerFileUploadClick"
+                    :disabled="kmlFile">
+            <span class="text-primary">UPLOAD</span>&nbsp;<span class="text-secondary">a KML/KMZ file.</span>
+          </b-button>
+        </div>
+
+        <div v-for="(entry, entryId) in kmlLayers" :key="entryId" class="w-100 d-flex flex-row mt-1">
+          <div class="p-1">
+            <b-form-checkbox type="checkbox" :id="`kmlLayers-${entryId}`" v-model="entry.active"
+                             @change="kmlLayerChange(entry)" class="flex-fill">
+              {{ entry.name }}
+            </b-form-checkbox>
           </div>
         </div>
         <!--            <div v-if="boundaries">-->
@@ -438,10 +450,16 @@ export default {
     openWindow(link) {
       window.open(link);
     },
-    handleFileUpload(event) {
-      this.kmlFile = event.target.files[0];
+    triggerFileUploadClick() {
+      this.$refs.file.$refs.input.click();
     },
-    submitFile() {
+    async handleFileUpload(event) {
+      this.kmlFile = event.target.files[0];
+      await this.submitFile();
+      this.kmlFile = null;
+      this.$refs.file.reset();
+    },
+    async submitFile() {
       var fileName = this.kmlFile['name'];
 
       function getExtension(filename) {
@@ -461,7 +479,7 @@ export default {
       let formData = new FormData();
       formData.append('file', this.kmlFile);
       this.kmlLayers.push({name: fileName, active: true})
-      axios.post(uploadUrl, formData
+      await axios.post(uploadUrl, formData
       ).then(function (response) {
         bus.$emit('addkmlUploadLayer', response.data, fileName);
       })
@@ -474,7 +492,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+// Bootstrap and its default variables
+@import '~bootstrap/scss/bootstrap';
+// BootstrapVue and its default variables
+@import '~bootstrap-vue/src/index.scss';
+
 .fileEntry {
   width: auto;
   height: auto;
@@ -510,6 +533,33 @@ export default {
 
 .clickable {
   cursor: pointer;
+}
+
+.visible {
+  visibility: unset;
+}
+
+.invisible {
+  visibility: hidden;
+  position: fixed;
+  top: -10000px;
+}
+
+button.file-upload-button {
+  background-color: lighten($primary, 49%);
+  border: 2px dashed lighten($primary, 35%);
+  border-radius: 5px;
+  padding: 20px 10px;
+
+  &:hover, &:active, &:focus {
+    background-color: lighten($primary, 48%);
+    border: 2px dashed lighten($primary, 25%);
+  }
+
+  &:disabled {
+    background-color: lighten($secondary, 48%);
+    border: 2px dashed lighten($secondary, 25%);
+  }
 }
 
 </style>

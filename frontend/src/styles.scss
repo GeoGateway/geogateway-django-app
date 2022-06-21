@@ -32,3 +32,8 @@ $alert-border-width: 0px !default;
 hr {
   margin: 12px 0px 0px 5px;
 }
+
+.collapsed > .when-open,
+.not-collapsed > .when-closed {
+  display: none;
+}

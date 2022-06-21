@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="w-100 p-2 bg-light text-left">
+
     <h3>User Resources</h3>
     <!--
     <a href="https://archive.geo-gateway.org:3000/main.html" target="_blank"> <i>Visit the archived Geo-Gateway</i></a>

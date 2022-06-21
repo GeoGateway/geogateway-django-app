@@ -1,15 +1,17 @@
 <template>
-  <div class="w-100 overflow-auto" style="max-width: 150px;">
-    <ul class="w-100">
-      <li v-for="(menu, menuIndex) in menus" :key="menuIndex">
-        <router-link :to="menu.to" v-slot="{href, navigate, isActive, isExactActive}">
-          <a :href="href" @click="navigate" :class="{'active': isExactActive}">
-            {{ menu.label }}
-          </a>
-        </router-link>
-      </li>
-    </ul>
-  </div>
+  <b-collapse id="navbar-toggle-collapse" is-nav class="w-100 overflow-auto" style="max-width: 150px;" visible>
+    <div class="w-100 overflow-auto">
+      <ul class="w-100">
+        <li v-for="(menu, menuIndex) in menus" :key="menuIndex">
+          <router-link :to="menu.to" v-slot="{href, navigate, isActive, isExactActive}">
+            <a :href="href" @click="navigate" :class="{'active': isExactActive}">
+              {{ menu.label }}
+            </a>
+          </router-link>
+        </li>
+      </ul>
+    </div>
+  </b-collapse>
 </template>
 
 <script>

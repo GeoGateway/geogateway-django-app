@@ -1,14 +1,16 @@
 <template>
-  <div class="w-100 bg-light p-2 overflow-auto" style="max-width: 300px;">
-    <router-view></router-view>
+  <div style="max-width: 300px;" class="h-100 d-flex flex-column">
+    <div class="text-right bg-light">
+      <b-button variant="link" v-b-toggle="`navbar-toolbar-toggle`" class="v-100">
+        <b-icon icon="x" class="when-open"></b-icon>
+        <b-icon icon="arrow-right-short" class="when-closed"></b-icon>
+      </b-button>
+    </div>
+    <b-collapse ref="toolbarToggle" class="w-100 flex-fill bg-light p-2 overflow-auto" id="navbar-toolbar-toggle" :visible="true">
+      <router-view></router-view>
+    </b-collapse>
+
   </div>
-  <!--  <div id="sidebar-1" class="overflow-auto">-->
-  <!--    <b-collapse id="toolbar" v-model="toolbar" visible>-->
-  <!--      <b-card-text id="toolbarContent">-->
-  <!--        <router-view></router-view>-->
-  <!--      </b-card-text>-->
-  <!--    </b-collapse>-->
-  <!--  </div>-->
 </template>
 
 <script>
@@ -114,6 +116,11 @@ export default {
       this.layers['uavsarWMS'].setOpacity(.7);
     },
   },
+  watch: {
+    $route() {
+      this.$refs.toolbarToggle.show = true;
+    }
+  }
 }
 </script>
 
