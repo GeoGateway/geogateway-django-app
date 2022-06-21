@@ -113,6 +113,76 @@
                   </div>
                 </div>
               </div>
+
+              <b-button v-if="!entry.extended" class="btn-clear" @click="extendEntry(entry)">More Options +</b-button>
+
+              <div v-if="extendingActive && entry.extended">
+                <b-spinner type="grow" variant="warning">
+                </b-spinner>
+              </div>
+              <div v-else-if="entry.extended && !extendingActive" class="extended"
+                   v-bind:style="{backgroundColor: extendedColor, border: extendedBorder }">
+
+                <div class="extended">
+                  <div><small><b>Heading: </b></small> <span>{{ entry.info['heading'] }}</span></div>
+                  <div><small><b>Radar Dir: </b></small> <span>{{ entry.info['radardirection'] }}</span></div>
+                </div>
+                <div v-if="layerFound" class="pt-2">
+                  <div>
+                    <label :for="`${entry.info['uid']}-opacity`">
+                      <small>Set Layer Opacity: <b>{{ opVal }}%</b></small>
+                    </label>
+                    <div>
+                      <b-form-input :id="`${entry.info['uid']}-opacity`" @change="updateOpacity(opVal)" v-model="opVal"
+                                    type="range" min="0"
+                                    max="100"></b-form-input>
+                    </div>
+                  </div>
+                  <div v-if="LosPlotAvailable && layerFound" class="extended" id="active-plot"
+                       v-bind:style="{backgroundColor: extendedColor, border: extendedBorder }">
+                    <b-input-group>
+                      <b-input-group prepend="Start Lat/Lon" class="input-group-sm mb-2">
+                        <b-form-input v-model="lat1" name="lat1" placeholder=""></b-form-input>
+                        <b-form-input v-model="lon1" name="lon1" placeholder=""></b-form-input>
+                      </b-input-group>
+                    </b-input-group>
+                    <b-input-group>
+                      <b-input-group prepend="End Lat/Lon" class="input-group-sm mb-2">
+                        <b-form-input v-model="lat2" name="lat2" placeholder=""></b-form-input>
+                        <b-form-input v-model="lon2" name="lon2" placeholder=""></b-form-input>
+                      </b-input-group>
+                    </b-input-group>
+                    <!--
+                    <b-input-group prepend="LOS Length" class="input-group-sm">
+                      <b-form-input v-model="losLength" name="length" placeholder=""></b-form-input>
+                    </b-input-group>
+                    <b-input-group prepend="Azimuth" class="input-group-sm">
+                      <b-form-input v-model="azimuth" name="azimuth" placeholder=""></b-form-input>
+                    </b-input-group> -->
+                    <i style="font-size: small;">Profile Length: <b>{{ losLength }} km</b></i> <span class="tab"/>
+                    <i style="font-size: small;">Azimuth: <b>{{ azimuth }}</b></i>
+                    <b-row>
+                      <b-col sm="auto">
+                        <b-button class="btn-sm" variant="success"
+                                  @click="updatePlotLineForm(activeEntry, lat1, lon1, lat2, lon2)">
+                          <span>Update Plot</span>
+                        </b-button>
+                      </b-col>
+                      <b-col sm="auto">
+                        <b-button class="btn-sm" variant="success" @click="downloadCSV(activeEntry)">
+                          <span>Download Data</span>
+                        </b-button>
+                      </b-col>
+                      <b-col sm="auto">
+                        <span @click="openDataSource(entry.info['uid'])"
+                              style="cursor: pointer; color: #2e6da4; font-size: small;"><b><u>Data Source</u></b></span>
+                      </b-col>
+                    </b-row>
+                  </div>
+                </div>
+
+              </div>
+
             </div>
           </div>
         </div>
@@ -1096,8 +1166,7 @@ export default {
   box-sizing: border-box;
   font-size: 15px;
   border-radius: 4px;
-  padding-top: 2px;
-  padding-bottom: 2px;
+  padding: 5px;
 }
 
 #active-plot {
