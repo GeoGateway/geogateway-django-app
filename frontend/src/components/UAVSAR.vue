@@ -14,11 +14,21 @@
 
     <div class="w-100 pt-2 pb-2">
       <div>
-        <b-button size="sm" :variant="!!rectDraw ? 'primary': 'outline-secondary'"
+        <b-button
+            size="sm" class="mb-2"
+            type="checkbox"
+            id="overview"
+            :pressed.sync="overview"
+            @click="showOverview"
+        >
+          <span v-if="!overview">Show Overview</span>
+          <span v-else>Hide Overview</span>
+        </b-button>
+        <b-button size="sm" class="mb-2" :variant="!!rectDraw ? 'primary': 'outline-secondary'"
                   v-on:click="uavsarDrawRect()">
           Draw Area
         </b-button>
-        <b-button size="sm" :variant="!!pinDrop ? 'primary': 'outline-secondary'"
+        <b-button size="sm" class="mb-2" :variant="!!pinDrop ? 'primary': 'outline-secondary'"
                   v-on:click="uavsarPinDrop()">
           Drop Pin
         </b-button>
