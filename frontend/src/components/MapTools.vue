@@ -221,14 +221,14 @@ export default {
         return;
       }
       if (filterstr == "") {
-      this.layers['qfaultsWMS'] = L.tileLayer.wms('https://archive.geo-gateway.org/geoserver/InSAR/wms?', {
+      this.layers['qfaultsWMS'] = L.tileLayer.wms('https://data.geo-gateway.org/geoserver00/InSAR/wms?', {
         layers: 'InSAR:Qfaults_US_Database',
         transparent: true,
         format: 'image/png',
         zIndex: 10,
         //cql_filter: filterstr,
       }); } else {
-        this.layers['qfaultsWMS'] = L.tileLayer.wms('https://archive.geo-gateway.org/geoserver/InSAR/wms?', {
+        this.layers['qfaultsWMS'] = L.tileLayer.wms('https://data.geo-gateway.org/geoserver00/InSAR/wms?', {
         layers: 'InSAR:Qfaults_US_Database',
         transparent: true,
         format: 'image/png',
