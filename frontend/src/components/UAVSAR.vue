@@ -669,7 +669,7 @@ export default {
 
       var headingLegendFinal;
       //var headingLegendBase = 'http://gf2.ucs.indiana.edu/direction_kml/'
-      var headingLegendBase = 'https://archive.geo-gateway.org/kmz/direction_kml/'
+      var headingLegendBase = 'https://data.geo-gateway.org/kmz/direction_kml/'
       var headingRounded = entry.info['heading'].split('.')[0];
       var radarDir = entry.info['radardirection'];
       var radarDirL;
@@ -873,7 +873,7 @@ export default {
     showOverview() {
       const _ = require('lodash');
       if (this.overview) {
-        this.layers['uavsarWMS'] = L.tileLayer.wms('https://archive.geo-gateway.org/geoserver/InSAR/wms?', {
+        this.layers['uavsarWMS'] = L.tileLayer.wms('https://data.geo-gateway.org/geoserver/InSAR/wms?', {
               layers: 'InSAR:thumbnailmosaic',
               transparent: true,
               format: 'image/png',

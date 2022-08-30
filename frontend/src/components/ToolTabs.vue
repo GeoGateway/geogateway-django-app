@@ -96,7 +96,7 @@
             },
 
           uavsarOverview(){
-            this.layers['uavsarWMS'] = L.tileLayer.wms('https://archive.geo-gateway.org/geoserver/InSAR/wms?', {
+            this.layers['uavsarWMS'] = L.tileLayer.wms('https://data.geo-gateway.org/geoserver/InSAR/wms?', {
                   layers: 'InSAR:thumbnailmosaic',
                   transparent: true,
                   format: 'image/png',
