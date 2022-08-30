@@ -366,7 +366,7 @@ export default {
       var vm = this;
       this.pinDrop = new L.Draw.Marker(this.globalMap, this.drawControl.options.marker);
       this.pinDrop.enable();
-      if (vm.pinLayer!=null){
+      if (vm.pinLayer != null){
           vm.globalMap.removeLayer(vm.pinLayer);
           vm.pinLayer = null;
         }
@@ -1046,6 +1046,7 @@ export default {
               vm.uavsarDisplayedLayers[uid] = track;
               vm.globalMap.addLayer(vm.uavsarDisplayedLayers[uid]);
             }
+            vm.removePinLayer();
             vm.activeQuery = false;
           })
         })
