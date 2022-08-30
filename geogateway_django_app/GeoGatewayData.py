@@ -19,9 +19,10 @@ GpsServiceUrl = "https://data.geo-gateway.org/gpsservice/kml?"
 KmlPrefix = "https://data.geo-gateway.org/static"
 
 # UAVSAR service url
-wmsColorUrl = 'https://archive.geo-gateway.org/color/InSAR/wms?'
-wmsUrl = 'https://archive.geo-gateway.org/color/highres/wms?'
-losQueryUrl = 'https://archive.geo-gateway.org/los/profile?dem=True&image=uid'
+wmsColorUrl = 'https://data.geo-gateway.org/geoserver/InSAR/wms?'
+wmsUrl = 'https://data.geo-gateway.org/geoserver/highres/wms?'
+
+losQueryUrl = 'https://data.geo-gateway.org/los/profile?dem=True&image=uid'
 
 WoForecastUrl = 'http://www.openhazards.com/Tools/kml/wo-forecast.kmz'
 CaForecastUrl = 'http://www.openhazards.com/Tools/kml/ca-forecast.kmz'
@@ -184,11 +185,11 @@ def uavsarTest(request):
             checkdict['hasHighresOverlay'] = 1
         else:
             # get lowres kml
-            baseURI = 'https://archive.geo-gateway.org/kmz/'
+            baseURI = 'https://data.geo-gateway.org/kmz/'
             dataname = request.GET.get('dataname')
             postfix = 'uid' + uid + '/' + dataname + '.unw.kml'
             kmldata = requests.get(baseURI + postfix)
-            toRep = '<href>https://archive.geo-gateway.org/kmz/' + 'uid' + uid + '/'
+            toRep = '<href>https://data.geo-gateway.org/kmz/' + 'uid' + uid + '/'
             respData = kmldata.content.replace('<href>'.encode(), toRep.encode()).decode("utf-8")
             checkdict['lowreskml'] = respData
         return HttpResponse(json.dumps(checkdict))
@@ -198,7 +199,7 @@ def uavsarKML(request):
     if request.method == 'GET':
 
         #baseURI = 'http://gf2.ucs.indiana.edu/kmz/'
-        baseURI = 'https://archive.geo-gateway.org/kmz/'
+        baseURI = 'https://data.geo-gateway.org/kmz/'
 
         raw = request.GET.get('json')
         query = json.loads(raw)
@@ -209,7 +210,7 @@ def uavsarKML(request):
         uid = query['uid']
 
         #toRep = '<href>http://gf2.ucs.indiana.edu/kmz/' + 'uid' + uid + '/'
-        toRep = '<href>https://archive.geo-gateway.org/kmz/' + 'uid' + uid + '/'
+        toRep = '<href>https://data.geo-gateway.org/kmz/' + 'uid' + uid + '/'
 
         respData = data.content.replace('<href>'.encode(), toRep.encode()).decode("utf-8")
         meta = query

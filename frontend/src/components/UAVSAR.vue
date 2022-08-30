@@ -219,15 +219,15 @@ export default {
       geometryActive: false,
       //wmsColorUrl: 'http://js-169-62.jetstream-cloud.org/geoserver/InSAR/wms?',
       //wmsUrl: 'http://js-169-62.jetstream-cloud.org/geoserver/highres/wms?',
-      wmsColorUrl: 'https://archive.geo-gateway.org/color/InSAR/wms?',
-      wmsUrl: 'https://archive.geo-gateway.org/color/highres/wms?',
+      wmsColorUrl: 'https://data.geo-gateway.org/geoserver/InSAR/wms?',
+      wmsUrl: 'https://data.geo-gateway.org/geoserver/highres/wms?',
       //losQueryUrl: 'http://gf1.ucs.indiana.edu/insartool/profile?image=InSAR:uid',
       //altColorLegend: 'http://js-169-62.jetstream-cloud.org/uavsarlegend1/uid',
-      altColorLegend: 'http://archive.geo-gateway.org/colorvm/uavsarlegend1/uid',
+      altColorLegend: 'http://data.geo-gateway.org/uavsarlegend1/uid',
       //piLegend: 'http://js-169-62.jetstream-cloud.org/highreslegend/pi_t.png',
       //twoPiLegend: 'http://js-169-62.jetstream-cloud.org/highreslegend/2pi_t.png',
-      piLegend: 'https://archive.geo-gateway.org/kmz/highreslegend/pi_t.png',
-      twoPiLegend: 'https://archive.geo-gateway.org/kmz/highreslegend/2pi_t.png',
+      piLegend: 'https://data.geo-gateway.org/kmz/highreslegend/pi_t.png',
+      twoPiLegend: 'https://data.geo-gateway.org/kmz/highreslegend/2pi_t.png',
     }
   },
 
@@ -873,7 +873,7 @@ export default {
     showOverview() {
       const _ = require('lodash');
       if (this.overview) {
-        this.layers['uavsarWMS'] = L.tileLayer.wms('https://data.geo-gateway.org/geoserver/InSAR/wms?', {
+        this.layers['uavsarWMS'] = L.tileLayer.wms('https://data.geo-gateway.org/geoserver00/InSAR/wms?', {
               layers: 'InSAR:thumbnailmosaic',
               transparent: true,
               format: 'image/png',
