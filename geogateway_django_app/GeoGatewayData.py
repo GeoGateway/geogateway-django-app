@@ -19,8 +19,8 @@ GpsServiceUrl = "https://data.geo-gateway.org/gpsservice/kml?"
 KmlPrefix = "https://data.geo-gateway.org/static"
 
 # UAVSAR service url
-wmsColorUrl = 'https://data.geo-gateway.org/color/InSAR/wms?'
-wmsUrl = 'https://data.geo-gateway.org/color/highres/wms?'
+wmsColorUrl = 'https://data.geo-gateway.org/geoserver/InSAR/wms?'
+wmsUrl = 'https://data.geo-gateway.org/geoserver/highres/wms?'
 losQueryUrl = 'https://data.geo-gateway.org/los/profile?dem=True&image=uid'
 
 WoForecastUrl = 'http://www.openhazards.com/Tools/kml/wo-forecast.kmz'
