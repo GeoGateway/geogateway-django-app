@@ -7,14 +7,14 @@
    -->
     <div class="tool-content">
       <a target="_blank"
-         href="https://github.com/GeoGateway/GeoGatewayStaticResources/raw/master/documents/GeoGateway_User_Guide.pdf"><strong>User
+         href="https://github.com/GeoGateway/GeoGatewayStaticResources/raw/master/documents/GeoGateway_User_Guide_v3.pdf"><strong>User
         Guide (pdf)</strong></a>
       <br/>
       <a target="_blank" href="https://www.youtube.com/channel/UC0_bNEBxRWH2qBULDl6cB7Q/featured"><strong>Tutorial
         Videos</strong></a>
       <br/>
       <a target="_blank"
-         href="https://github.com/GeoGateway/GeoGatewayStaticResources/raw/master/documents/GeoGateway_Exercises.pdf"><strong>Exercises
+         href="https://github.com/GeoGateway/GeoGatewayStaticResources/raw/master/documents/GeoGateway_Exercises_v3.pdf"><strong>Exercises
         (pdf)</strong></a>
       <br/><br/>
       <!--
