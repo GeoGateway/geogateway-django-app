@@ -1045,6 +1045,7 @@ export default {
               vm.uavsarDisplayedLayers[uid] = track;
               vm.globalMap.addLayer(vm.uavsarDisplayedLayers[uid]);
             }
+            vm.removePinLayer();
             vm.activeQuery = false;
           })
         })
