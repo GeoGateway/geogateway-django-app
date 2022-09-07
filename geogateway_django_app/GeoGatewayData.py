@@ -14,10 +14,11 @@ from django.core.files.base import ContentFile
 from django.apps import apps
 from airavata_django_portal_sdk import user_storage
 
-GpsServiceUrl = "https://archive.geo-gateway.org/gpsservice/kml?"
-KmlPrefix = "https://archive.geo-gateway.org/static"
-#wmsColorUrl = 'http://js-168-95.jetstream-cloud.org/geoserver/InSAR/wms?'
-#wmsUrl = 'http://js-168-95.jetstream-cloud.org/geoserver/highres/wms?'
+# GNSS service url
+GpsServiceUrl = "https://data.geo-gateway.org/gpsservice/kml?"
+KmlPrefix = "https://data.geo-gateway.org/static"
+
+# UAVSAR service url
 wmsColorUrl = 'https://archive.geo-gateway.org/color/InSAR/wms?'
 wmsUrl = 'https://archive.geo-gateway.org/color/highres/wms?'
 losQueryUrl = 'https://archive.geo-gateway.org/los/profile?dem=True&image=uid'
