@@ -119,7 +119,7 @@
               id="kml"
           ><label for="kml">KML/KMZ Uploader</label>&ensp;
           </b-form-checkbox>
-          <span class="icon is-right" syle="pointer-events: all;" @click="kmlInfo=true">
+          <span class="icon is-right" style="pointer-events: all;" @click="kmlInfo=true">
           <i class="clickable fas fa-info-circle"></i>
         </span>
         </b-row>
@@ -177,7 +177,7 @@
               id="boundaries"
           ><label for="boundaries">Show State Boundaries</label>&ensp;
           </b-form-checkbox>
-          <span class="icon is-right" syle="pointer-events: all;" @click="boundariesInfo=true">
+          <span class="icon is-right" style="pointer-events: all;" @click="boundariesInfo=true">
           <i class="clickable fas fa-info-circle"></i>
         </span>
         </b-row>
@@ -195,7 +195,7 @@
               id="coasts"
           ><label for="coasts">Show Coastlines</label>&ensp;
           </b-form-checkbox>
-          <span class="icon is-right" syle="pointer-events: all;" @click="coastlinesInfo=true">
+          <span class="icon is-right" style="pointer-events: all;" @click="coastlinesInfo=true">
           <i class="clickable fas fa-info-circle"></i>
         </span>
         </b-row>
@@ -213,7 +213,7 @@
               id="loc"
           ><label for="loc">Show Current Location</label>&ensp;
           </b-form-checkbox>
-          <span class="icon is-right" syle="pointer-events: all;" @click="currentLocationInfo=true">
+          <span class="icon is-right" style="pointer-events: all;" @click="currentLocationInfo=true">
           <i class="clickable fas fa-info-circle"></i>
         </span>
         </b-row>
@@ -225,7 +225,7 @@
         v-model="mapToolsInfo"
         title="Map Tools">
       <p class="my-4">
-        Map tools contains multiple funtions allowing users to display different faults and topographical
+        Map tools contains multiple functions allowing users to display different faults and topographical
         features, as well as upload KML and KMZ files.
       </p>
       <div slot="modal-footer" class="w-100">
@@ -392,7 +392,7 @@ export default {
         return;
       }
       if (filterstr == "") {
-        this.layers['qfaultsWMS'] = L.tileLayer.wms('https://archive.geo-gateway.org/geoserver/InSAR/wms?', {
+        this.layers['qfaultsWMS'] = L.tileLayer.wms('https://data.geo-gateway.org/geoserver00/InSAR/wms?', {
           layers: 'InSAR:Qfaults_US_Database',
           transparent: true,
           format: 'image/png',
@@ -400,7 +400,7 @@ export default {
           //cql_filter: filterstr,
         });
       } else {
-        this.layers['qfaultsWMS'] = L.tileLayer.wms('https://archive.geo-gateway.org/geoserver/InSAR/wms?', {
+        this.layers['qfaultsWMS'] = L.tileLayer.wms('https://data.geo-gateway.org/geoserver00/InSAR/wms?', {
           layers: 'InSAR:Qfaults_US_Database',
           transparent: true,
           format: 'image/png',
