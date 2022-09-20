@@ -40,6 +40,7 @@ export default {
         {to: "disloc", label: "Disloc"},
         {to: "specialstudies", label: "Studies"},
         {to: "3dimaging", label: "3D imaging"},
+        {to: "ckfusion", label: "CK Fusion"},
         {to: "report", label: "Report"},
         {to: "help", label: "Help"}
       ]
@@ -147,11 +148,14 @@ export default {
         case "/3dimaging":
           index = 7;
           break;
+        case "/ckfusion":
+          index = 8;
+          break;
         case "/report":
           index = 9;
           break;
         case "/help":
-          index = 8;
+          index = 10;
           break;
       }
       if (this.tabIndex != index) {

@@ -85,10 +85,13 @@ export default {
         case 7:
           route = '/3dimaging';
           break;
+        case 8:
+          route = '/ckfusion';
+          break;
         case 9:
           route = '/report';
           break;
-        case 8:
+        case 10:
           route = '/help';
           break;
       }

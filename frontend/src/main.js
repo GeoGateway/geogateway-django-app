@@ -13,6 +13,7 @@ import help from "./components/help";
 import Disloc from "./components/Disloc";
 import SpecialStudies from "./components/SpecialStudies";
 import ThreeDImaging from "./components/ThreeDImaging";
+import CKFusion from "./components/CKFusion";
 import VueRouter from 'vue-router';
 import 'leaflet/dist/leaflet.css';
 import "leaflet-kml";
@@ -51,6 +52,7 @@ const routes = [
   {name: 'uavsar', path: '/uavsar', component: UAVSAR },
   {name: 'specialstudies', path: '/specialstudies', component: SpecialStudies },
   {name: '3dimaging', path: '/3dimaging', component: ThreeDImaging },
+  {name: 'ckfusion', path: '/ckfusion', component: CKFusion },
   {name: 'report', path: '/report', component: report },
   {name: 'help', path: '/help', component: help },
   ]}
