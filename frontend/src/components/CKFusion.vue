@@ -6,7 +6,11 @@
       </b-link>&ensp;
       About CK Fusion
     </b-alert>
-    
+    <div class="tool-content">
+      <a target="_blank"
+         href="https://github.com/GeoGateway/GeoGatewayStaticResources/raw/master/documents/CK_Fusion_Software_User_Guide.pdf"><strong>CK Fusion User
+        Guide</strong></a>
+    </div>
     <!-- info  popup -->
     <b-modal
         v-model=ckfusionInfo
