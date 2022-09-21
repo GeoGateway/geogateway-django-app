@@ -11,6 +11,12 @@
        <br/>
        <a target="_blank" href="https://github.com/GeoGateway/GeoGatewayStaticResources/raw/master/documents/GeoGateway_Exercises.pdf"><strong>Exercises (pdf)</strong></a>
        <br/><br/>
+       <a target="_blank" href="https://geogateway.js2.scigap.org/geogateway_django_app/#/"><strong>Beta Site</strong></a> <br>
+       <div align="center" style="width:80%;display:inline-block;">
+       Beta site previews the new interface and features under active development.<br>
+      <a target="_blank" href="https://github.com/GeoGateway/GeoGatewayStaticResources/raw/master/documents/GeoGateway_User_Guide_v3.pdf"><strong>User Guide for Beta site</strong></a>       
+       </div>
+       <br><br>
        <strong>Recent Publications</strong>
        <div align="left">
        <b-list-group>
