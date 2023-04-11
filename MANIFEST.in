@@ -1,0 +1,2 @@
+recursive-include geogateway_django_app/static *
+recursive-include geogateway_django_app/templates *
