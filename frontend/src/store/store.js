@@ -69,6 +69,7 @@ export const store = new Vuex.Store({
             plotLat2: null,
             plotLon2: null,
             uavsarLatlon: null,
+            geoserverChecked: false,
             hasAlternateColoring: false,
             hasHighresOverlay: false,
             activeBackground: '#a8b4bf',

@@ -274,6 +274,7 @@ export default {
       'uavsar.sortBy',
       'uavsar.uavsarHighResLayer',
       'uavsar.uavsarDisplayedLayers',
+      'uavsar.geoserverChecked',
       'uavsar.hasAlternateColoring',
       'uavsar.hasHighresOverlay',
       'uavsar.activeBackground',
@@ -440,7 +441,7 @@ export default {
       // let vm = this;
       // let csv;
       // axios.get(csvUrl).then(function(response){
-      //   csv = response.data;
+      //   csv = response.data;        console.log("entry", entry);
       // }).then(function (){
       var csv2=csv.split("\n");
       var csv_final="";
@@ -452,7 +453,7 @@ export default {
         }
       }
 //      console.log(csv_final);
-      this.csv_final = csv_final;
+      this.csv_final = csv_final;  
       this.LosPlotAvailable= true;
       bus.$emit('activatePlot', csv_final);
       // });
@@ -494,7 +495,7 @@ export default {
       var losLength = this.setLosLength(latlon);
       var azimuth = this.setAzimuth(latlon);
       this.losLength = losLength;
-      this.azimuth = azimuth;
+      this.azimuth = azimuth;    
       this.lat1 = latlon[0].toFixed(5);
       this.lon1 = latlon[1].toFixed(5);
       this.lat2 = latlon[2].toFixed(5);
@@ -547,6 +548,10 @@ export default {
       }
       //Now handle the selected entry
       if(!entry.extended) {
+        console.log("entry", entry.hasAlternateColoring);
+        console.log("vm.geoserverChecked", vm.geoserverChecked);
+        console.log("vm.hasAlternateColoring:",vm.hasAlternateColoring);
+        console.log("vm.hasHighresOverlay:",vm.hasHighresOverlay)
         this.extendingActive = true;
         if(this.plotActive){
           this.getCSV(entry, [this.plottingMarkerEnd.getLatLng().lat, this.plottingMarkerEnd.getLatLng().lng,
@@ -573,7 +578,9 @@ export default {
             'dataname': entry.info['dataname'],
           }
         }).then( (response) => {
+          this.geoserverChecked = true;
           var datajson = response.data;
+          console.log(datajson);
           if (Object.prototype.hasOwnProperty.call(datajson, 'hasAlternateColoring')) {
             vm.hasAlternateColoring = true; }
           if (Object.prototype.hasOwnProperty.call(datajson, 'hasHighresOverlay')) {
@@ -633,7 +640,6 @@ export default {
 
       this.uavsarLatlon = latlon;
       this.uavsarEntry = entry;
-      console.log(hasHighresOverlay);
       if (hasHighresOverlay) {
         this.uavsarHighResLayer = L.tileLayer.wms(baseURI, {
           layers: layername,
