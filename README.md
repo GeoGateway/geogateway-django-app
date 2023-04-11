@@ -26,3 +26,7 @@ After you have installed the Airavata Django Portal, install the GeoGateway Djan
    * ```python manage.py runserver```
 6. In Terminal #1, run: ``` yarn serve ``` 
 7. Point your browser to http://localhost:8000/geogateway_django_app/
+
+## node version
+nvm install lts/fermium
+v14 is supported, not able to run with latest lts version v18.15 
