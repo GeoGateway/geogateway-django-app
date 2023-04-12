@@ -175,30 +175,32 @@ def uavsarTest(request):
         geoserver_response = requests.get(wmsColorUrl + testURI + layername)
         data = geoserver_response.json()
         checkdict = {'layer':layername}
+
         if "layerDescriptions" in data:
             checkdict['hasAlternateColoring'] = 1
-            
+
         # test if it has highres layer
         geoserver_response = requests.get(wmsUrl + testURI + layername)
         data = geoserver_response.json()
         if "layerDescriptions" in data:
             checkdict['hasHighresOverlay'] = 1
-        else:
-            # get lowres kml
-            baseURI = 'https://data.geo-gateway.org/kmz/'
-            dataname = request.GET.get('dataname')
-            postfix = 'uid' + uid + '/' + dataname + '.unw.kml'
-            kmldata = requests.get(baseURI + postfix)
-            toRep = '<href>https://data.geo-gateway.org/kmz/' + 'uid' + uid + '/'
-            respData = kmldata.content.replace('<href>'.encode(), toRep.encode()).decode("utf-8")
-            checkdict['lowreskml'] = respData
+        # it seems no need for lowres kml
+        # entry.kml already has lowres kml
+        # else:
+        #     # get lowres kml
+        #     baseURI = 'https://data.geo-gateway.org/kmz/'
+        #     dataname = request.GET.get('dataname')
+        #     postfix = 'uid' + uid + '/' + dataname + '.unw.kml'
+        #     kmldata = requests.get(baseURI + postfix)
+        #     toRep = '<href>https://data.geo-gateway.org/kmz/' + 'uid' + uid + '/'
+        #     respData = kmldata.content.replace('<href>'.encode(), toRep.encode()).decode("utf-8")
+        #     checkdict['lowreskml'] = respData
         return HttpResponse(json.dumps(checkdict))
 
 
 def uavsarKML(request):
     if request.method == 'GET':
 
-        #baseURI = 'http://gf2.ucs.indiana.edu/kmz/'
         baseURI = 'https://data.geo-gateway.org/kmz/'
 
         raw = request.GET.get('json')
@@ -209,7 +211,6 @@ def uavsarKML(request):
 
         uid = query['uid']
 
-        #toRep = '<href>http://gf2.ucs.indiana.edu/kmz/' + 'uid' + uid + '/'
         toRep = '<href>https://data.geo-gateway.org/kmz/' + 'uid' + uid + '/'
 
         respData = data.content.replace('<href>'.encode(), toRep.encode()).decode("utf-8")

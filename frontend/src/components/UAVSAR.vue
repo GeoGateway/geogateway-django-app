@@ -548,10 +548,6 @@ export default {
       }
       //Now handle the selected entry
       if(!entry.extended) {
-        console.log("entry", entry.hasAlternateColoring);
-        console.log("vm.geoserverChecked", vm.geoserverChecked);
-        console.log("vm.hasAlternateColoring:",vm.hasAlternateColoring);
-        console.log("vm.hasHighresOverlay:",vm.hasHighresOverlay)
         this.extendingActive = true;
         if(this.plotActive){
           this.getCSV(entry, [this.plottingMarkerEnd.getLatLng().lat, this.plottingMarkerEnd.getLatLng().lng,
@@ -585,9 +581,9 @@ export default {
             vm.hasAlternateColoring = true; }
           if (Object.prototype.hasOwnProperty.call(datajson, 'hasHighresOverlay')) {
             vm.hasHighresOverlay = true; }
-          if (Object.prototype.hasOwnProperty.call(datajson, 'lowreskml')) {
-            vm.lowResKML = datajson['lowreskml'];}
-
+          // if (Object.prototype.hasOwnProperty.call(datajson, 'lowreskml')) {
+          //   vm.lowResKML = datajson['lowreskml'];}
+          console.log(entry);
           if (vm.alternateColoringChecked) {
             vm.layerFound = true;
             vm.extendedColor = '#CCFFCC'
@@ -649,6 +645,7 @@ export default {
         })
       } else {
         const parser = new DOMParser();
+        this.lowResKML = entry.kml;
         const kml = parser.parseFromString(this.lowResKML, 'text/xml');
         const track = new L.KML(kml,{'ignorePlacemark':true});
         this.uavsarHighResLayer = track;
