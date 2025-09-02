@@ -12,7 +12,6 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.core.files.base import ContentFile
 from django.apps import apps
-from airavata_django_portal_sdk import user_storage
 
 # GNSS service url
 GpsServiceUrl = "https://data.geo-gateway.org/gpsservice/kml?"
@@ -111,8 +110,10 @@ def dislocInput(request):
     if request.method == 'POST':
         print("test")
         file = request.FILES['file']
-        inputFile = user_storage.save_input_file(request, file)
-        print(inputFile.productUri + ' uri')
+        fs = FileSystemStorage()
+        filename = fs.save(file.name, file)
+        uploaded_file_url = fs.url(filename)
+        print(uploaded_file_url + ' url')
         id = 'Disloc_d9f189ed-d2c1-4e07-b709-de736f487e89'
         return JsonResponse(
             {

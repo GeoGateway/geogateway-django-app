@@ -6,3 +6,6 @@ geogateway_django_app/static
 .DS_Store
 *.pyc
 .idea
+
+CLAUDE.md
+MIGRATION.md

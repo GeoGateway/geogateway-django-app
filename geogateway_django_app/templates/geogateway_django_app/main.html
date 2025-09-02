@@ -1,25 +1,22 @@
-{% extends 'base1.html' %}
+{% extends 'geogateway_django_app/base.html' %}
 {% load static %}
 {% load render_bundle from webpack_loader %}
 
+{% block title %}GeoGateway{% endblock %}
 
-    {% block css %}
-    {% render_bundle "chunk-vendors" "css" "djvue_app2" %}
-    {% render_bundle "app" "css" "djvue_app2" %}
-    {% endblock css %}
-
+{% block extra_head %}
+{% render_bundle "chunk-vendors" "css" "DEFAULT" %}
+{% render_bundle "app" "css" "DEFAULT" %}
+{% endblock %}
 
 {% block content %}
 {% csrf_token %}
 <div id="app"></div>
 {% endblock %}
-{% block scripts %}
-<script src="{% static 'django_airavata_api/dist/airavata-api.js' %}"></script>
-    <script>
 
-    </script>
-{% render_bundle "chunk-vendors" "js" "djvue_app2" %}
-{% render_bundle "app" "js" "djvue_app2" %}
+{% block extra_js %}
+{% render_bundle "chunk-vendors" "js" "DEFAULT" %}
+{% render_bundle "app" "js" "DEFAULT" %}
 {% endblock %}
 
 

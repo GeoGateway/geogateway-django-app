@@ -117,7 +117,6 @@ import {bus} from '../main';
 import 'leaflet-kmz';
 import 'axios'
 
-// import AiravataAPI from 'django-airavata-api';
 
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 axios.defaults.xsrfCookieName = 'csrftoken'
@@ -175,12 +174,6 @@ export default {
   mounted() {
     bus.$on('updateDisloc', (html) =>
         this.fileInfo = html);
-    // eslint-disable-next-line no-undef
-    const {models, services, session, utils} = AiravataAPI;
-    this.models = models;
-    this.services = services;
-    this.session = session;
-    this.utils = utils;
 
 
   },
