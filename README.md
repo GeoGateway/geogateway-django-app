@@ -1,28 +1,82 @@
-# geogateway-django-app
+# GeoGateway Django App
+
+A standalone Django application for geospatial data visualization and analysis tools.
+
+## Requirements
+
+- Python 3.8 or later
+- Node.js 14 or later
+- yarn or npm
 
 ## Setting up the development environment
 
-You will need Python 3.6.2 or later for this installation. 
-This assumes you have the airavata-django-portal repo cloned and the development environment setup. 
-Instructions are provided here: https://github.com/apache/airavata-django-portal. Complete this installation before following the instructions below. 
-Assume this is done in $HOME/airavata-django-portal. 
+### 1. Clone the repository
+```bash
+git clone <repository-url>
+cd geogateway-django-app
+```
 
-After you have installed the Airavata Django Portal, install the GeoGateway Django App with the following steps. 
+### 2. Backend Setup (Django)
+```bash
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-1. Open two terminal windows. 
-2. In Terminal #1, clone this repo under $HOME, creating the directory $HOME/geogateway-django-app. 
+# Install Python dependencies
+pip install -r requirements.txt
 
-2. In Terminal #1, install dependencies and build frontend code for the Geogateway Django App:
-   * ```cd $HOME/geogateway-django-app/frontend```
-   * ```yarn install```
-3. In Terminal #2, activate the virtual environment 
-   * ```cd $HOME/airavata-django-portal``` 
-   * ```source venv/bin/activate``` 
-4. In Terminal #2, install the Geogateway Django App in develop mode into the Django portal
-   * ```cd $HOME/geogateway-django-app```
-   * ```python setup.py develop```
-4. In Terminal #2, run Airavata Django Portal Server
-   * ```cd $HOME/airavata-django-portal```
-   * ```python manage.py runserver```
-6. In Terminal #1, run: ``` yarn serve ``` 
-7. Point your browser to http://localhost:8000/geogateway_django_app/
+# Run database migrations
+python manage.py migrate
+
+# Create superuser (optional)
+python manage.py createsuperuser
+
+# Start Django development server
+python manage.py runserver
+```
+
+### 3. Frontend Setup (Vue.js)
+Open a new terminal window:
+```bash
+cd frontend
+
+# Install dependencies
+yarn install
+# or: npm install
+
+# Start development server
+yarn serve
+# or: npm run serve
+```
+
+### 4. Access the application
+- Django API: http://localhost:8000/
+- Vue.js frontend: http://localhost:9000/
+- Main app: http://localhost:8000/ (Django serves the built frontend in production)
+
+## Production Build
+
+```bash
+# Build frontend for production
+cd frontend
+yarn build
+
+# Collect static files
+python manage.py collectstatic
+
+# Run Django with production settings
+python manage.py runserver --settings=geogateway_project.settings_prod
+```
+
+## Available Commands
+
+### Backend
+- `python manage.py runserver` - Start Django development server
+- `python manage.py migrate` - Run database migrations
+- `python manage.py test` - Run tests
+- `python manage.py collectstatic` - Collect static files
+
+### Frontend
+- `yarn serve` - Start Vue.js development server
+- `yarn build` - Build for production
+- `yarn lint` - Run ESLint

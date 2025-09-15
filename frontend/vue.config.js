@@ -7,7 +7,7 @@ module.exports = {
     outputDir: '../geogateway_django_app/static/geogateway_django_app/bundles',
 
     devServer: {
-        disableHostCheck: true
+        allowedHosts: 'all'
     },
     configureWebpack: {
         optimization: {
@@ -46,12 +46,18 @@ module.exports = {
             .set('__STATIC__', 'static')
 
         config.devServer
-            .public('http://0.0.0.0:9000')
             .host('0.0.0.0')
             .port(9000)
-            .hotOnly(true)
-            .watchOptions({poll: 1000})
+            .hot(true)
             .https(false)
-            .headers({"Access-Control-Allow-Origin": ["\*"]})
+            .headers({"Access-Control-Allow-Origin": ["*"]})
+        
+        config.devServer.set('watchFiles', {
+            paths: ['**/*'],
+            options: {
+                usePolling: true,
+                interval: 1000
+            }
+        })
     }
 };
