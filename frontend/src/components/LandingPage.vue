@@ -4,11 +4,11 @@
     <div id="homePage" class="full-height" >
             <div class="row" id="header">
                 <div class="col"> <img id="logo" src="../assets/logo.png" alt="GeoGateway Logo"> </div>
-                <div class="col"> <b-button class="title-btn" @click="scrollTo('features')">Features</b-button></div>
-                <div class="col"> <b-button class="title-btn" @click="scrollTo('userRes')">User Resources</b-button></div>
-                <div class="col"> <b-button class="title-btn" @click="scrollTo('publications')">Publications</b-button></div>
-                <div class="col"> <b-button class="title-btn" @click="scrollTo('contributors')">Contributors</b-button></div>
-                <div class="col"> <b-button class="title-btn" @click="scrollTo('dataAttr')">Data Attribution</b-button></div>
+                <div class="col"> <q-btn flat class="title-btn" @click="scrollTo('features')">Features</q-btn></div>
+                <div class="col"> <q-btn flat class="title-btn" @click="scrollTo('userRes')">User Resources</q-btn></div>
+                <div class="col"> <q-btn flat class="title-btn" @click="scrollTo('publications')">Publications</q-btn></div>
+                <div class="col"> <q-btn flat class="title-btn" @click="scrollTo('contributors')">Contributors</q-btn></div>
+                <div class="col"> <q-btn flat class="title-btn" @click="scrollTo('dataAttr')">Data Attribution</q-btn></div>
             </div>
             <span class="align-items-center" id="geogatewayTitle">
                 GeoGateway
@@ -17,7 +17,7 @@
                 A search and analysis gateway to geodetic imaging data for scientific discovery, 
             field use and disaster response
             </span>
-            <b-button class="geogateway-button" @click="goToMap('/maptools')">Go to Map Tools</b-button>
+            <q-btn class="geogateway-button" @click="goToMap('/maptools')">Go to Map Tools</q-btn>
     </div>
 
     <div id="features" ref="features">
@@ -27,25 +27,25 @@
         <div class="section-content">
             <div class="row">
                 <div class="col inner-section">
-                <b-button class="btn btn-circle" @click="goToMap('/maptools')">
-                        <i class="fas fa-map"></i>
-                    </b-button><br>
+                <q-btn round class="btn-circle" @click="goToMap('/maptools')">
+                        <q-icon name="map" />
+                    </q-btn><br>
                     <span class="feature-title">Map Tools</span><br>
                     <span class="feature-desc">Map tools are integrated from different sources/references</span>
                 </div>
                 <div class="col inner-section">
 
-                    <b-button class="btn btn-circle" @click="goToMap('/uavsar')">
-                        <i class="fas fa-map"></i>
-                    </b-button><br>
+                    <q-btn round class="btn-circle" @click="goToMap('/uavsar')">
+                        <q-icon name="map" />
+                    </q-btn><br>
                     <span class="feature-title">UAVSAR</span><br>
                     <span class="feature-desc">UAVSAR is an airborne, L-band, fully polarimetric radar, mounted 
                     to the belly of a piloted Gulfstream III aircraft</span>
                 </div>
                 <div class="col inner-section">
-                <b-button class="btn btn-circle" @click="goToMap('/gnss')">
-                        <i class="fas fa-map"></i>
-                    </b-button><br>
+                <q-btn round class="btn-circle" @click="goToMap('/gnss')">
+                        <q-icon name="map" />
+                    </q-btn><br>
                     <span class="feature-title">GNSS</span><br>
                     <span class="feature-desc">Global Navigation Satellite System (GNSS) is any satellite 
                     constellation which provides positioning</span>
@@ -53,9 +53,9 @@
             </div>
             <div class="row">
                 <div class="col inner-section">
-                    <b-button class="btn btn-circle" @click="goToMap('/seismicity')">
-                        <i class="fas fa-map"></i>
-                    </b-button><br>
+                    <q-btn round class="btn-circle" @click="goToMap('/seismicity')">
+                        <q-icon name="map" />
+                    </q-btn><br>
                     <span class="feature-title">Seismicity</span><br>
                     <span class="feature-desc">The seismicity tab allows users to display earthquakes in a region over a specified period.</span>
                 </div>
@@ -69,9 +69,9 @@
                 </div>
                 -->
                 <div class="col inner-section">
-                <b-button class="btn btn-circle" @click="goToMap('/momentmagnitude')">
-                        <i class="fas fa-map"></i>
-                    </b-button><br>
+                <q-btn round class="btn-circle" @click="goToMap('/momentmagnitude')">
+                        <q-icon name="map" />
+                    </q-btn><br>
                     <span class="feature-title">Magnitude</span><br>
                     <span class="feature-desc">Magnitude is the physical size of an earthquake. </span>
                 </div>
@@ -149,21 +149,23 @@
         <span class="section">We integrate map data from different sources</span> 
     <div class="section-content">
         <div class="row">
-            <b-table 
+            <q-table 
                 class="tbl" 
-                striped hover 
-                :items="items" 
-                :fields="fields"
-                :per-page="perPage"
+                :data="items.slice(0, perPage)" 
+                :columns="columns"
+                hide-header
+                flat
             >
-                <template slot=cell(source) slot-scope="data">
-                     <a :href="data.item.link" target="_blank" rel="noreferrer noopener">{{data.item.text}}</a>
+                <template v-slot:body-cell-source="props">
+                  <q-td :props="props">
+                     <a :href="props.row.link" target="_blank" rel="noreferrer noopener">{{props.row.text}}</a>
+                  </q-td>
                 </template>
-            </b-table>
+            </q-table>
         </div><br>
-            <b-button @click="toggleRows()">
+            <q-btn @click="toggleRows()">
                 {{rowButtonText()}}
-            </b-button>
+            </q-btn>
         </div>
     </div>
 </div>
@@ -180,14 +182,18 @@ export default {
   data() {
       return {
           perPage: 6,
-          fields: [
+          columns: [
           {
-            key: 'tool',
-            label: 'Tool'
+            name: 'tool',
+            label: 'Tool',
+            field: 'tool',
+            align: 'left'
           },
           {
-            key: 'source',
-            label: 'Data Source / Reference'
+            name: 'source',
+            label: 'Data Source / Reference',
+            field: 'source',
+            align: 'left'
           }
         ],
         items: [

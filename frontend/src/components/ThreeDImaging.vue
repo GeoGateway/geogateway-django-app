@@ -1,20 +1,25 @@
 <template>
   <div class="w-100 p-2 bg-light text-left">
-    <b-alert :show="true">
-      <b-link @click="threedInfo=true" href="#">
-        <b-icon icon="info-circle-fill"/>
-      </b-link>&ensp;
+    <q-banner class="bg-info text-white q-mb-md">
+      <q-btn 
+        flat 
+        dense 
+        @click="threedInfo=true" 
+        icon="info" 
+        color="white"
+        class="q-mr-sm"
+      />
       About 3D Imaging
-    </b-alert>
+    </q-banner>
 
     <div align="left">
-      <input
-          type="checkbox"
-          v-model="ridgecrest"
-          id="ridgecrest"
-          @change="loadridgecrest"
-      ><label for="ridgecrest"><small><strong>Postseismic Products of Ridgecrest Earthquake</strong></small></label>
-      <br/>
+      <q-checkbox
+        v-model="ridgecrest"
+        @update:model-value="loadridgecrest"
+        class="text-weight-bold q-mb-sm"
+      >
+        <span class="text-caption text-weight-bold">Postseismic Products of Ridgecrest Earthquake</span>
+      </q-checkbox>
       <div id="ridgecrest_div" v-show="this.ridgecrest">
         <p>High-Resolution Targeted 3D imaging Postseismic Products of the Ridgecrest M6.4 (July 4, 2019) and M7.1 (July
           5, 2019) Earthquake Sequence.
@@ -27,32 +32,52 @@
           Earthquake Sequence, DOI: 10.5967/5sq2-rs60. <a target=_ href="http://hdl.handle.net/2022/23341">Full
             record</a>
         </p>
-        <table>
-          <tr>
-            <td><input type="checkbox" id="ridgecrest_0" value=0 v-model="ridgecrest_checkbox"
-                       @change="updateridgecrest('0')"><label for="ridgecrest_0"><a target="_blank" download
-                                                                                    href="https://raw.githubusercontent.com/GeoGateway/GeoGatewayStaticResources/master/kmz/Ridgecrest_2019_M6.4.kml">Inferred
-              Rupture Traces M6.4</a></label></td>
-          </tr>
-          <tr>
-            <td><input type="checkbox" id="ridgecrest_1" value=1 v-model="ridgecrest_checkbox"
-                       @change="updateridgecrest('1')"><label for="ridgecrest_1"><a target="_blank" download
-                                                                                    href="https://raw.githubusercontent.com/GeoGateway/GeoGatewayStaticResources/master/kmz/Ridgecrest_RC20190709_orthomosaic_preview.kml">Overview
-              of orthomosaic image M6.4</a></label></td>
-          </tr>
-          <tr>
-            <td><input type="checkbox" id="ridgecrest_2" value=2 v-model="ridgecrest_checkbox"
-                       @change="updateridgecrest('2')"><label for="ridgecrest_2"><a target="_blank" download
-                                                                                    href="https://raw.githubusercontent.com/GeoGateway/GeoGatewayStaticResources/master/kmz/Ridgecrest_2019_M7.1.kml">Inferred
-              Rupture Traces M7.1</a></label></td>
-          </tr>
-          <tr>
-            <td><input type="checkbox" id="ridgecrest_3" value=3 v-model="ridgecrest_checkbox"
-                       @change="updateridgecrest('3')"><label for="ridgecrest_3"><a target="_blank" download
-                                                                                    href="https://raw.githubusercontent.com/GeoGateway/GeoGatewayStaticResources/master/kmz/Ridgecrest_SV20190715_orthomosaic_preview.kml">
-              Overview of orthomosaic image M7.1</a></label></td>
-          </tr>
-        </table>
+        <div class="q-pl-md">
+          <q-checkbox 
+            :model-value="ridgecrest_checkbox.includes('0')" 
+            @update:model-value="updateridgecrest('0')"
+            class="q-mb-sm"
+          >
+            <span class="q-ml-sm">
+              <a target="_blank" download href="https://raw.githubusercontent.com/GeoGateway/GeoGatewayStaticResources/master/kmz/Ridgecrest_2019_M6.4.kml">
+                Inferred Rupture Traces M6.4
+              </a>
+            </span>
+          </q-checkbox>
+          <q-checkbox 
+            :model-value="ridgecrest_checkbox.includes('1')" 
+            @update:model-value="updateridgecrest('1')"
+            class="q-mb-sm"
+          >
+            <span class="q-ml-sm">
+              <a target="_blank" download href="https://raw.githubusercontent.com/GeoGateway/GeoGatewayStaticResources/master/kmz/Ridgecrest_RC20190709_orthomosaic_preview.kml">
+                Overview of orthomosaic image M6.4
+              </a>
+            </span>
+          </q-checkbox>
+          <q-checkbox 
+            :model-value="ridgecrest_checkbox.includes('2')" 
+            @update:model-value="updateridgecrest('2')"
+            class="q-mb-sm"
+          >
+            <span class="q-ml-sm">
+              <a target="_blank" download href="https://raw.githubusercontent.com/GeoGateway/GeoGatewayStaticResources/master/kmz/Ridgecrest_2019_M7.1.kml">
+                Inferred Rupture Traces M7.1
+              </a>
+            </span>
+          </q-checkbox>
+          <q-checkbox 
+            :model-value="ridgecrest_checkbox.includes('3')" 
+            @update:model-value="updateridgecrest('3')"
+            class="q-mb-sm"
+          >
+            <span class="q-ml-sm">
+              <a target="_blank" download href="https://raw.githubusercontent.com/GeoGateway/GeoGatewayStaticResources/master/kmz/Ridgecrest_SV20190715_orthomosaic_preview.kml">
+                Overview of orthomosaic image M7.1
+              </a>
+            </span>
+          </q-checkbox>
+        </div>
         <br>
         <center><strong>M 6.4 products</strong></center>
         <table class="uavsar-table">
@@ -247,20 +272,27 @@
     </div>
 
     <!-- info  popup -->
-    <b-modal
-        v-model="threedInfo"
-        title="3D Imaging">
-      <p class="my-4">
-        Users can locate postseismic products of the Ridgecrest Earthquake
-        (M6.4 (July 4, 2019) and M7.1 (July 5, 2019)) by navigating to the “3D
-        Imaging” tab and clicking on the box labeled “Postseismic Products of
-        Ridgecrest Earthquake.” The data was collected by Andrea Donnellan and
-        Gregory Lyzenga.
-      </p>
-
-      <div slot="modal-footer" class="w-100">
-      </div>
-    </b-modal>
+    <q-dialog v-model="threedInfo">
+      <q-card style="min-width: 400px">
+        <q-card-section>
+          <div class="text-h6">3D Imaging</div>
+        </q-card-section>
+        
+        <q-card-section class="q-pt-none">
+          <p class="my-4">
+            Users can locate postseismic products of the Ridgecrest Earthquake
+            (M6.4 (July 4, 2019) and M7.1 (July 5, 2019)) by navigating to the "3D
+            Imaging" tab and clicking on the box labeled "Postseismic Products of
+            Ridgecrest Earthquake." The data was collected by Andrea Donnellan and
+            Gregory Lyzenga.
+          </p>
+        </q-card-section>
+        
+        <q-card-actions align="right">
+          <q-btn flat label="Close" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
 
   </div>
@@ -268,7 +300,7 @@
 
 <script>
 import {bus} from '../main'
-import {mapFields} from 'vuex-map-fields';
+import {mapFields} from '../utils/mapFields';
 import axios from "axios";
 
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';

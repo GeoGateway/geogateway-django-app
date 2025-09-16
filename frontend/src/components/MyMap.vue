@@ -15,7 +15,6 @@
       <DraggableDiv v-resize @resize="resizeLOS" class="col-11" v-if="plotActive" id="plot-window">
 
 
-        <vue-resize></vue-resize>
         <template slot="header">
           <p style="color: #000000">Line of Sight Displacement</p>
         </template>
@@ -59,9 +58,7 @@ import Dygraph from "dygraphs";
 import 'dygraphs/dist/dygraph.css';
 import DraggableDiv from "./DraggableDiv";
 import 'leaflet-kmz';
-import {mapFields} from 'vuex-map-fields';
-import 'vue-resize/dist/vue-resize.css'
-import VueResize from 'vue-resize';
+import {mapFields} from '../utils/mapFields';
 // import axios from "axios";
 // import GeometryUtil from 'leaflet-geometryutil'
 
@@ -73,7 +70,6 @@ export default {
     ToolTabs,
     TopNav,
     DraggableDiv,
-    VueResize,
   },
   data() {
     return {

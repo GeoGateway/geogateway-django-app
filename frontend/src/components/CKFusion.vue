@@ -1,11 +1,16 @@
 <template>
   <div class="w-100 p-2 bg-light text-left">
-    <b-alert :show="true">
-      <b-link @click="ckfusionInfo=true" href="#">
-        <b-icon icon="info-circle-fill"/>
-      </b-link>&ensp;
+    <q-banner class="bg-info text-white q-mb-md">
+      <q-btn 
+        flat 
+        dense 
+        @click="ckfusionInfo=true" 
+        icon="info" 
+        color="white"
+        class="q-mr-sm"
+      />
       About CK Fusion
-    </b-alert>
+    </q-banner>
     <div class="tool-content">
       <a target="_blank"
          href="https://github.com/GeoGateway/GeoGatewayStaticResources/raw/master/documents/CK_Fusion_Software_User_Guide.pdf"><strong>CK Fusion User
@@ -21,20 +26,31 @@
     -->
 
     <!-- info  popup -->
-    <b-modal
-        v-model=ckfusionInfo
-        title="CK Fusion">
-        CK Fusion software uses the clustered kriging fusion method to combine earth surface displacement observations from two sources: GNSS and UAVSAR.
-        <br><br>
-        There are three stand alone components to software each of which can be run separately as a python executable.
-        <ul>
-        <li><b>get_uavsar_displacements</b>: Retrieves GNSS displacements over an InSAR epoch defined by the input UAVSAR annotation file.</li> 
-        <li><b>clusterKrigeVelocities</b>: A stand alone implementation of the clustered kriging algorithm that uses only the GNSS observations to generate an estimated field.</li>
-        <li><b>CK_Fusion_GNSS_InSAR</b>: Implements the full clustered kriging fusion method for GNSS and UAVSAR displacement observations.</li>
-        </ul>
-      <div slot="modal-footer" class="w-100">
-      </div>
-    </b-modal>
+    <q-dialog v-model="ckfusionInfo">
+      <q-card style="min-width: 400px">
+        <q-card-section>
+          <div class="text-h6">CK Fusion</div>
+        </q-card-section>
+        
+        <q-card-section class="q-pt-none">
+          <p>
+            CK Fusion software uses the clustered kriging fusion method to combine earth surface displacement observations from two sources: GNSS and UAVSAR.
+          </p>
+          <p>
+            There are three stand alone components to software each of which can be run separately as a python executable.
+          </p>
+          <ul>
+            <li><strong>get_uavsar_displacements</strong>: Retrieves GNSS displacements over an InSAR epoch defined by the input UAVSAR annotation file.</li> 
+            <li><strong>clusterKrigeVelocities</strong>: A stand alone implementation of the clustered kriging algorithm that uses only the GNSS observations to generate an estimated field.</li>
+            <li><strong>CK_Fusion_GNSS_InSAR</strong>: Implements the full clustered kriging fusion method for GNSS and UAVSAR displacement observations.</li>
+          </ul>
+        </q-card-section>
+        
+        <q-card-actions align="right">
+          <q-btn flat label="Close" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 
 </template>

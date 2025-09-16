@@ -1,11 +1,16 @@
 <template>
   <div class="w-100 p-2 bg-light text-left">
-    <b-alert :show="true">
-      <b-link @click="seismInfo=true" href="#">
-        <b-icon icon="info-circle-fill"/>
-      </b-link>&ensp;
+    <q-banner class="bg-info text-white q-mb-md">
+      <q-btn 
+        flat 
+        dense 
+        @click="seismInfo=true" 
+        icon="info" 
+        color="white"
+        class="q-mr-sm"
+      />
       About Seismicity
-    </b-alert>
+    </q-banner>
 
     Recent Earthquakes from USGS
 
@@ -13,34 +18,16 @@
 
       <span class="inputLabel">Recent Earthquakes from USGS</span>
       <hr>
-      <b-form-radio-group>
-        <b-form-radio
-            type="radio"
-            v-model="selected"
-            value="day"
-            @change="showSelected('day')"
-            name="group1"
-        > M > 1.0, Last Day
-        </b-form-radio>
-        <br/>
-        <b-form-radio
-            type="radio"
-            v-model="selected"
-            value="week"
-            @change="showSelected('week')"
-            name="group1"
-        >M > 2.5, Last Week
-        </b-form-radio>
-        <br/>
-        <b-form-radio
-            type="radio"
-            value="month"
-            v-model="selected"
-            @change="showSelected('month')"
-            name="group1"
-        >M > 4.5, Last Month
-        </b-form-radio>
-      </b-form-radio-group>
+      <q-option-group
+        v-model="selected"
+        @update:model-value="showSelected"
+        :options="[
+          {label: 'M > 1.0, Last Day', value: 'day'},
+          {label: 'M > 2.5, Last Week', value: 'week'},
+          {label: 'M > 4.5, Last Month', value: 'month'}
+        ]"
+        type="radio"
+      />
 
       <!--        is this necessary? -->
       <!--        <input-->
@@ -69,78 +56,125 @@
 
       <span class="inputLabel">Search Earthquake Catalog</span>
       <hr>
-      <b-button id="sp_windowpicker" class="btn btn_blue" @click="seisDrawRect()">
+      <q-btn 
+        id="sp_windowpicker" 
+        color="primary" 
+        @click="seisDrawRect()"
+        class="q-mb-sm q-mr-sm"
+      >
         Draw an area on the map
-      </b-button>
-      <b-button
-          v-if="areaLayer!=null || 
-                selected!=null || 
-                geoUri !== '' || 
-                kmlUri !== ''"
-          class="btn_white" id="clearUsgs" @click="clearUsgs()">
+      </q-btn>
+      <q-btn
+        v-if="areaLayer!=null || 
+              selected!=null || 
+              geoUri !== '' || 
+              kmlUri !== ''"
+        color="white" 
+        text-color="black"
+        id="clearUsgs" 
+        @click="clearUsgs()"
+        class="q-mb-sm"
+      >
         Clear USGS Layers
-      </b-button>
+      </q-btn>
       <br/><br/>
 
-      <span class="inputLabel">Min Lat</span>
-      <b-input-group>
-        <b-form-input v-model="minLat" placeholder="1 degree" name="minLat" value="32.0"></b-form-input>
-      </b-input-group>
+      <q-input
+        v-model="minLat"
+        label="Min Lat"
+        placeholder="32.0"
+        outlined
+        class="q-mb-md"
+      />
 
-      <span class="inputLabel">Min Lon</span>
-      <b-input-group>
-        <b-form-input v-model="minLon" placeholder="1 degree" name="minLon" value="-130.0"></b-form-input>
-      </b-input-group>
+      <q-input
+        v-model="minLon"
+        label="Min Lon"
+        placeholder="-130.0"
+        outlined
+        class="q-mb-md"
+      />
 
-      <span class="inputLabel">Max Lat</span>
-      <b-input-group>
-        <b-form-input v-model="maxLat" placeholder="1 degree" name="maxLat"></b-form-input>
-      </b-input-group>
+      <q-input
+        v-model="maxLat"
+        label="Max Lat"
+        placeholder="1 degree"
+        outlined
+        class="q-mb-md"
+      />
 
-      <span class="inputLabel">Max Lon</span>
-      <b-input-group>
-        <b-form-input v-model="maxLon" placeholder="1 degree" name="maxLon"></b-form-input>
-      </b-input-group>
+      <q-input
+        v-model="maxLon"
+        label="Max Lon"
+        placeholder="1 degree"
+        outlined
+        class="q-mb-md"
+      />
 
-      <span class="inputLabel">Start Date</span>
-      <b-input-group>
-        <input v-model="startDate" type="date" id="start"
-               value="2020-06-22"></b-input-group>
+      <q-input
+        v-model="startDate"
+        label="Start Date"
+        type="date"
+        outlined
+        class="q-mb-md"
+      />
 
-      <span class="inputLabel">Starting Time</span>
-      <b-input-group>
-        <b-form-input v-model="startTime" placeholder="1 degree" name="startT"></b-form-input>
-      </b-input-group>
+      <q-input
+        v-model="startTime"
+        label="Starting Time"
+        placeholder="HH:MM:SS"
+        outlined
+        class="q-mb-md"
+      />
 
-      <span class="inputLabel">Ending Date</span>
-      <b-input-group>
-        <input v-model="endDate" type="date" id="end"
-               value="2020-06-26">
-      </b-input-group>
+      <q-input
+        v-model="endDate"
+        label="Ending Date"
+        type="date"
+        outlined
+        class="q-mb-md"
+      />
 
-      <span class="inputLabel">Ending Time</span>
-      <b-input-group>
-        <b-form-input v-model="endTime" placeholder="1 degree" name="endTime"></b-form-input>
-      </b-input-group>
+      <q-input
+        v-model="endTime"
+        label="Ending Time"
+        placeholder="HH:MM:SS"
+        outlined
+        class="q-mb-md"
+      />
 
-      <span class="inputLabel">Minimum Magnitude</span>
-      <b-input-group>
-        <b-form-input v-model="minMag" placeholder="1 degree" name="minMag"></b-form-input>
-      </b-input-group>
+      <q-input
+        v-model="minMag"
+        label="Minimum Magnitude"
+        placeholder="e.g. 4.0"
+        outlined
+        class="q-mb-md"
+      />
 
-      <span class="inputLabel">Maximum Magnitude</span>
-      <b-input-group>
-        <b-form-input v-model="maxMag" placeholder="1 degree" name="maxMag"></b-form-input>
-      </b-input-group>
+      <q-input
+        v-model="maxMag"
+        label="Maximum Magnitude"
+        placeholder="e.g. 8.0"
+        outlined
+        class="q-mb-md"
+      />
 
-      <span class="inputLabel">Icon Display Scale</span>
-      <b-input-group>
-        <b-form-input v-model="iconScale" placeholder="1 degree" name="iconScale"></b-form-input>
-      </b-input-group>
+      <q-input
+        v-model="iconScale"
+        label="Icon Display Scale"
+        placeholder="1"
+        outlined
+        class="q-mb-md"
+      />
       <br/>
-      <button class="btn btn-success" id="gs_submit" name="submit" type="submit" v-on:click.prevent="runSeismicity()">
+      <q-btn 
+        color="positive" 
+        id="gs_submit" 
+        @click="runSeismicity()"
+        class="q-mb-md"
+      >
         Search
-      </button>
+      </q-btn>
       <br/>
       <br/>
       <div class="toolInfo" v-if="geoUri !== '' || kmlUri !== ''">
@@ -151,26 +185,34 @@
     </div>
 
     <!-- info  popup -->
-    <b-modal
-        v-model="seismInfo"
-        title="Seismicity">
-      <p class="my-4">
-        The seismicity tab allows users to display earthquakes in a region over a specified
-        period. The tab is split into two sections, “Recent Earthquakes from USGS” and
-        “Search Earthquake Catalog.”
-      </p>
-      <p>
-        The tab allows users to view recent earthquakes from USGS data. The USGS data
-        can also be found on the USGS website
-        <strong><a href="https://earthquake.usgs.gov/earthquakes/map/"
-                   target="_blank">earthquake.usgs.gov/earthquakes/map/</a></strong>
-        . The displayed earthquake events are color coded with the hotter
-        colors representing recent events and the cooler colors representing less recent
-        events.
-      </p>
-      <div slot="modal-footer" class="w-100">
-      </div>
-    </b-modal>
+    <q-dialog v-model="seismInfo">
+      <q-card style="min-width: 400px">
+        <q-card-section>
+          <div class="text-h6">Seismicity</div>
+        </q-card-section>
+        
+        <q-card-section class="q-pt-none">
+          <p class="my-4">
+            The seismicity tab allows users to display earthquakes in a region over a specified
+            period. The tab is split into two sections, "Recent Earthquakes from USGS" and
+            "Search Earthquake Catalog."
+          </p>
+          <p>
+            The tab allows users to view recent earthquakes from USGS data. The USGS data
+            can also be found on the USGS website
+            <strong><a href="https://earthquake.usgs.gov/earthquakes/map/"
+                       target="_blank">earthquake.usgs.gov/earthquakes/map/</a></strong>
+            . The displayed earthquake events are color coded with the hotter
+            colors representing recent events and the cooler colors representing less recent
+            events.
+          </p>
+        </q-card-section>
+        
+        <q-card-actions align="right">
+          <q-btn flat label="Close" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
   </div>
 </template>
@@ -179,7 +221,7 @@
 import axios from "axios";
 import {bus} from '../main'
 import 'leaflet-ajax';
-import {mapFields} from 'vuex-map-fields';
+import {mapFields} from '../utils/mapFields';
 import L from "leaflet";
 
 export default {

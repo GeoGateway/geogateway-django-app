@@ -18,7 +18,7 @@
 import 'vue-router'
 import {bus} from '../main'
 import L from 'leaflet'
-import {mapFields} from 'vuex-map-fields';
+import {mapFields} from '../utils/mapFields';
 
 export default {
   name: "ToolTabs",
@@ -167,10 +167,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-// Bootstrap and its default variables
-@import '~bootstrap/scss/bootstrap';
-// BootstrapVue and its default variables
-@import '~bootstrap-vue/src/index.scss';
+@use "sass:color";
+@import "../styles.scss";
+// Bootstrap imports removed for Quasar migration
 
 ul {
   list-style: none;
@@ -184,7 +183,7 @@ ul li a {
   background-color: $white;
   padding: 10px 15px;
   border-left: 4px solid $white;
-  border-right: 2px solid lighten($secondary, 48%);
+  border-right: 2px solid color.scale($secondary, $lightness: 48%);
   font-size: 1rem;
   font-weight: 500;
   display: block;

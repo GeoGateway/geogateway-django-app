@@ -1,29 +1,55 @@
 <template>
   <div class="w-100 p-2 bg-light text-left">
-    <b-alert :show="true">
-      <b-link @click="mmInfo=true" href="#">
-        <b-icon icon="info-circle-fill"/>
-      </b-link>&ensp;
+    <q-banner class="bg-info text-white q-mb-md">
+      <q-btn 
+        flat 
+        dense 
+        @click="mmInfo=true" 
+        icon="info" 
+        color="white"
+        class="q-mr-sm"
+      />
       About Moment Magnitude Calculator
-    </b-alert>
+    </q-banner>
 
     <hr/>
-    <b-input-group prepend="Length" append="km">
-      <b-form-input v-model="mm_length" placeholder="12.5"></b-form-input>
-    </b-input-group>
-    <b-input-group prepend="Width" append="km">
-      <b-form-input v-model="mm_width" placeholder="10"></b-form-input>
-    </b-input-group>
-    <b-input-group prepend="Slip" append="m">
-      <b-form-input v-model="mm_slip" placeholder="0.45"></b-form-input>
-    </b-input-group>
-    <b-input-group prepend="Shear Modulus">
-      <b-form-input v-model="mm_shear" placeholder="3"></b-form-input>
-      <b-input-group-append><span class="input-group-text">10<sup>11</sup> dyne/cm<sup>2</sup></span>
-      </b-input-group-append>
-    </b-input-group>
+    <q-input
+      v-model="mm_length"
+      label="Length"
+      placeholder="12.5"
+      suffix="km"
+      outlined
+      class="q-mb-md"
+    />
+    <q-input
+      v-model="mm_width"
+      label="Width"  
+      placeholder="10"
+      suffix="km"
+      outlined
+      class="q-mb-md"
+    />
+    <q-input
+      v-model="mm_slip"
+      label="Slip"
+      placeholder="0.45"
+      suffix="m"
+      outlined
+      class="q-mb-md"
+    />
+    <q-input
+      v-model="mm_shear"
+      label="Shear Modulus"
+      placeholder="3"
+      outlined
+      class="q-mb-md"
+    >
+      <template v-slot:append>
+        <span class="text-caption">10<sup>11</sup> dyne/cm<sup>2</sup></span>
+      </template>
+    </q-input>
     <br/>
-    <b-button v-on:click="runMMC()" variant="success">Calculate</b-button>
+    <q-btn @click="runMMC()" color="positive" class="q-mb-md">Calculate</q-btn>
     <br/>
     <div v-show="SM != null && MM != null">
       <br/>
@@ -32,22 +58,30 @@
       <h6><strong> Moment Magnitude: </strong> {{ this.MM }}</h6>
     </div>
 
-    <b-modal
-        v-model="mmInfo"
-        title="Moment Magnitude Calculator">
-      <p class="my-4">
-        Magnitude is the physical size of an earthquake.
-        Both seismic moment and moment magnitude <strong>(MW)</strong>
-        can be calculated using GeoGateway’s moment magnitude calculator.
-      </p>
-      <div slot="modal-footer" class="w-100">
-      </div>
-    </b-modal>
+    <q-dialog v-model="mmInfo">
+      <q-card style="min-width: 350px">
+        <q-card-section>
+          <div class="text-h6">Moment Magnitude Calculator</div>
+        </q-card-section>
+        
+        <q-card-section class="q-pt-none">
+          <p>
+            Magnitude is the physical size of an earthquake.
+            Both seismic moment and moment magnitude <strong>(MW)</strong>
+            can be calculated using GeoGateway's moment magnitude calculator.
+          </p>
+        </q-card-section>
+        
+        <q-card-actions align="right">
+          <q-btn flat label="Close" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
 <script>
-import {mapFields} from 'vuex-map-fields';
+import {mapFields} from '../utils/mapFields';
 
 export default {
   name: "MMCalc",

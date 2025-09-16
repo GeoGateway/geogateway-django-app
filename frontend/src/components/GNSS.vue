@@ -217,7 +217,7 @@
 
 import {bus} from '@/main'
 import axios from 'axios'
-import {mapFields} from 'vuex-map-fields';
+import {mapFields} from '../utils/mapFields';
 import L from "leaflet";
 
 export default {

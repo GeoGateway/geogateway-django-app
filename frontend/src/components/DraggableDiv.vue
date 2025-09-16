@@ -1,7 +1,11 @@
 <template>
     <div ref="draggableContainer" id="draggable-container">
         <div id="draggable-header" @mousedown="dragMouseDown">
-            <b-icon-x @click="hidePlot()" id="close-button"></b-icon-x>
+            <q-icon 
+              name="close" 
+              @click="hidePlot()" 
+              id="close-button"
+            />
                 <slot name="header" id="plot-header"></slot>
 
 

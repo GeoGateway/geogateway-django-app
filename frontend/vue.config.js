@@ -10,8 +10,12 @@ module.exports = {
         allowedHosts: 'all'
     },
     configureWebpack: {
+        resolve: {
+            alias: {
+                vue: '@vue/compat'
+            }
+        },
         optimization: {
-
             splitChunks: {
                 cacheGroups: {
                     vendors: {
@@ -27,13 +31,8 @@ module.exports = {
 
     chainWebpack: config => {
 
-        config.module
-            .rule('scss')
-            .test(/\.scss$/,)
-            .use('sass-loader')
-            .loader('css-loader')
-            .loader('vue-style-loader')
-            .end()
+        // SCSS configuration - removing potentially problematic custom rule
+        // Vue CLI handles SCSS automatically
 
         config
             .plugin('BundleTracker')
@@ -44,6 +43,7 @@ module.exports = {
 
         config.resolve.alias
             .set('__STATIC__', 'static')
+            .set('vue', '@vue/compat')
 
         config.devServer
             .host('0.0.0.0')
@@ -52,12 +52,7 @@ module.exports = {
             .https(false)
             .headers({"Access-Control-Allow-Origin": ["*"]})
         
-        config.devServer.set('watchFiles', {
-            paths: ['**/*'],
-            options: {
-                usePolling: true,
-                interval: 1000
-            }
-        })
+        // Simplified watchFiles configuration
+        config.devServer.set('watchFiles', ['src/**/*'])
     }
 };

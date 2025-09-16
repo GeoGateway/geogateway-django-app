@@ -1,6 +1,10 @@
-import Vue from 'vue';
+import { createApp } from 'vue';
+import { Quasar } from 'quasar';
+import quasarLang from 'quasar/lang/en-US';
+import quasarIconSet from 'quasar/icon-set/material-icons';
+import '@quasar/extras/material-icons/material-icons.css';
+import 'quasar/dist/quasar.css';
 import App from './App.vue';
-import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue';
 import MapTools from "./components/MapTools";
 import GNSS from './components/GNSS'
 import MMCalc from "./components/MMCalc";
@@ -14,27 +18,19 @@ import Disloc from "./components/Disloc";
 import SpecialStudies from "./components/SpecialStudies";
 import ThreeDImaging from "./components/ThreeDImaging";
 import CKFusion from "./components/CKFusion";
-import VueRouter from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import 'leaflet/dist/leaflet.css';
 import "leaflet-kml";
 import {store} from "./store/store";
-import resize from "vue-element-resize-detector";
+import mitt from 'mitt';
+import { vResize } from './directives/resize';
 import LandinigPage from "./components/LandingPage";
 import MyMap from "./components/MyMap";
 
-Vue.use(VueRouter);
-Vue.use(BootstrapVue);
-Vue.use(BootstrapVueIcons);
-Vue.use(resize);
-Vue.config.silent = true
-
-export const bus = new Vue();
-
-Vue.config.productionTip = false;
-Vue.config.devtools = true;
+// Create event bus for component communication
+export const bus = mitt();
 
 import 'leaflet/dist/leaflet.css';
-import VueResource from 'vue-resource';
 
 
 
@@ -59,21 +55,29 @@ const routes = [
 ]
 
 
-const router = new VueRouter({
+const router = createRouter({
+  history: createWebHistory(),
   routes,
-})
-Vue.use(VueResource);
-// Vue.prototype.$http = axios;
-Vue.http.options.emulateJSON = true;
+});
 
 
 
 
 
-// initialize router
+// Create and mount Vue app
+const app = createApp(App);
 
-new Vue({
-  router,
-  store: store,
-  render: h => h(App),
-}).$mount('#app');
+app.use(router);
+app.use(store);
+app.use(Quasar, {
+  lang: quasarLang,
+  iconSet: quasarIconSet,
+});
+
+// Global properties (replacing Vue 2's Vue.prototype)
+app.config.globalProperties.$bus = bus;
+
+// Register global directives
+app.directive('resize', vResize);
+
+app.mount('#app');

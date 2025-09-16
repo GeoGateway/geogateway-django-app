@@ -1,11 +1,16 @@
 <template>
   <div class="w-100 p-2 bg-light text-left">
-    <b-alert :show="true">
-      <b-link v-b-modal="`about-uavsar-modal`">
-        <b-icon icon="info-circle-fill"/>
-      </b-link>&ensp;
+    <q-banner class="bg-info text-white q-mb-md">
+      <q-btn 
+        flat 
+        dense 
+        @click="showAboutModal" 
+        icon="info" 
+        color="white"
+        class="q-mr-sm"
+      />
       About UAVSAR
-    </b-alert>
+    </q-banner>
 
     <div class="w-100 pt-2 pb-2 d-flex flex-row text-secondary">
       <div>Functions</div>
@@ -233,7 +238,7 @@ import axios from "axios";
 import 'leaflet-kmz';
 import L from 'leaflet';
 import 'leaflet-kml'
-import {mapFields} from 'vuex-map-fields';
+import {mapFields} from '../utils/mapFields';
 
 export default {
   name: "UAVSAR",

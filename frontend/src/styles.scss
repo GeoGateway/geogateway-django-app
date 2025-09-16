@@ -1,26 +1,24 @@
+// Sass imports must be first
+@use "sass:color";
+
 @import url('https://fonts.iu.edu/style.css?family=BentonSans:regular,bold|BentonSansCond:regular|GeorgiaPro:regular');
 
 $font-family-sans-serif: BentonSans Regular, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
 $font-family-monospace: BentonSans Regular, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
 $font-family-base: BentonSans Regular, $font-family-sans-serif !default;
 
-
-//$alert-padding-y: .75rem !default;
-//$alert-padding-x: 1.25rem !default;
-//$alert-margin-bottom: 1rem !default;
-//$alert-border-radius: 0px !default;
-//$alert-link-font-weight:            $font-weight-bold !default;
 $alert-border-width: 0px !default;
 
-//$alert-bg-level: -12 !default;
-//$alert-border-level: 0 !default;
-//$alert-color-level: 6 !default;
-
-
-// Bootstrap and its default variables
-@import '~bootstrap/scss/bootstrap';
-// BootstrapVue and its default variables
-@import '~bootstrap-vue/src/index.scss';
+// Define common color variables for compatibility  
+$primary: #007bff;
+$secondary: #6c757d;
+$success: #28a745;
+$info: #17a2b8;
+$warning: #ffc107;
+$danger: #dc3545;
+$light: #f8f9fa;
+$dark: #343a40;
+$white: #fff;
 
 .alert {
   background-color: white;

@@ -1,61 +1,62 @@
 <template>
   <div class="w-100 p-2 bg-light text-left">
-    <b-alert :show="true">
-      <b-link @click="mapToolsInfo=true" href="#">
-        <b-icon icon="info-circle-fill"/>
-      </b-link>&ensp;
+    <q-banner class="bg-info text-white q-mb-md">
+      <q-btn 
+        flat 
+        dense 
+        @click="mapToolsInfo=true" 
+        icon="info" 
+        color="white"
+        class="q-mr-sm"
+      />
       About Maptools
-    </b-alert>
+    </q-banner>
 
     <div class="w-100 pt-2 pb-2 d-flex flex-row text-secondary">
       <div>Functions</div>
       <hr class="flex-fill"/>
     </div>
 
-    <b-card>
-      <b-col>
+    <q-card class="q-mb-md">
+      <q-card-section>
         <h5 class="orange">Faults</h5>
-        <b-row class="text-center">
-          <b-form-checkbox
+        <div class="text-center">
+          <q-checkbox
               v-model="ucerf"
-              @change="updateLayer('ucerf')"
-              id="ucerf"
-          ><label for="ucerf"> UCERF3 Fault Model</label>&ensp;
-          </b-form-checkbox>
-          <a href="" v-on:click.stop.prevent="openWindow('https://www.scec.org/ucerf')">
-            <i class="fas fa-info-circle"></i>
-          </a>
-        </b-row>
-      </b-col>
-      <div v-show="this.ucerf">
-        <span class="card-text">
-          Select a color for the falut
-        </span>
-        <b-form-radio-group v-model="selectedColor">
-
-          <b-row>
-            <b-col>
-              <b-form-radio label="black" name="some-radios" value="black" v-model="selectedColor"
-                            @change="updateColor('black')"><p>black</p></b-form-radio>
-            </b-col>
-            <b-col>
-              <b-form-radio label="yellow" name="some-radios" value="yellow" v-model="selectedColor"
-                            @change="updateColor('yellow')"><p>yellow</p></b-form-radio>
-            </b-col>
-          </b-row>
-          <b-row>
-            <b-col>
-              <b-form-radio label="red" name="some-radios" value="red" v-model="selectedColor"
-                            @change="updateColor('red')"><p>red</p></b-form-radio>
-            </b-col>
-            <b-col>
-              <b-form-radio label="grey" name="some-radios" value="grey" v-model="selectedColor"
-                            @change="updateColor('grey')"><p>grey</p></b-form-radio>
-            </b-col>
-          </b-row>
-        </b-form-radio-group>
-      </div>
-    </b-card>
+              @update:model-value="updateLayer('ucerf')"
+              label="UCERF3 Fault Model"
+              class="q-mr-sm"
+          />
+          <q-btn 
+            flat 
+            dense 
+            round 
+            icon="info" 
+            @click.stop.prevent="openWindow('https://www.scec.org/ucerf')"
+            color="primary"
+            size="sm"
+          />
+        </div>
+      </q-card-section>
+        <q-card-section v-show="this.ucerf">
+          <div class="card-text">
+            Select a color for the fault
+          </div>
+          <q-option-group
+            v-model="selectedColor"
+            :options="[
+              { label: 'Black', value: 'black' },
+              { label: 'Yellow', value: 'yellow' },
+              { label: 'Red', value: 'red' },
+              { label: 'Grey', value: 'grey' }
+            ]"
+            @update:model-value="updateColor"
+            color="primary"
+            class="q-mt-sm"
+            inline
+          />
+        </q-card-section>
+    </q-card>
 
     <b-card>
       <b-col>
@@ -273,7 +274,7 @@
 <script>
 import {bus} from '../main'
 import axios from "axios";
-import {mapFields} from 'vuex-map-fields';
+import {mapFields} from '../utils/mapFields';
 import L from 'leaflet';
 
 axios.defaults.withCredentials = true;
@@ -493,10 +494,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-// Bootstrap and its default variables
-@import '~bootstrap/scss/bootstrap';
-// BootstrapVue and its default variables
-@import '~bootstrap-vue/src/index.scss';
+@use "sass:color";
+@import "../styles.scss";
 
 .fileEntry {
   width: auto;
@@ -546,19 +545,19 @@ export default {
 }
 
 button.file-upload-button {
-  background-color: lighten($primary, 49%);
-  border: 2px dashed lighten($primary, 35%);
+  background-color: color.scale($primary, $lightness: 49%);
+  border: 2px dashed color.scale($primary, $lightness: 35%);
   border-radius: 5px;
   padding: 20px 10px;
 
   &:hover, &:active, &:focus {
-    background-color: lighten($primary, 48%);
-    border: 2px dashed lighten($primary, 25%);
+    background-color: color.scale($primary, $lightness: 48%);
+    border: 2px dashed color.scale($primary, $lightness: 25%);
   }
 
   &:disabled {
-    background-color: lighten($secondary, 48%);
-    border: 2px dashed lighten($secondary, 25%);
+    background-color: color.scale($secondary, $lightness: 48%);
+    border: 2px dashed color.scale($secondary, $lightness: 25%);
   }
 }
 

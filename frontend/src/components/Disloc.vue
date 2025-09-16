@@ -120,7 +120,7 @@ import 'axios'
 
 axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 axios.defaults.xsrfCookieName = 'csrftoken'
-import {mapFields} from 'vuex-map-fields';
+import {mapFields} from '../utils/mapFields';
 import L from "leaflet";
 
 export default {

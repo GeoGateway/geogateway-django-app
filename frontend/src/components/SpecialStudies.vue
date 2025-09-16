@@ -1,98 +1,161 @@
 <template>
   <div class="w-100 p-2 bg-light text-left">
-    <b-alert :show="true">
-      <b-link @click="specstudInfo=true" href="#">
-        <b-icon icon="info-circle-fill"/>
-      </b-link>&ensp;
+    <q-banner class="bg-info text-white q-mb-md">
+      <q-btn 
+        flat 
+        dense 
+        @click="specstudInfo=true" 
+        icon="info" 
+        color="white"
+        class="q-mr-sm"
+      />
       About Special Studies
-    </b-alert>
+    </q-banner>
 
     <hr>
     <div align="left">
 
-      <b-card>
-
-        <b-form-checkbox
-
+      <q-card class="q-mb-md">
+        <q-card-section>
+          <q-checkbox
             v-model="woolseyfire"
-            id="woolseyfire"
-            @change="loadwoolfire"
-        ><label for="woolseyfire"><strong>Southern California Woolsey Fire</strong></label>
-        </b-form-checkbox>
-        <div id="woof_table" v-show="this.woolseyfire">
+            @update:model-value="loadwoolfire"
+            label="Southern California Woolsey Fire"
+            class="text-weight-bold"
+          />
+        </q-card-section>
+        <q-card-section v-show="this.woolseyfire">
           <p>Southern California's Woolsey Fire on Nov. 15 observed with UAVSAR</p>
-          <div>
-            <b-form-checkbox id="woof_0" value=0 v-model="woof_checkbox" @change="updatewoof('0')"><label
-                for="woof_0"><a target="_blank"
-                                href="https://raw.githubusercontent.com/GeoGateway/GeoGatewayStaticResources/master/kmz/CAVNC-091023_WOOLSEY_11-18-2018_55900_AM.kmz">Woolsey
-              fire perimeter (11-18-2018)</a></label></b-form-checkbox>
-            <b-form-checkbox id="woof_1" value=1 v-model="woof_checkbox" @change="updatewoof('1')"><label
-                for="woof_1"><a target="_blank"
-                                href="https://raw.githubusercontent.com/GeoGateway/GeoGatewayStaticResources/master/kmz/CAVNC-090993_Hill_11-12-2018_91400_PM.kmz">Hill
-              fire perimeter (11-12-2018)</a></label></b-form-checkbox>
-            <b-form-checkbox id="woof_2" value=2 v-model="woof_checkbox" @change="updatewoof('2')"><label
-                for="woof_2"><a target="_blank"
-                                href="http://gf2.ucs.indiana.edu/stage/CA_Fires/SanAnd_08525_18076-003_18083-003_0036d_s01_L090HH_01.cor.tiff">UAVSAR
-              Correlation Image 1 (geotiff)</a></label></b-form-checkbox>
-            <b-form-checkbox id="woof_3" value=3 v-model="woof_checkbox" @change="updatewoof('3')"><label
-                for="woof_3"><a target="_blank"
-                                href="http://gf2.ucs.indiana.edu/stage/CA_Fires/SanAnd_26526_18080-006_18083-000_0011d_s01_L090HH_01.cor.tiff">UAVSAR
-              Correlation Image 2 (geotiff)</a></label></b-form-checkbox>
+          <div class="q-pl-md">
+            <q-checkbox 
+              :model-value="woof_checkbox.includes(0)" 
+              @update:model-value="updatewoof('0')"
+              class="q-mb-sm"
+            >
+              <span class="q-ml-sm">
+                <a target="_blank" href="https://raw.githubusercontent.com/GeoGateway/GeoGatewayStaticResources/master/kmz/CAVNC-091023_WOOLSEY_11-18-2018_55900_AM.kmz">
+                  Woolsey fire perimeter (11-18-2018)
+                </a>
+              </span>
+            </q-checkbox>
+            <q-checkbox 
+              :model-value="woof_checkbox.includes(1)" 
+              @update:model-value="updatewoof('1')"
+              class="q-mb-sm"
+            >
+              <span class="q-ml-sm">
+                <a target="_blank" href="https://raw.githubusercontent.com/GeoGateway/GeoGatewayStaticResources/master/kmz/CAVNC-090993_Hill_11-12-2018_91400_PM.kmz">
+                  Hill fire perimeter (11-12-2018)
+                </a>
+              </span>
+            </q-checkbox>
+            <q-checkbox 
+              :model-value="woof_checkbox.includes(2)" 
+              @update:model-value="updatewoof('2')"
+              class="q-mb-sm"
+            >
+              <span class="q-ml-sm">
+                <a target="_blank" href="http://gf2.ucs.indiana.edu/stage/CA_Fires/SanAnd_08525_18076-003_18083-003_0036d_s01_L090HH_01.cor.tiff">
+                  UAVSAR Correlation Image 1 (geotiff)
+                </a>
+              </span>
+            </q-checkbox>
+            <q-checkbox 
+              :model-value="woof_checkbox.includes(3)" 
+              @update:model-value="updatewoof('3')"
+              class="q-mb-sm"
+            >
+              <span class="q-ml-sm">
+                <a target="_blank" href="http://gf2.ucs.indiana.edu/stage/CA_Fires/SanAnd_26526_18080-006_18083-000_0011d_s01_L090HH_01.cor.tiff">
+                  UAVSAR Correlation Image 2 (geotiff)
+                </a>
+              </span>
+            </q-checkbox>
           </div>
           <small>Experimental products: JPL/Caltech/GeoGateway</small>
-        </div>
-      </b-card>
+        </q-card-section>
+      </q-card>
 
 
-      <b-card>
-        <b-form-checkbox
+      <q-card class="q-mb-md">
+        <q-card-section>
+          <q-checkbox
             v-model="wildfire"
-            id="wildfire"
-            @change="loadwildfire"
-        ><label for="wildfire"><strong>Wildfire and debris flows</strong></label>
-        </b-form-checkbox>
-        <div id="wilf_table" v-show="this.wildfire">
+            @update:model-value="loadwildfire"
+            label="Wildfire and debris flows"
+            class="text-weight-bold"
+          />
+        </q-card-section>
+        <q-card-section v-show="this.wildfire">
           <p>Montecito debris flows observed with UAVSAR</p>
-          <div>
-            <b-form-checkbox id="wilf_0" value=0 v-model="wilf_checkbox" @change="updatewilf('0')"><label
-                for="wilf_0"><a target="_blank"
-                                href="https://raw.githubusercontent.com/GeoGateway/GeoGatewayStaticResources/master/kmz/wildfire_ModifiedUAVSAR.kmz">UAVSAR
-              enchanced image pair (Nov-2-2017, Feb-5-2018) Orange</a></label></b-form-checkbox>
-            <b-form-checkbox id="wilf_1" value=1 v-model="wilf_checkbox" @change="updatewilf('1')"><label
-                for="wilf_1"><a target="_blank"
-                                href="https://raw.githubusercontent.com/GeoGateway/GeoGatewayStaticResources/master/kmz/wildfire_ModifiedCorrelation.kmz">UAVSAR
-              enchanced image coherence (Feb-5-2018) Purple</a></label></b-form-checkbox>
-            <b-form-checkbox id="wilf_2" value=2 v-model="wilf_checkbox" @change="updatewilf('2')"><label
-                for="wilf_2"><a target="_blank"
-                                href="https://raw.githubusercontent.com/GeoGateway/GeoGatewayStaticResources/master/kmz/wildfire_NIT_result.kmz">Rapid
-              change detection with optical images (Dec-28-2017/Jan-13-2018)</a></label></b-form-checkbox>
+          <div class="q-pl-md">
+            <q-checkbox 
+              :model-value="wilf_checkbox.includes(0)" 
+              @update:model-value="updatewilf('0')"
+              class="q-mb-sm"
+            >
+              <span class="q-ml-sm">
+                <a target="_blank" href="https://raw.githubusercontent.com/GeoGateway/GeoGatewayStaticResources/master/kmz/wildfire_ModifiedUAVSAR.kmz">
+                  UAVSAR enhanced image pair (Nov-2-2017, Feb-5-2018) Orange
+                </a>
+              </span>
+            </q-checkbox>
+            <q-checkbox 
+              :model-value="wilf_checkbox.includes(1)" 
+              @update:model-value="updatewilf('1')"
+              class="q-mb-sm"
+            >
+              <span class="q-ml-sm">
+                <a target="_blank" href="https://raw.githubusercontent.com/GeoGateway/GeoGatewayStaticResources/master/kmz/wildfire_ModifiedCorrelation.kmz">
+                  UAVSAR enhanced image coherence (Feb-5-2018) Purple
+                </a>
+              </span>
+            </q-checkbox>
+            <q-checkbox 
+              :model-value="wilf_checkbox.includes(2)" 
+              @update:model-value="updatewilf('2')"
+              class="q-mb-sm"
+            >
+              <span class="q-ml-sm">
+                <a target="_blank" href="https://raw.githubusercontent.com/GeoGateway/GeoGatewayStaticResources/master/kmz/wildfire_NIT_result.kmz">
+                  Rapid change detection with optical images (Dec-28-2017/Jan-13-2018)
+                </a>
+              </span>
+            </q-checkbox>
           </div>
           <small>Experimental products: JPL/Caltech/GeoGateway</small>
-        </div>
-      </b-card>
+        </q-card-section>
+      </q-card>
     </div>
 
     <!-- info  popup -->
-    <b-modal
-        v-model="specstudInfo"
-        title="Special Studies">
-      <p class="my-4">
-        GeoGateway’s Special Studies tab lists products for demonstration purposes.
-        The study includes wildfire burn areas and debris flows imaged with UAVSAR
-        following the Southern California 2018 Woolsey Fire and the 2017 Montecito,
-        California fire.
-      </p>
-
-      <div slot="modal-footer" class="w-100">
-      </div>
-    </b-modal>
+    <q-dialog v-model="specstudInfo">
+      <q-card style="min-width: 400px">
+        <q-card-section>
+          <div class="text-h6">Special Studies</div>
+        </q-card-section>
+        
+        <q-card-section class="q-pt-none">
+          <p class="my-4">
+            GeoGateway's Special Studies tab lists products for demonstration purposes.
+            The study includes wildfire burn areas and debris flows imaged with UAVSAR
+            following the Southern California 2018 Woolsey Fire and the 2017 Montecito,
+            California fire.
+          </p>
+        </q-card-section>
+        
+        <q-card-actions align="right">
+          <q-btn flat label="Close" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
   </div>
 </template>
 
 <script>
 import {bus} from '../main'
-import {mapFields} from 'vuex-map-fields';
+import {mapFields} from '../utils/mapFields';
 import axios from "axios";
 
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';

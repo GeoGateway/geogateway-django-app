@@ -1,14 +1,20 @@
 <template>
   <div style="max-width: 300px;" class="h-100 d-flex flex-column">
     <div class="text-right bg-light">
-      <b-button variant="link" v-b-toggle="`navbar-toolbar-toggle`" class="v-100">
-        <b-icon icon="x" class="when-open"></b-icon>
-        <b-icon icon="arrow-right-short" class="when-closed"></b-icon>
-      </b-button>
+      <q-btn 
+        flat 
+        round 
+        @click="toolbarVisible = !toolbarVisible" 
+        class="v-100"
+        :icon="toolbarVisible ? 'close' : 'keyboard_arrow_right'"
+        color="primary"
+      />
     </div>
-    <b-collapse ref="toolbarToggle" class="w-100 flex-fill bg-light p-2 overflow-auto" id="navbar-toolbar-toggle" :visible="true">
-      <router-view></router-view>
-    </b-collapse>
+    <q-slide-transition>
+      <div v-show="toolbarVisible" ref="toolbarToggle" class="w-100 flex-fill bg-light p-2 overflow-auto">
+        <router-view></router-view>
+      </div>
+    </q-slide-transition>
 
   </div>
 </template>
@@ -16,13 +22,13 @@
 <script>
 import {bus} from '../main'
 import L from 'leaflet'
-import {mapFields} from 'vuex-map-fields';
+import {mapFields} from '../utils/mapFields';
 
 export default {
   name: "ToolBar",
   data() {
     return {
-      toolbar: true,
+      toolbarVisible: true,
       toggleButton: null,
       nav: true,
     }
@@ -31,13 +37,13 @@ export default {
     bus.$on('ToPage', (page) =>
         this.toPage(page));
     bus.$on('CloseBar', () => {
-      if (this.toolbar) {
+      if (this.toolbarVisible) {
         this.closeBar();
       }
     });
     bus.$on('OpenBar', () => {
-      if (!this.toolbar) {
-        this.toolbar = true;
+      if (!this.toolbarVisible) {
+        this.toolbarVisible = true;
       }
     });
     bus.$on('navClosed', () => {
@@ -49,7 +55,7 @@ export default {
   },
   methods: {
     closeBar() {
-      this.toolbar = false;
+      this.toolbarVisible = false;
     },
     toPage(page) {
       var route = '';
@@ -121,7 +127,8 @@ export default {
   },
   watch: {
     $route() {
-      this.$refs.toolbarToggle.show = true;
+      // Ensure toolbar is visible when route changes
+      this.toolbarVisible = true;
     }
   }
 }

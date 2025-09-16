@@ -1,14 +1,7 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-// import L from "leaflet";
-// import L from "leaflet";
+import { createStore } from 'vuex';
+import { getField, updateField } from '../utils/mapFields';
 
-import { getField, updateField } from 'vuex-map-fields';
-
-Vue.use(Vuex);
-
-
-export const store = new Vuex.Store({
+export const store = createStore({
     state: {
         mapTools: {
             ucerfUrlGrey: "https://raw.githubusercontent.com/GeoGateway/GeoGatewayStaticResources/master/kmz/ucerf3_grey.kml",

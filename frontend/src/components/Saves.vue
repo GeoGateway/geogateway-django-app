@@ -1,6 +1,6 @@
 <template>
     <div class="tab-window">
-        <b-button variant="success" @click="saveState">Save Current State</b-button>
+        <q-btn color="positive" @click="saveState">Save Current State</q-btn>
         <br/> <br>
 
         <div v-for="save in saves" :key="save.date">
@@ -13,7 +13,7 @@
 
 <script>
     import {bus} from '../main'
-    import {mapFields} from 'vuex-map-fields'
+    import {mapFields} from '../utils/mapFields'
     export default {
         name: "Saves",
         data(){

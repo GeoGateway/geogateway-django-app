@@ -5,9 +5,12 @@
             <div class="row">
 
             <div class="col">
-                <b-button class="btn btn-circle" @click="scroll(1)">
-                        <i class="fas fa-angle-left"></i>
-                    </b-button>
+                <q-btn 
+                  round 
+                  color="primary" 
+                  @click="scroll(1)"
+                  icon="keyboard_arrow_left"
+                />
             </div>
 
             <div class="col">
@@ -54,9 +57,12 @@
             </div>
 
             <div class="col">
-                <b-button class="btn btn-circle" @click="scroll(-1)">
-                        <i class="fas fa-angle-right"></i>
-                    </b-button>
+                <q-btn 
+                  round 
+                  color="primary" 
+                  @click="scroll(-1)"
+                  icon="keyboard_arrow_right"
+                />
             </div>
 
         </div>
