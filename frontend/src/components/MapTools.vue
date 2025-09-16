@@ -58,216 +58,248 @@
         </q-card-section>
     </q-card>
 
-    <b-card>
-      <b-col>
-        <h5 class="orange">Faults</h5>
-        <b-row>
-          <b-form-checkbox
-              type="checkbox"
+    <q-card class="q-mb-md">
+      <q-card-section>
+        <h5 class="orange">Quaternary Faults</h5>
+        <div class="text-center">
+          <q-checkbox
               v-model="qfaults"
-              @change="updateLayer('qfaults')"
-              id="qfaults"
-          ><label for="boundaries">Quaternary Faults</label>&ensp;
-          </b-form-checkbox>
-          <a href="" v-on:click.stop.prevent="openWindow('https://doi.org/10.5066/F7S75FJM')">
-            <i class="fas fa-info-circle"></i>
-          </a>
-        </b-row>
-      </b-col>
-      <div id="div_qfautls" v-show="this.qfaults" align="left">
-        <br><span class="card-text">Source: USGS Faults Database</span>
-        <!-- <img src="../assets/qfaultslegend.jpg" alt="qfaults_legend" width="80%" height="80%" style="border:1px solidblack"> -->
-        <b-form-group>
-          <b-form-checkbox-group
-              id="qfaults_type"
-              v-model="qfaults_selected"
-              stacked
-          >
-            <b-form-checkbox value="historic"><span style="color:#ff0000;font-weight: bold;">&#9473;&#9473;</span>
-              Historic (150 yr)
-            </b-form-checkbox>
-            <b-form-checkbox value="latest Quaternary"><span
-                style="color:#ffaa00;font-weight: bold;">&#9473;&#9473;</span> Latest Quaternary (15,000 yr)
-            </b-form-checkbox>
-            <b-form-checkbox value="late Quaternary"><span
-                style="color:#55ff00;font-weight: bold;">&#9473;&#9473;</span> Late Quaternary (130,000 yr)
-            </b-form-checkbox>
-            <b-form-checkbox value="middle and late Quaternary"><span style="color:#0070ff;font-weight: bold;">&#9473;&#9473;</span>
-              Middle and Late Quaternary (750,000 yr)
-            </b-form-checkbox>
-            <b-form-checkbox value="undifferentiated Quaternary"><span style="color:#000000;font-weight: bold;">&#9473;&#9473;</span>
-              Undifferentiated Quaternary (1.6 millions yr)
-            </b-form-checkbox>
-            <b-form-checkbox value="unspecified"><span style="color:#dfe000;font-weight: bold;">&#9473;&#9473;</span>
-              Unspecified Age
-            </b-form-checkbox>
-            <b-form-checkbox value="class B"><span style="color:#9c9c9c;font-weight: bold;">&#9473;&#9473;</span>
-              Class B
-            </b-form-checkbox>
-          </b-form-checkbox-group>
-        </b-form-group>
-      </div>
-    </b-card>
+              @update:model-value="updateLayer('qfaults')"
+              label="Quaternary Faults"
+              class="q-mr-sm"
+          />
+          <q-btn 
+            flat 
+            dense 
+            round 
+            icon="info" 
+            @click.stop.prevent="openWindow('https://doi.org/10.5066/F7S75FJM')"
+            color="primary"
+            size="sm"
+          />
+        </div>
+      </q-card-section>
+      <q-card-section v-show="this.qfaults">
+        <div class="card-text q-mb-sm">Source: USGS Faults Database</div>
+        <q-option-group
+          v-model="qfaults_selected"
+          :options="[
+            { label: 'Historic (150 yr)', value: 'historic', color: '#ff0000' },
+            { label: 'Latest Quaternary (15,000 yr)', value: 'latest Quaternary', color: '#ffaa00' },
+            { label: 'Late Quaternary (130,000 yr)', value: 'late Quaternary', color: '#55ff00' },
+            { label: 'Middle and Late Quaternary (750,000 yr)', value: 'middle and late Quaternary', color: '#0070ff' },
+            { label: 'Undifferentiated Quaternary (1.6 millions yr)', value: 'undifferentiated Quaternary', color: '#000000' },
+            { label: 'Unspecified Age', value: 'unspecified', color: '#dfe000' },
+            { label: 'Class B', value: 'class B', color: '#9c9c9c' }
+          ]"
+          @update:model-value="updateqfaults"
+          color="primary"
+          type="checkbox"
+        />
+      </q-card-section>
+    </q-card>
 
-    <b-card>
-      <b-col>
+    <q-card class="q-mb-md">
+      <q-card-section>
         <h5 class="red">Geology</h5>
-        <b-row>
-          <b-form-checkbox
-              type="checkbox"
+        <div class="text-center">
+          <q-checkbox
               v-model="kml"
-              @change="updateLayer('kml')"
-              id="kml"
-          ><label for="kml">KML/KMZ Uploader</label>&ensp;
-          </b-form-checkbox>
-          <span class="icon is-right" style="pointer-events: all;" @click="kmlInfo=true">
-          <i class="clickable fas fa-info-circle"></i>
-        </span>
-        </b-row>
-      </b-col>
+              @update:model-value="updateLayer('kml')"
+              label="KML/KMZ Uploader"
+              class="q-mr-sm"
+          />
+          <q-btn 
+            flat 
+            dense 
+            round 
+            icon="info" 
+            @click="kmlInfo=true"
+            color="primary"
+            size="sm"
+          />
+        </div>
+      </q-card-section>
 
-      <div v-if="this.kml">
-        <br/>
-        <h4>KML/KMZ File Upload</h4>
+      <q-card-section v-if="this.kml">
+        <h6>KML/KMZ File Upload</h6>
         <p>Upload a KML or KMZ from your local file system</p>
 
         <div class="invisible">
-          <b-form-file
-              no-traverse
+          <q-file
               id="file"
               ref="file"
-              @change="handleFileUpload"
-              placeholder="Upload a KML/KMZ file"
-          ></b-form-file>
+              @update:model-value="handleFileUpload"
+              accept=".kml,.kmz"
+              filled
+          />
 
-          <b-button @click="submitFile()">Submit</b-button>
+          <q-btn @click="submitFile()" color="primary">Submit</q-btn>
         </div>
 
-        <div class="w-100 p-2">
-          <b-button variant="outline-secondary" class="file-upload-button w-100" v-on:click="triggerFileUploadClick"
-                    :disabled="kmlFile">
-            <span class="text-primary">UPLOAD</span>&nbsp;<span class="text-secondary">a KML/KMZ file.</span>
-          </b-button>
+        <div class="w-100 q-pa-sm">
+          <q-btn 
+            outline 
+            color="primary" 
+            class="full-width" 
+            @click="triggerFileUploadClick"
+            :disable="kmlFile"
+            icon="upload"
+          >
+            <span>Upload a KML/KMZ file</span>
+          </q-btn>
         </div>
 
-        <div v-for="(entry, entryId) in kmlLayers" :key="entryId" class="w-100 d-flex flex-row mt-1">
-          <div class="p-1">
-            <b-form-checkbox type="checkbox" :id="`kmlLayers-${entryId}`" v-model="entry.active"
-                             @change="kmlLayerChange(entry)" class="flex-fill">
-              {{ entry.name }}
-            </b-form-checkbox>
-          </div>
+        <div v-for="(entry, entryId) in kmlLayers" :key="entryId" class="w-100 q-mt-sm">
+          <q-checkbox 
+            :model-value="entry.active"
+            @update:model-value="(val) => kmlLayerChange({...entry, active: val})"
+            :label="entry.name"
+            class="full-width"
+          />
         </div>
-        <!--            <div v-if="boundaries">-->
-        <!--                <label for="opacity">Example range with min and max</label>-->
-        <!--                <b-form-input id="opacity" @change="updateOpacity(value)" v-model="value" type="range" min="0" max="100"></b-form-input>-->
-        <!--                <div class="mt-2">Value: {{ value }}</div>-->
-        <!--            </div>-->
-      </div>
-
-
-    </b-card>
-    <b-card>
-      <b-col>
+      </q-card-section>
+    </q-card>
+    <q-card class="q-mb-md">
+      <q-card-section>
         <h5 class="green">Topology</h5>
-        <b-row class="maptool">
-          <b-form-checkbox
-              type="checkbox"
+        <div class="row maptool">
+          <q-checkbox
               v-model="boundaries"
-              @change="updateLayer('boundaries')"
+              @update:model-value="updateLayer('boundaries')"
               id="boundaries"
-          ><label for="boundaries">Show State Boundaries</label>&ensp;
-          </b-form-checkbox>
+              label="Show State Boundaries"
+              class="q-mr-sm"
+          />
           <span class="icon is-right" style="pointer-events: all;" @click="boundariesInfo=true">
           <i class="clickable fas fa-info-circle"></i>
         </span>
-        </b-row>
-      </b-col>
-    </b-card>
+        </div>
+      </q-card-section>
+    </q-card>
 
-    <b-card>
-      <b-col>
+    <q-card class="q-mb-md">
+      <q-card-section>
         <h5 class="green">Topology</h5>
-        <b-row class="maptool">
-          <b-form-checkbox
-              type="checkbox"
+        <div class="row maptool">
+          <q-checkbox
               v-model="coasts"
-              @change="updateLayer('coasts')"
+              @update:model-value="updateLayer('coasts')"
               id="coasts"
-          ><label for="coasts">Show Coastlines</label>&ensp;
-          </b-form-checkbox>
+              label="Show Coastlines"
+              class="q-mr-sm"
+          />
           <span class="icon is-right" style="pointer-events: all;" @click="coastlinesInfo=true">
           <i class="clickable fas fa-info-circle"></i>
         </span>
-        </b-row>
-      </b-col>
-    </b-card>
+        </div>
+      </q-card-section>
+    </q-card>
 
-    <b-card>
-      <b-col>
+    <q-card class="q-mb-md">
+      <q-card-section>
         <h5 class="green">Topology</h5>
-        <b-row>
-          <b-form-checkbox
-              type="checkbox"
+        <div class="row">
+          <q-checkbox
               v-model="currLoc"
-              @change="getLocation()"
+              @update:model-value="getLocation()"
               id="loc"
-          ><label for="loc">Show Current Location</label>&ensp;
-          </b-form-checkbox>
+              label="Show Current Location"
+              class="q-mr-sm"
+          />
           <span class="icon is-right" style="pointer-events: all;" @click="currentLocationInfo=true">
           <i class="clickable fas fa-info-circle"></i>
         </span>
-        </b-row>
-      </b-col>
-    </b-card>
+        </div>
+      </q-card-section>
+    </q-card>
 
     <!-- info  popups -->
-    <b-modal
-        v-model="mapToolsInfo"
-        title="Map Tools">
-      <p class="my-4">
-        Map tools contains multiple functions allowing users to display different faults and topographical
-        features, as well as upload KML and KMZ files.
-      </p>
-      <div slot="modal-footer" class="w-100">
-      </div>
-    </b-modal>
+    <q-dialog
+        v-model="mapToolsInfo">
+      <q-card style="min-width: 300px">
+        <q-card-section>
+          <div class="text-h6">Map Tools</div>
+        </q-card-section>
+        <q-card-section>
+          <p>
+            Map tools contains multiple functions allowing users to display different faults and topographical
+            features, as well as upload KML and KMZ files.
+          </p>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Close" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
-    <b-modal
+    <q-dialog
         v-model="kmlInfo">
-      <p class="my-4">
-        KML (Keyhole Markup Language) is a file format used to display geographic data.
-      </p>
-      <div slot="modal-footer" class="w-100">
-      </div>
-    </b-modal>
+      <q-card style="min-width: 300px">
+        <q-card-section>
+          <div class="text-h6">KML Information</div>
+        </q-card-section>
+        <q-card-section>
+          <p>
+            KML (Keyhole Markup Language) is a file format used to display geographic data.
+          </p>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Close" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
-    <b-modal
+    <q-dialog
         v-model="boundariesInfo">
-      <p class="my-4">
-        Display USA state boundaries on the map.
-      </p>
-      <div slot="modal-footer" class="w-100">
-      </div>
-    </b-modal>
+      <q-card style="min-width: 300px">
+        <q-card-section>
+          <div class="text-h6">State Boundaries</div>
+        </q-card-section>
+        <q-card-section>
+          <p>
+            Display USA state boundaries on the map.
+          </p>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Close" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
-    <b-modal
+    <q-dialog
         v-model="coastlinesInfo">
-      <p class="my-4">
-        Display coastlines on the map.
-      </p>
-      <div slot="modal-footer" class="w-100">
-      </div>
-    </b-modal>
+      <q-card style="min-width: 300px">
+        <q-card-section>
+          <div class="text-h6">Coastlines</div>
+        </q-card-section>
+        <q-card-section>
+          <p>
+            Display coastlines on the map.
+          </p>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Close" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
-    <b-modal
+    <q-dialog
         v-model="currentLocationInfo">
-      <p class="my-4">
-        Mark your current location on the map.
-      </p>
-      <div slot="modal-footer" class="w-100">
-      </div>
-    </b-modal>
+      <q-card style="min-width: 300px">
+        <q-card-section>
+          <div class="text-h6">Current Location</div>
+        </q-card-section>
+        <q-card-section>
+          <p>
+            Mark your current location on the map.
+          </p>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Close" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 

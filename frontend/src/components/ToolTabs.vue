@@ -1,5 +1,5 @@
 <template>
-  <b-collapse id="navbar-toggle-collapse" is-nav class="w-100 overflow-auto" style="max-width: 150px;" visible>
+  <div id="navbar-toggle-collapse" class="w-100 overflow-auto" style="max-width: 150px;">
     <div class="w-100 overflow-auto">
       <ul class="w-100">
         <li v-for="(menu, menuIndex) in menus" :key="menuIndex">
@@ -11,7 +11,7 @@
         </li>
       </ul>
     </div>
-  </b-collapse>
+  </div>
 </template>
 
 <script>

@@ -61,9 +61,9 @@
                 </div>
                 <!--
                 <div class="col inner-section">
-                <b-button class="btn btn-circle" @click="goToMap('/nowcast')">
-                        <i class="fas fa-map"></i>
-                    </b-button><br>
+                <q-btn round class="btn-circle" @click="goToMap('/nowcast')">
+                        <q-icon name="map" />
+                    </q-btn><br>
                     <span class="feature-title">Nowcast</span><br>
                     <span class="feature-desc">GeoGateway’s Nowcast tab consists of useful tools to evaluate earthquake hazard</span>
                 </div>

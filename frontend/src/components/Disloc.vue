@@ -1,45 +1,65 @@
 <template>
   <div class="w-100 p-2 bg-light text-left">
-    <b-alert :show="true">
-      <b-link @click="disclocInfo=true" href="#">
-        <b-icon icon="info-circle-fill"/>
-      </b-link>&ensp;
-      About Discloc
-    </b-alert>
+    <q-banner class="bg-info text-white q-mb-md">
+      <q-btn flat @click="disclocInfo=true" color="white">
+        <q-icon name="info" class="q-mr-sm"/>
+        About Discloc
+      </q-btn>
+    </q-banner>
 
     <hr/>
 
     <div id="upload-container">
       <!--
       <h5><b>Input File Upload &nbsp;&nbsp;</b>
-        <b-icon icon="question-circle-fill" v-b-modal.modal-2></b-icon></h5>
-      <b-modal id="modal-2" title="Input File Format" button-size="sm" ok-only>
-
-          Use this form to upload one or more faults that are already in Disloc input file format. The following example shows formatting:
-          <hr/>
-          <ul>
-            <li>Line 1: 32.904255 -115.526449 1 (this is the lat, lon of the origin; and "1" signifies use of a grid).</li>
-            <li>Line 2: -75 1 151 -40 1 41 (the grid: x0, x_delta, x_number, y0, y_delta, y_number).</li>
-            <li>Line 3: 20.489759271 -80.624111128 355.0 (first fault patch: x, y (km) from origin and strike (degrees).</li>
-            <li>Line 4: 0 1.21 45.0 1.0 1.0 -0.0 -0.0 0.0 3.0 3.0 (fault_type 0 for point dislocation, depth, dip (degrees), lambda, mu,u1,u2,u3, length, width).</li>
-            <li>Repeat the formats for Lines 3 and 4 for each additional fault.</li>
-          </ul>
-
-      </b-modal>
+        <q-btn flat dense @click="fileFormatDialog = true" icon="help" /></h5>
+      <q-dialog v-model="fileFormatDialog">
+        <q-card style="min-width: 400px">
+          <q-card-section>
+            <div class="text-h6">Input File Format</div>
+          </q-card-section>
+          <q-card-section>
+            Use this form to upload one or more faults that are already in Disloc input file format. The following example shows formatting:
+            <hr/>
+            <ul>
+              <li>Line 1: 32.904255 -115.526449 1 (this is the lat, lon of the origin; and "1" signifies use of a grid).</li>
+              <li>Line 2: -75 1 151 -40 1 41 (the grid: x0, x_delta, x_number, y0, y_delta, y_number).</li>
+              <li>Line 3: 20.489759271 -80.624111128 355.0 (first fault patch: x, y (km) from origin and strike (degrees).</li>
+              <li>Line 4: 0 1.21 45.0 1.0 1.0 -0.0 -0.0 0.0 3.0 3.0 (fault_type 0 for point dislocation, depth, dip (degrees), lambda, mu,u1,u2,u3, length, width).</li>
+              <li>Repeat the formats for Lines 3 and 4 for each additional fault.</li>
+            </ul>
+          </q-card-section>
+          <q-card-actions align="right">
+            <q-btn flat label="OK" color="primary" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
       <label>
         <input  type="file" id="file" ref="file" @change="handleFileUpload"/>
       </label>
       <div>
         <strong>Synthetic Interferograms Parameters:</strong>
-        <b-input-group prepend="Elevation (Deg)">
-            <b-form-input v-model="Elevation" name="Elevation"></b-form-input>
-        </b-input-group>
-        <b-input-group prepend="Azimuth (Deg)">
-            <b-form-input v-model="Azimuth" name="Azimuth"></b-form-input>
-        </b-input-group>
-        <b-input-group prepend="Radar Frequency (GHz)">
-            <b-form-input v-model="RadarFrequency" name="RadarFrequency"></b-form-input>
-        </b-input-group>
+        <q-input 
+          v-model="Elevation" 
+          name="Elevation"
+          label="Elevation (Deg)"
+          outlined
+          class="q-mb-sm"
+        />
+        <q-input 
+          v-model="Azimuth" 
+          name="Azimuth"
+          label="Azimuth (Deg)"
+          outlined
+          class="q-mb-sm"
+        />
+        <q-input 
+          v-model="RadarFrequency" 
+          name="RadarFrequency"
+          label="Radar Frequency (GHz)"
+          outlined
+          class="q-mb-sm"
+        />
       </div><br>
       <button @click="submitFile()">Submit</button>
       <div class="container" v-html="fileInfo">
@@ -48,19 +68,20 @@
       -->
       <!--
           <div v-if="jobActive" class="center">
-              <b-spinner type="grow" label="Job executing..."></b-spinner>
+              <q-spinner color="primary" size="lg" />
+              <div>Job executing...</div>
              <br />
          </div>
       -->
 
-      <b-button @click="loadExperiments()">
+      <q-btn @click="loadExperiments()" color="primary">
         <div v-if="results.length !== 0">
           Refresh Experiments
         </div>
         <div v-else>
           Load Experiments
         </div>
-      </b-button>
+      </q-btn>
 
 
       <div v-for="entry in results" :key="entry.exp.name" class="collapsed">
@@ -89,24 +110,31 @@
     </div>
 
     <!-- info  popup -->
-    <b-modal
-        v-model="disclocInfo"
-        title="Discloc">
-      <p class="my-4">
-        Elastic dislocation models are commonly used to analyze inversion on faults
-        following the event of an earthquake (Chen et al., 2020). In 1985, Yoshimitsu
-        Okada (Ph.D.) proposed a formula which calculated displacement in an isotropic,
-        uniform elastic half space. The formula can calculate coseismic deformation
-        caused by any fault within the elastic half space (Okada, 1985). Okada’s dislocation
-        theory, which is the most commonly used dislocation theory, is often used with
-        InSAR. InSAR monitors the surface coseismic deformation field, and subsequently, Okada’s theory is used to
-        conduct
-        fault slip inversion, calculating the coseismic strain stress field (Chen et al., 2020).
-        deformation of an elastic medium due to slip from active faults (Avouac, n.d.).
-      </p>
-      <div slot="modal-footer" class="w-100">
-      </div>
-    </b-modal>
+    <q-dialog
+        v-model="disclocInfo">
+      <q-card style="min-width: 400px">
+        <q-card-section>
+          <div class="text-h6">Discloc</div>
+        </q-card-section>
+        <q-card-section>
+          <p>
+            Elastic dislocation models are commonly used to analyze inversion on faults
+            following the event of an earthquake (Chen et al., 2020). In 1985, Yoshimitsu
+            Okada (Ph.D.) proposed a formula which calculated displacement in an isotropic,
+            uniform elastic half space. The formula can calculate coseismic deformation
+            caused by any fault within the elastic half space (Okada, 1985). Okada's dislocation
+            theory, which is the most commonly used dislocation theory, is often used with
+            InSAR. InSAR monitors the surface coseismic deformation field, and subsequently, Okada's theory is used to
+            conduct
+            fault slip inversion, calculating the coseismic strain stress field (Chen et al., 2020).
+            deformation of an elastic medium due to slip from active faults (Avouac, n.d.).
+          </p>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Close" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
   </div>
 </template>
@@ -129,6 +157,7 @@ export default {
   data() {
     return {
       disclocInfo: false,
+      // fileFormatDialog: false, // Uncomment if file upload section is enabled
 
     }
   },

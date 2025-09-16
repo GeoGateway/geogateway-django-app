@@ -54,26 +54,38 @@
                 <h5>Magnitude-Frequency relations and Nowcast</h5>
                 <hr/>
                 <div id="nowcast_input">
-                    <b-button variant="dark" id="sp_windowpicker" class="btn btn-light" @click="nowcastPinDrop()">
-                        <b-icon-pencil></b-icon-pencil> Place Marker</b-button>
-                  <b-button v-if="geometryActive" variant="warning" @click="drawListenerOff"><b-icon-x-circle></b-icon-x-circle> Cancel Selection</b-button>
+                    <q-btn color="dark" id="sp_windowpicker" class="btn btn-light" @click="nowcastPinDrop()">
+                        <q-icon name="edit" /> Place Marker</q-btn>
+                  <q-btn v-if="geometryActive" color="warning" @click="drawListenerOff"><q-icon name="cancel" /> Cancel Selection</q-btn>
                   <br/>
                     <br/>
-                    <b-input-group prepend="Place Name">
-                        <b-form-input v-model="p_name" name="p_name"></b-form-input>
-                    </b-input-group>
-                    <b-input-group prepend="Latitude">
-                        <b-form-input v-model="lat" name="lat"></b-form-input>
-                    </b-input-group>
-                    <b-input-group prepend="Longitude">
-                        <b-form-input v-model="lon" name="lon"></b-form-input>
-                    </b-input-group>
+                    <q-input 
+                      v-model="p_name" 
+                      name="p_name"
+                      label="Place Name"
+                      outlined
+                      class="q-mb-sm"
+                    />
+                    <q-input 
+                      v-model="lat" 
+                      name="lat"
+                      label="Latitude"
+                      outlined
+                      class="q-mb-sm"
+                    />
+                    <q-input 
+                      v-model="lon" 
+                      name="lon"
+                      label="Longitude"
+                      outlined
+                      class="q-mb-sm"
+                    />
                 </div>
                 <br />
 
                 <br />
-                <b-button variant="success" id="run_plot"  @click="runPlot()">
-                    Run</b-button>
+                <q-btn color="positive" id="run_plot" @click="runPlot()">
+                    Run</q-btn>
                 -->
             </div>
         </div>

@@ -4,7 +4,7 @@
       <q-btn 
         flat 
         dense 
-        @click="showAboutModal" 
+        @click="uavsarInfo = true" 
         icon="info" 
         color="white"
         class="q-mr-sm"
@@ -19,42 +19,44 @@
 
     <div class="w-100 pt-2 pb-2">
       <div>
-        <b-button
-            size="sm" class="mb-2"
-            type="checkbox"
+        <q-btn
+            size="sm" class="q-mb-sm"
+            :color="overview ? 'primary' : 'secondary'"
+            :outline="!overview"
             id="overview"
-            :pressed.sync="overview"
             @click="showOverview"
         >
           <span v-if="!overview">Show Overview</span>
           <span v-else>Hide Overview</span>
-        </b-button>
-        <b-button size="sm" class="mb-2" :variant="!!rectDraw ? 'primary': 'outline-secondary'"
-                  v-on:click="uavsarDrawRect()">
+        </q-btn>
+        <q-btn size="sm" class="q-mb-sm" :color="!!rectDraw ? 'primary': 'secondary'"
+                  :outline="!rectDraw"
+                  @click="uavsarDrawRect()">
           Draw Area
-        </b-button>
-        <b-button size="sm" class="mb-2" :variant="!!pinDrop ? 'primary': 'outline-secondary'"
-                  v-on:click="uavsarPinDrop()">
+        </q-btn>
+        <q-btn size="sm" class="q-mb-sm" :color="!!pinDrop ? 'primary': 'secondary'"
+                  :outline="!pinDrop"
+                  @click="uavsarPinDrop()">
           Drop Pin
-        </b-button>
+        </q-btn>
       </div>
     </div>
 
     <div class="w-100 pt-2 pb-2">
       <label for="flightPath" class="text-secondary">Flight name/path</label>
-      <b-form-input id="flightPath" v-model="flight_path" name="flight_path" placeholder=""></b-form-input>
+      <q-input id="flightPath" v-model="flight_path" name="flight_path" outlined class="q-mb-sm" />
     </div>
 
     <div class="w-100 pt-2 pb-2">
       <label class="latLon text-secondary">Latitude, Longitude</label>
-      <b-form-input id="latLon" v-model="lat_lon" name="lat_lon" placeholder=""></b-form-input>
+      <q-input id="latLon" v-model="lat_lon" name="lat_lon" outlined class="q-mb-sm" />
     </div>
 
     <div class="w-100 pt-2 pb-2">
-      <b-button size="sm" variant="success" v-on:click="uavsarQuery()">Search</b-button>
-      <b-button v-if="uavsarLayers.length !== 0 && !activeQuery" variant="link" v-on:click="clearQuery">
+      <q-btn size="sm" color="positive" @click="uavsarQuery()">Search</q-btn>
+      <q-btn v-if="uavsarLayers.length !== 0 && !activeQuery" flat color="primary" @click="clearQuery">
         Clear and refresh
-      </b-button>
+      </q-btn>
     </div>
 
 
@@ -65,16 +67,15 @@
       </div>
 
       <div class="w-100 pt-2 pb-2 d-flex flex-row">
-        <b-form-datepicker class="flex-fill" type="date" id="start" name="trip-start" v-model="bracketDate"/>
+        <q-input class="flex-fill" type="date" id="start" name="trip-start" v-model="bracketDate" outlined />
         <div style="min-width: 90px;">
-          <b-button v-if="!isFiltered" v-on:click="filterDate" size="sm" variant="link">Filter</b-button>
-          <b-button v-if="isFiltered" v-on:click="clearFilters" size="sm" variant="link">Clear Filter</b-button>
+          <q-btn v-if="!isFiltered" @click="filterDate" size="sm" flat color="primary">Filter</q-btn>
+          <q-btn v-if="isFiltered" @click="clearFilters" size="sm" flat color="primary">Clear Filter</q-btn>
         </div>
       </div>
 
       <div class="w-100 pt-2 pb-2">
-        <b-checkbox v-model="alternateColoringChecked">Show alternate coloring if available
-        </b-checkbox>
+        <q-checkbox v-model="alternateColoringChecked" label="Show alternate coloring if available" />
       </div>
 
 
@@ -88,7 +89,7 @@
              style="background: #FFFFFF; border-radius: 5px">
           <div class="d-flex flex-row">
             <div class="pl-2 pr-2">
-              <b-checkbox v-model="entry.displayed" @change="kmlLayerChange(entry)"/>
+              <q-checkbox v-model="entry.displayed" @update:model-value="val => kmlLayerChange(entry)" />
             </div>
             <div>
               <div class="mb-2">
@@ -106,34 +107,32 @@
                 <div class="rating">Rating</div>
                 <div id="rating">
                   <div v-if="entry.info['rating'] === '0'">
-                    <b-icon-star/>
-                    <b-icon-star/>
-                    <b-icon-star/>
-
+                    <q-icon name="star_border" />
+                    <q-icon name="star_border" />
+                    <q-icon name="star_border" />
                   </div>
                   <div v-else-if="entry.info['rating'] === '1'">
-                    <b-icon-star-fill/>
-                    <b-icon-star/>
-                    <b-icon-star/>
+                    <q-icon name="star" />
+                    <q-icon name="star_border" />
+                    <q-icon name="star_border" />
                   </div>
                   <div v-else-if="entry.info['rating'] === '2'">
-                    <b-icon-star-fill/>
-                    <b-icon-star-fill/>
-                    <b-icon-star/>
+                    <q-icon name="star" />
+                    <q-icon name="star" />
+                    <q-icon name="star_border" />
                   </div>
                   <div v-else-if="entry.info['rating'] === '3'">
-                    <b-icon-star-fill/>
-                    <b-icon-star-fill/>
-                    <b-icon-star-fill/>
+                    <q-icon name="star" />
+                    <q-icon name="star" />
+                    <q-icon name="star" />
                   </div>
                 </div>
               </div>
 
-              <b-button v-if="!entry.extended" class="btn-clear" @click="extendEntry(entry)">More Options +</b-button>
+              <q-btn v-if="!entry.extended" flat class="btn-clear" @click="extendEntry(entry)">More Options +</q-btn>
 
               <div v-if="extendingActive && entry.extended">
-                <b-spinner type="grow" variant="warning">
-                </b-spinner>
+                <q-spinner color="warning" size="lg" />
               </div>
               <div v-else-if="entry.extended && !extendingActive" class="extended"
                    v-bind:style="{backgroundColor: extendedColor, border: extendedBorder }">
@@ -148,51 +147,53 @@
                       <small>Set Layer Opacity: <b>{{ opVal }}%</b></small>
                     </label>
                     <div>
-                      <b-form-input :id="`${entry.info['uid']}-opacity`" @change="updateOpacity(opVal)" v-model="opVal"
-                                    type="range" min="0"
-                                    max="100"></b-form-input>
+                      <q-slider :id="`${entry.info['uid']}-opacity`" @update:model-value="updateOpacity" v-model="opVal"
+                                    :min="0"
+                                    :max="100" />
                     </div>
                   </div>
                   <div v-if="LosPlotAvailable && layerFound" class="extended" id="active-plot"
                        v-bind:style="{backgroundColor: extendedColor, border: extendedBorder }">
-                    <b-input-group>
-                      <b-input-group prepend="Start Lat/Lon" class="input-group-sm mb-2">
-                        <b-form-input v-model="lat1" name="lat1" placeholder=""></b-form-input>
-                        <b-form-input v-model="lon1" name="lon1" placeholder=""></b-form-input>
-                      </b-input-group>
-                    </b-input-group>
-                    <b-input-group>
-                      <b-input-group prepend="End Lat/Lon" class="input-group-sm mb-2">
-                        <b-form-input v-model="lat2" name="lat2" placeholder=""></b-form-input>
-                        <b-form-input v-model="lon2" name="lon2" placeholder=""></b-form-input>
-                      </b-input-group>
-                    </b-input-group>
+                    <div class="q-mb-sm">
+                      <div class="text-caption q-mb-xs">Start Lat/Lon</div>
+                      <div class="row q-gutter-sm">
+                        <q-input v-model="lat1" name="lat1" outlined dense class="col" />
+                        <q-input v-model="lon1" name="lon1" outlined dense class="col" />
+                      </div>
+                    </div>
+                    <div class="q-mb-sm">
+                      <div class="text-caption q-mb-xs">End Lat/Lon</div>
+                      <div class="row q-gutter-sm">
+                        <q-input v-model="lat2" name="lat2" outlined dense class="col" />
+                        <q-input v-model="lon2" name="lon2" outlined dense class="col" />
+                      </div>
+                    </div>
                     <!--
-                    <b-input-group prepend="LOS Length" class="input-group-sm">
-                      <b-form-input v-model="losLength" name="length" placeholder=""></b-form-input>
-                    </b-input-group>
-                    <b-input-group prepend="Azimuth" class="input-group-sm">
-                      <b-form-input v-model="azimuth" name="azimuth" placeholder=""></b-form-input>
-                    </b-input-group> -->
+                    <div class="q-mb-sm">
+                      <q-input v-model="losLength" name="length" label="LOS Length" outlined dense />
+                    </div>
+                    <div class="q-mb-sm">
+                      <q-input v-model="azimuth" name="azimuth" label="Azimuth" outlined dense />
+                    </div> -->
                     <i style="font-size: small;">Profile Length: <b>{{ losLength }} km</b></i> <span class="tab"/>
                     <i style="font-size: small;">Azimuth: <b>{{ azimuth }}</b></i>
-                    <b-row>
-                      <b-col sm="auto">
-                        <b-button class="btn-sm" variant="success"
+                    <div class="row q-gutter-sm">
+                      <div class="col-auto">
+                        <q-btn size="sm" color="positive"
                                   @click="updatePlotLineForm(activeEntry, lat1, lon1, lat2, lon2)">
                           <span>Update Plot</span>
-                        </b-button>
-                      </b-col>
-                      <b-col sm="auto">
-                        <b-button class="btn-sm" variant="success" @click="downloadCSV(activeEntry)">
+                        </q-btn>
+                      </div>
+                      <div class="col-auto">
+                        <q-btn size="sm" color="positive" @click="downloadCSV(activeEntry)">
                           <span>Download Data</span>
-                        </b-button>
-                      </b-col>
-                      <b-col sm="auto">
+                        </q-btn>
+                      </div>
+                      <div class="col-auto">
                         <span @click="openDataSource(entry.info['uid'])"
                               style="cursor: pointer; color: #2e6da4; font-size: small;"><b><u>Data Source</u></b></span>
-                      </b-col>
-                    </b-row>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -205,29 +206,36 @@
     </template>
     <template v-else-if="activeQuery">
       <div class="w-100 pt-2 pb-2">
-        <b-spinner variant="success" label="Spinning" size="sm"></b-spinner>
+        <q-spinner color="positive" size="sm" />
         Loading
       </div>
     </template>
 
     <!-- info  popup -->
-    <b-modal id="about-uavsar-modal" title="UAVSAR">
-      <p class="my-4">
-        UAVSAR (Uninhabited Aerial Vehicle Synthetic Aperture Radar), is an airborne,
-        L-band, fully polarimetric radar, housed in a pod that is mounted to the belly of a
-        piloted Gulfstream III aircraft. Interferometric radar images, or interferograms, are
-        generated from repeat passes flown over a site of interest. Interferometric radar
-        observations are made from the swaths received, which are approximately 22 km
-        wide and typically between 100 and 300 km long (Donnellan et al., 2014).
-        The wide swath of the UAVSAR instrument results in a large incidence angle
-        variation across the swath. Near range incidence angles are approximately 25°
-        whereas far range incidence angles are approximately 65° resulting in a 40°
-        incidence angle variation across the swath.
-      </p>
-
-      <div slot="modal-footer" class="w-100">
-      </div>
-    </b-modal>
+    <q-dialog v-model="uavsarInfo" id="about-uavsar-modal">
+      <q-card style="min-width: 400px">
+        <q-card-section>
+          <div class="text-h6">UAVSAR</div>
+        </q-card-section>
+        <q-card-section>
+          <p>
+            UAVSAR (Uninhabited Aerial Vehicle Synthetic Aperture Radar), is an airborne,
+            L-band, fully polarimetric radar, housed in a pod that is mounted to the belly of a
+            piloted Gulfstream III aircraft. Interferometric radar images, or interferograms, are
+            generated from repeat passes flown over a site of interest. Interferometric radar
+            observations are made from the swaths received, which are approximately 22 km
+            wide and typically between 100 and 300 km long (Donnellan et al., 2014).
+            The wide swath of the UAVSAR instrument results in a large incidence angle
+            variation across the swath. Near range incidence angles are approximately 25°
+            whereas far range incidence angles are approximately 65° resulting in a 40°
+            incidence angle variation across the swath.
+          </p>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Close" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
   </div>
 </template>

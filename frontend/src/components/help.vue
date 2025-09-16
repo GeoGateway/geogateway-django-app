@@ -20,11 +20,13 @@
       <!--
          <strong>Recent Publications</strong>
          <div align="left" style="width:300px;">
-         <b-list-group>
-             <b-list-group-item v-for="item in papers" :key="item.year">
-                 <a target="_blank" :href= "item.doiurl">{{ item.title }}</a>
-              </b-list-group-item>
-         </b-list-group>
+         <q-list bordered>
+             <q-item v-for="item in papers" :key="item.year">
+                 <q-item-section>
+                   <a target="_blank" :href="item.doiurl">{{ item.title }}</a>
+                 </q-item-section>
+             </q-item>
+         </q-list>
          </div>
          <br/> -->
       <h3>More</h3>

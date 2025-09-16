@@ -21,8 +21,8 @@
     <br><br>
     <a target="_blank" href="https://data.geo-gateway.org/stage/Salton_Sea_Fusion_Results/">Salton Sea Fusion Examples</a>
     <!--
-    <b-button>Create New Experiment</b-button><br><br>
-    <b-button>Load Experiments</b-button>
+    <q-btn color="primary">Create New Experiment</q-btn><br><br>
+    <q-btn color="primary">Load Experiments</q-btn>
     -->
 
     <!-- info  popup -->

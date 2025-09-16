@@ -19,7 +19,7 @@
           <p style="color: #000000">Line of Sight Displacement</p>
         </template>
         <template>
-          <b-button @click=toggleNav() class="toggle"><i class="fas fa-bars"></i></b-button>
+          <q-btn @click="toggleNav()" class="toggle"><i class="fas fa-bars"></i></q-btn>
         </template>
         <div id="losLegend">
         </div>
