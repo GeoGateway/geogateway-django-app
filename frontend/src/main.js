@@ -1,5 +1,5 @@
 import { createApp, configureCompat } from 'vue';
-import { Quasar, QBtn, QIcon, QTable, QTd, QTh, QTr, QCard, QCardSection, QCardActions, QBanner, QCheckbox, QDialog, QOptionGroup, QSlideTransition, QDrawer, QList, QItem, QItemSection, QToolbar, QToolbarTitle, QSpace, QInput, QFile, QSpinner, QSelect, QDate, QSlider } from 'quasar';
+import { Quasar, QBtn, QIcon, QTable, QTd, QTh, QTr, QCard, QCardSection, QCardActions, QBanner, QCheckbox, QDialog, QOptionGroup, QSlideTransition, QDrawer, QList, QItem, QItemSection, QToolbar, QToolbarTitle, QSpace, QInput, QFile, QSpinner, QSelect, QDate, QSlider, QLayout, QPage, QPageContainer, QHeader } from 'quasar';
 import quasarLang from 'quasar/lang/en-US';
 import quasarIconSet from 'quasar/icon-set/material-icons';
 import '@quasar/extras/material-icons/material-icons.css';
@@ -67,7 +67,8 @@ const router = createRouter({
 // Configure Vue 3 behavior to fix Quasar compatibility
 configureCompat({
   COMPONENT_V_MODEL: false,
-  INSTANCE_ATTRS_CLASS_STYLE: false
+  INSTANCE_ATTRS_CLASS_STYLE: false,
+  WATCH_ARRAY: false
 });
 
 // Create and mount Vue app
@@ -105,7 +106,11 @@ app.use(Quasar, {
     QSpinner,
     QSelect,
     QDate,
-    QSlider
+    QSlider,
+    QLayout,
+    QPage,
+    QPageContainer,
+    QHeader
   }
 });
 

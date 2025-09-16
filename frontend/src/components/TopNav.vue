@@ -1,27 +1,30 @@
 <template>
-  <div class="w-100 window">
-    <q-toolbar class="navbar-custom" id="top">
-      <!-- Logo always visible -->
-      <q-toolbar-title class="pl-3">
-        <img id="logo" src="../assets/LogoDark.png" alt="GeoGateway Logo" @click="move_logo_right">
-      </q-toolbar-title>
+  <div>
+    <!-- Header within QLayout -->
+    <q-header class="navbar-custom" id="top">
+      <q-toolbar>
+        <!-- Logo always visible -->
+        <q-toolbar-title class="pl-3">
+          <img id="logo" src="../assets/LogoDark.png" alt="GeoGateway Logo" @click="move_logo_right">
+        </q-toolbar-title>
 
-      <q-space />
+        <q-space />
 
-      <!-- Desktop: Always show buttons -->
-      <div v-if="$q.screen.gt.sm" class="q-gutter-sm">
-        <q-btn flat color="secondary" @click="feedbackPopup=true">Feedback</q-btn>
-        <q-btn flat color="secondary" @click="helpPopup=true">Help</q-btn>
-        <q-btn outline color="primary" href="/auth/login">
-          <q-icon name="account_circle" left />Login
-        </q-btn>
-      </div>
+        <!-- Desktop: Always show buttons -->
+        <div v-if="$q.screen.gt.sm" class="q-gutter-sm">
+          <q-btn flat color="secondary" @click="feedbackPopup=true">Feedback</q-btn>
+          <q-btn flat color="secondary" @click="helpPopup=true">Help</q-btn>
+          <q-btn outline color="primary" href="/auth/login">
+            <q-icon name="account_circle" left />Login
+          </q-btn>
+        </div>
 
-      <!-- Mobile: Show hamburger menu -->
-      <q-btn v-else flat round icon="menu" @click="mobileMenuOpen = !mobileMenuOpen" />
-    </q-toolbar>
+        <!-- Mobile: Show hamburger menu -->
+        <q-btn v-else flat round icon="menu" @click="mobileMenuOpen = !mobileMenuOpen" />
+      </q-toolbar>
+    </q-header>
 
-    <!-- Mobile drawer menu -->
+    <!-- Mobile drawer menu - now properly within QLayout -->
     <q-drawer v-model="mobileMenuOpen" side="right" overlay>
       <q-list>
         <q-item clickable @click="feedbackPopup=true; mobileMenuOpen=false">
@@ -68,7 +71,6 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-
   </div>
 </template>
 

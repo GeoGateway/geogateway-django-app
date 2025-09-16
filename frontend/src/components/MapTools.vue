@@ -349,9 +349,12 @@ export default {
       'map.layers'])
   },
   watch: {
-    qfaults_selected() {
-      //console.log(val); // or this.selectedFruits
-      this.updateqfaults();
+    qfaults_selected: {
+      handler() {
+        //console.log(val); // or this.selectedFruits
+        this.updateqfaults();
+      },
+      deep: true
     }
   },
   mounted() {

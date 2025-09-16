@@ -7,7 +7,10 @@ export function mapFields(fields) {
   const result = {};
   
   fields.forEach(field => {
-    result[field] = {
+    // Extract the property name from the path (e.g., 'map.plotActive' -> 'plotActive')
+    const propertyName = field.split('.').pop();
+    
+    result[propertyName] = {
       get() {
         return getField(this.$store.state, field);
       },

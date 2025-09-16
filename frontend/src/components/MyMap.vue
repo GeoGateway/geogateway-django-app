@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100 h-100 d-flex flex-column overflow-auto">
+  <q-layout view="hHh lpR fFf">
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
           integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
@@ -7,38 +7,39 @@
 
     <TopNav/>
 
-    <div class="w-100 d-flex flex-fill overflow-auto">
-      <ToolTabs/>
+    <q-page-container>
+      <q-page class="no-padding">
+        <div class="w-100 h-100 d-flex overflow-auto">
+          <ToolTabs/>
 
+          <ToolBar/>
+          <DraggableDiv v-resize @resize="resizeLOS" class="col-11" v-if="plotActive" id="plot-window">
 
-      <ToolBar/>
-      <DraggableDiv v-resize @resize="resizeLOS" class="col-11" v-if="plotActive" id="plot-window">
+            <template slot="header">
+              <p style="color: #000000">Line of Sight Displacement</p>
+            </template>
+            <template>
+              <q-btn @click="toggleNav()" class="toggle"><i class="fas fa-bars"></i></q-btn>
+            </template>
+            <div id="losLegend">
+            </div>
+            <template slot="main">
+              <div id="dygraph-LOS" v-bind:style="losStyle"></div>
+            </template>
 
+          </DraggableDiv>
+          <!--        <div v-if="plotActive" class="plot-window">-->
+          <!--            <div id="los-header"><h4>LOS Plot</h4></div>-->
+          <!--            <div id="dygraph-LOS"></div>-->
+          <!--        </div>-->
 
-        <template slot="header">
-          <p style="color: #000000">Line of Sight Displacement</p>
-        </template>
-        <template>
-          <q-btn @click="toggleNav()" class="toggle"><i class="fas fa-bars"></i></q-btn>
-        </template>
-        <div id="losLegend">
+          <div id="map" class="flex-fill overflow-auto">
+          </div>
         </div>
-        <template slot="main">
-          <div id="dygraph-LOS" v-bind:style="losStyle"></div>
-        </template>
+      </q-page>
+    </q-page-container>
 
-      </DraggableDiv>
-      <!--        <div v-if="plotActive" class="plot-window">-->
-      <!--            <div id="los-header"><h4>LOS Plot</h4></div>-->
-      <!--            <div id="dygraph-LOS"></div>-->
-      <!--        </div>-->
-
-      <div id="map" class="flex-fill overflow-auto">
-      </div>
-    </div>
-
-
-  </div>
+  </q-layout>
 </template>
 
 <script>
@@ -365,7 +366,6 @@ export default {
 
     showPlotDiv() {
       this.plotActive = true;
-      this.$forceUpdate();
     },
     saveState() {
       bus.emit('saved', this.layers);
@@ -560,6 +560,17 @@ export default {
 }
 </script>
 <style scoped>
+/* QLayout takes full height and width */
+.q-layout {
+  height: 100vh;
+}
+
+/* QPage should fill remaining space */
+.q-page {
+  height: 100%;
+}
+
+/* Ensure map container fills space properly */
 #map {
 
   /*flex: 1;*/
@@ -571,6 +582,10 @@ export default {
   /*margin-bottom: auto;*/
   /*float: right;*/
 
+}
+
+.no-padding {
+  padding: 0;
 }
 
 #map-window {
