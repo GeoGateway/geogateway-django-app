@@ -343,8 +343,8 @@ export default {
       var vp = parseInt(val);
       var rlayerName = 'ridge' + val + "L";
       if (this.ridgecrest_checkbox.includes(val)) {
-        bus.$emit('UrlAddLayer', this.ridgecresturls[vp], rlayerName);
-      } else bus.$emit('RemoveLayer', rlayerName);
+        bus.emit('UrlAddLayer', this.ridgecresturls[vp], rlayerName);
+      } else bus.emit('RemoveLayer', rlayerName);
     },
 
   }

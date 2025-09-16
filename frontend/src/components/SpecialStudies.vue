@@ -210,8 +210,8 @@ export default {
       var vp = parseInt(val);
       var wlayerName = 'wool' + val + "L";
       if (this.woof_checkbox.includes(val)) {
-        bus.$emit('UrlAddLayer', this.woofurls[vp], wlayerName);
-      } else bus.$emit('RemoveLayer', wlayerName);
+        bus.emit('UrlAddLayer', this.woofurls[vp], wlayerName);
+      } else bus.emit('RemoveLayer', wlayerName);
     },
 
 
@@ -233,8 +233,8 @@ export default {
       var vp = parseInt(val);
       var wlayerName = 'wilf' + val + "L";
       if (this.wilf_checkbox.includes(val)) {
-        bus.$emit('UrlAddLayer', this.wilfurls[vp], wlayerName);
-      } else bus.$emit('RemoveLayer', wlayerName);
+        bus.emit('UrlAddLayer', this.wilfurls[vp], wlayerName);
+      } else bus.emit('RemoveLayer', wlayerName);
     },
   },
 

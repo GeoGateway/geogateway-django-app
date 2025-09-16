@@ -144,68 +144,92 @@ export default {
     });
     this.globalMap.addControl(this.drawControl);
 
-    bus.$on('UrlAddLayer', (url, layerName) =>
+    bus.on('UrlAddLayer', (url, layerName) =>
         this.kmlUrl(url, layerName));
 
-    bus.$on('TextAddLayer', (text, layerName) =>
+    bus.on('TextAddLayer', (text, layerName) =>
         this.kmlText(text, layerName));
 
-    bus.$on('addExisting', (layerName) =>
+    bus.on('addExisting', (layerName) =>
         this.globalMap.addLayer(this.layers[layerName]));
 
-    bus.$on('RemoveLayer', (name) =>
+    bus.on('RemoveLayer', (name) =>
         this.globalMap.removeLayer(this.layers[name]));
 
-    bus.$on('nowcast', (data, lat, lon) =>
+    bus.on('nowcast', (data, lat, lon) =>
         this.seismicityPlots(data, lat, lon));
 
-    bus.$on('filterCat', (text, dFilter, mFilter, iconScale, startDate, endDate) =>
+    bus.on('filterCat', (text, dFilter, mFilter, iconScale, startDate, endDate) =>
         this.catalogFilter(text, dFilter, mFilter, iconScale, startDate, endDate));
 
-    bus.$on('gdacsGeoJSON', (text) =>
+    bus.on('gdacsGeoJSON', (text) =>
         this.addGdacsLayers(text));
 
-    bus.$on('saveMapState', () =>
+    bus.on('saveMapState', () =>
         this.saveState());
 
-    bus.$on('displaySave', (layers) =>
+    bus.on('displaySave', (layers) =>
         this.displaySave(layers));
-    bus.$on('hidePlot', () => {
-      bus.$emit('resetPlot');
+    bus.on('hidePlot', () => {
+      bus.emit('resetPlot');
     });
-    bus.$on('clearSaveLayer', (layers) =>
+    bus.on('clearSaveLayer', (layers) =>
         this.clearSave(layers));
-    bus.$on('removeUavsarLayer', (name) =>
+    bus.on('removeUavsarLayer', (name) =>
         this.removeUavsarLayer(name));
-    bus.$on('activatePlot', (csv_final) =>
+    bus.on('activatePlot', (csv_final) =>
         this.showPlot(csv_final));
-    bus.$on('showPlotDiv', () =>
+    bus.on('showPlotDiv', () =>
         this.showPlotDiv());
-    bus.$on('placePlotMarkers', (southwest, northeast, clickloc, latlon, entry) =>
+    bus.on('placePlotMarkers', (southwest, northeast, clickloc, latlon, entry) =>
         this.placePlotMarkers(southwest, northeast, clickloc, latlon, entry));
-    bus.$on('RemovePlotPtGnss', () =>
+    bus.on('RemovePlotPtGnss', () =>
         this.removePlotGnss());
-    bus.$on('ClearUsgs', () =>
+    bus.on('ClearUsgs', () =>
         this.clearUsgsLayers());
-    bus.$on('addkmlUploadLayer', (file, filename) =>
+    bus.on('addkmlUploadLayer', (file, filename) =>
         this.addkmlUploadLayer(file, filename));
-    bus.$on('addGnssLayer', (file, type, prefix) =>
+    bus.on('addGnssLayer', (file, type, prefix) =>
         this.addGnssLayer(file, type, prefix));
-    bus.$on('seisDraw', () =>
+    bus.on('seisDraw', () =>
         this.seismicityDraw());
-    bus.$on('drawListenerOff', () =>
+    bus.on('drawListenerOff', () =>
         this.globalMap.off('draw:created'));
-    bus.$on('gnssDraw', () =>
+    bus.on('gnssDraw', () =>
         this.gnssDraw());
   },
 
+  beforeUnmount() {
+    bus.off('UrlAddLayer');
+    bus.off('TextAddLayer');
+    bus.off('addExisting');
+    bus.off('RemoveLayer');
+    bus.off('nowcast');
+    bus.off('filterCat');
+    bus.off('gdacsGeoJSON');
+    bus.off('saveMapState');
+    bus.off('displaySave');
+    bus.off('hidePlot');
+    bus.off('clearSaveLayer');
+    bus.off('removeUavsarLayer');
+    bus.off('activatePlot');
+    bus.off('showPlotDiv');
+    bus.off('placePlotMarkers');
+    bus.off('RemovePlotPtGnss');
+    bus.off('ClearUsgs');
+    bus.off('addkmlUploadLayer');
+    bus.off('addGnssLayer');
+    bus.off('seisDraw');
+    bus.off('drawListenerOff');
+    bus.off('gnssDraw');
+  },
 
   methods: {
     toggleBar() {
-      bus.$emit('ToggleBar');
+      bus.emit('ToggleBar');
     },
     toggleNav() {
-      bus.$emit('ToggleNav');
+      bus.emit('ToggleNav');
     },
 
     removeLayer(layerName) {
@@ -239,11 +263,11 @@ export default {
 
 
           if (tool === 'uavsar') {
-            bus.$emit('uavsarDrawQuery', this.maxLat, this.minLon, this.minLat, this.maxLon, this.centerLat, this.centerLng);
+            bus.emit('uavsarDrawQuery', this.maxLat, this.minLon, this.minLat, this.maxLon, this.centerLat, this.centerLng);
           } else if (tool === 'seismicity') {
-            bus.$emit('seisDrawQuery', this.maxLat, this.minLon, this.minLat, this.maxLon, this.centerLat, this.centerLng);
+            bus.emit('seisDrawQuery', this.maxLat, this.minLon, this.minLat, this.maxLon, this.centerLat, this.centerLng);
           } else if (tool === 'gnss') {
-            bus.$emit('gnssDrawQuery', this.maxLat, this.minLon, this.minLat, this.maxLon, this.centerLat, this.centerLng);
+            bus.emit('gnssDrawQuery', this.maxLat, this.minLon, this.minLat, this.maxLon, this.centerLat, this.centerLng);
           }
 
           //control which tool hears bus event for drawing rect
@@ -251,11 +275,11 @@ export default {
           this.markerLayer = e.layer;
           var lat = this.markerLayer.getLatLng().lat;
           var lng = this.markerLayer.getLatLng().lng;
-          bus.$emit('markPlace', lat, lng, tool);
+          bus.emit('markPlace', lat, lng, tool);
         } else if (type === 'polygon') {
           var placedPolygon = e.layer;
           var arrLatLon = placedPolygon.getLatLngs();
-          bus.$emit('polyDrawn', arrLatLon);
+          bus.emit('polyDrawn', arrLatLon);
         }
       });
 
@@ -344,7 +368,7 @@ export default {
       this.$forceUpdate();
     },
     saveState() {
-      bus.$emit('saved', this.layers);
+      bus.emit('saved', this.layers);
     },
     displaySave(layers) {
       for (var key in layers) {

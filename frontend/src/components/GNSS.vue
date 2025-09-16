@@ -266,9 +266,12 @@ export default {
 
   },
   mounted() {
-    bus.$on('gnssDrawQuery', (maxLat, minLon, minLat, maxLon, centerLat, centerLng) =>
+    bus.on('gnssDrawQuery', (maxLat, minLon, minLat, maxLon, centerLat, centerLng) =>
         this.setRect(maxLat, minLon, minLat, maxLon, centerLat, centerLng));
     this.kmltype_sel = null;
+  },
+  beforeUnmount() {
+    bus.off('gnssDrawQuery');
   },
 
   methods: {
@@ -472,7 +475,7 @@ export default {
           vm.minLon = layer.getLatLngs()[0][0].lng;
           vm.areaLayer = layer;
           vm.rectDraw = null;
-          bus.$emit('gnssDrawQuery', vm.maxLat, vm.minLon, vm.minLat, vm.maxLon, vm.centerLat, vm.centerLng)
+          bus.emit('gnssDrawQuery', vm.maxLat, vm.minLon, vm.minLat, vm.maxLon, vm.centerLat, vm.centerLng)
           vm.geometryActive = false;
         }
       });

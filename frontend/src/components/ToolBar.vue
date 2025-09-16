@@ -34,21 +34,27 @@ export default {
     }
   },
   mounted() {
-    bus.$on('ToPage', (page) =>
+    bus.on('ToPage', (page) =>
         this.toPage(page));
-    bus.$on('CloseBar', () => {
+    bus.on('CloseBar', () => {
       if (this.toolbarVisible) {
         this.closeBar();
       }
     });
-    bus.$on('OpenBar', () => {
+    bus.on('OpenBar', () => {
       if (!this.toolbarVisible) {
         this.toolbarVisible = true;
       }
     });
-    bus.$on('navClosed', () => {
+    bus.on('navClosed', () => {
       this.nav = false;
     });
+  },
+  beforeUnmount() {
+    bus.off('ToPage');
+    bus.off('CloseBar');
+    bus.off('OpenBar');
+    bus.off('navClosed');
   },
   computed: {
     ...mapFields(['uavsar.overview', 'map.globalMap', 'map.layers', 'uavsar.overviewLegend'])

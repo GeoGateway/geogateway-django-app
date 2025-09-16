@@ -38,16 +38,19 @@
             },
             showHideLayers(layers){
                 if(layers.active){
-                    bus.$emit('displaySave', layers.data);
+                    bus.emit('displaySave', layers.data);
                 }
                 else {
-                    bus.$emit('clearSaveLayer', layers.data)
+                    bus.emit('clearSaveLayer', layers.data)
                 }
             }
         },
         mounted() {
-            bus.$on('saved', (layers) =>
+            bus.on('saved', (layers) =>
                 this.storeSave(layers));
+        },
+        beforeUnmount() {
+            bus.off('saved');
         }
     }
 </script>

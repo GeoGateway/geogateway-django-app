@@ -130,21 +130,24 @@
           'map.drawControl',])
       },
         mounted() {
-            bus.$on('markPlace', (lat, lng)=>
+            bus.on('markPlace', (lat, lng)=>
                 this.setMarker(lat, lng));
 
-            // bus.$on('clearLayers', () =>
+            // bus.on('clearLayers', () =>
             //     this.uncheckAll());
 
 
+        },
+        beforeUnmount() {
+            bus.off('markPlace');
         },
         methods: {
 	//Don't use this. Use the UCERF layer from Map Tools
             ucerfAdd(){
                 if(this.ucerfL){
-                    bus.$emit('UrlAddLayer', this.ucerfUrl, 'ucerfL');
+                    bus.emit('UrlAddLayer', this.ucerfUrl, 'ucerfL');
                 }else{
-                    bus.$emit('RemoveLayer', 'ucerfL')
+                    bus.emit('RemoveLayer', 'ucerfL')
                 }
             },
             woForecastLayer() {
@@ -156,10 +159,10 @@
                             'loc': 'global'
                         }
                     }).then(function (response) {
-                        bus.$emit('TextAddLayer', response.data, 'woForecastL')
+                        bus.emit('TextAddLayer', response.data, 'woForecastL')
                     })
                 }else {
-                    bus.$emit('RemoveLayer', 'woForecastL')
+                    bus.emit('RemoveLayer', 'woForecastL')
                 }
 
             },
@@ -172,10 +175,10 @@
                             'loc': 'cali'
                         }
                     }).then(function (response) {
-                        bus.$emit('TextAddLayer', response.data, 'caForecastL')
+                        bus.emit('TextAddLayer', response.data, 'caForecastL')
                     })
                 }else {
-                    bus.$emit('RemoveLayer', 'caForecastL')
+                    bus.emit('RemoveLayer', 'caForecastL')
                 }
             },
             gdacsLayer(){
@@ -186,10 +189,10 @@
                     }).then(function (response) {
                         // var geojson = toGeoJSON.kml((new DOMParser()).parseFromString(response.data, 'text/xml'))
                         // console.log(geojson)
-                        bus.$emit('gdacsGeoJSON', response.data)
+                        bus.emit('gdacsGeoJSON', response.data)
                     })
                 }else {
-                    bus.$emit('RemoveLayer', 'gdacsL')
+                    bus.emit('RemoveLayer', 'gdacsL')
                 }
             },
           nowcastPinDrop(){
@@ -219,7 +222,7 @@
                     }).then(function (response){
                         console.log(response.request);
                         console.log(response.data);
-                        bus.$emit('nowcast', response.data, lat, lon)
+                        bus.emit('nowcast', response.data, lat, lon)
                     })
                     //add logic for layer removal
                 }

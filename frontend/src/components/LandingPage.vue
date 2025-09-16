@@ -151,10 +151,11 @@
         <div class="row">
             <q-table 
                 class="tbl" 
-                :data="items.slice(0, perPage)" 
+                :rows="items.slice(0, perPage)" 
                 :columns="columns"
                 hide-header
                 flat
+                :pagination="{ rowsPerPage: 0 }"
             >
                 <template v-slot:body-cell-source="props">
                   <q-td :props="props">
@@ -218,11 +219,11 @@ export default {
         this.$refs.landingPage.scrollTo(0, top);
     },
     goToMap(feature){
-        bus.$emit('switchPage', feature);
+        bus.emit('switchPage', feature);
     },
     toggleRows(){
         if(this.perPage<this.items.length){
-            this.perPage=this.items.legth;
+            this.perPage=this.items.length;
         }else{
             this.perPage=6;
         }

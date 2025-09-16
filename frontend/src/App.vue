@@ -17,7 +17,7 @@ export default {
     document.title = "GeoGateway";
   },
   mounted() {
-    bus.$on('switchPage', (feature) => {
+    bus.on('switchPage', (feature) => {
       try {
         this.$router.push(feature);
       } catch (e) {
@@ -28,6 +28,9 @@ export default {
       }
 
     });
+  },
+  beforeUnmount() {
+    bus.off('switchPage');
   }
 }
 </script>

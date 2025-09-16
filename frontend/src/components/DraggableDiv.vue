@@ -33,7 +33,7 @@
         },
         methods: {
             hidePlot(){
-                bus.$emit('hidePlot');
+                bus.emit('hidePlot');
             },
             dragMouseDown: function (event) {
                 event.preventDefault()

@@ -324,12 +324,15 @@ export default {
   },
   mounted() {
 
-    bus.$on('currentLocation', () => {
+    bus.on('currentLocation', () => {
       this.globalMap.addLayer(this.userLocationCirc);
       this.globalMap.addLayer(this.userLocationPin);
       this.locActive = true;
     });
 
+  },
+  beforeUnmount() {
+    bus.off('currentLocation');
   },
   methods: {
     dragFile(e) {
@@ -339,14 +342,14 @@ export default {
     //   bus.$emit('stateBoundaryOpacity', (value/100))
     // },
     toggle() {
-      bus.$emit('ToggleBar');
+      bus.emit('ToggleBar');
     },
     kmlLayerChange(entry) {
       console.log(entry.active);
       if (entry.active) {
-        bus.$emit('addExisting', entry.name);
+        bus.emit('addExisting', entry.name);
       } else {
-        bus.$emit('RemoveLayer', entry.name);
+        bus.emit('RemoveLayer', entry.name);
       }
     },
     getLocation() {
@@ -373,7 +376,7 @@ export default {
     },
     updateColor(selected) {
       //this.selected = selected;
-      bus.$emit('RemoveLayer', 'ucerfL');
+      bus.emit('RemoveLayer', 'ucerfL');
       this.updateLayer('ucerf', selected)
     },
     updateqfaults() {
@@ -424,20 +427,20 @@ export default {
             } else if (color === 'yellow') {
               url = this.ucerfUrlYellow;
             } else url = this.ucerfUrlGrey;
-            bus.$emit('UrlAddLayer', url, 'ucerfL');
-          } else bus.$emit('RemoveLayer', 'ucerfL');
+            bus.emit('UrlAddLayer', url, 'ucerfL');
+          } else bus.emit('RemoveLayer', 'ucerfL');
           break;
         case 'kml':
           break;
         case 'boundaries':
           if (this.boundaries) {
-            bus.$emit('UrlAddLayer', this.boundariesUrl, 'boundariesL');
-          } else bus.$emit('RemoveLayer', 'boundariesL');
+            bus.emit('UrlAddLayer', this.boundariesUrl, 'boundariesL');
+          } else bus.emit('RemoveLayer', 'boundariesL');
           break;
         case 'coasts':
           if (this.coasts) {
-            bus.$emit('UrlAddLayer', this.coastsUrl, 'coastsL');
-          } else bus.$emit('RemoveLayer', 'coastsL');
+            bus.emit('UrlAddLayer', this.coastsUrl, 'coastsL');
+          } else bus.emit('RemoveLayer', 'coastsL');
           break;
         case 'qfaults':
           if (this.qfaults) {
@@ -482,7 +485,7 @@ export default {
       this.kmlLayers.push({name: fileName, active: true})
       await axios.post(uploadUrl, formData
       ).then(function (response) {
-        bus.$emit('addkmlUploadLayer', response.data, fileName);
+        bus.emit('addkmlUploadLayer', response.data, fileName);
       })
           .catch(function (response) {
             console.log(response)

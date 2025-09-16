@@ -51,14 +51,17 @@ export default {
     this.directUrl(this.tabUrl);
   },
   mounted() {
-    bus.$on('ToggleNav', () =>
+    bus.on('ToggleNav', () =>
         this.navbar = true);
 
   },
+  beforeUnmount() {
+    bus.off('ToggleNav');
+  },
   watch: {
     tabIndex: function (val) {
-      bus.$emit('ToPage', val);
-      bus.$emit('OpenBar');
+      bus.emit('ToPage', val);
+      bus.emit('OpenBar');
     },
     tabUrl: function (val) {
       this.directUrl(val);
@@ -100,7 +103,7 @@ export default {
     },
     removeToggle() {
       this.navbar = true;
-      bus.$emit("ToggleNav");
+      bus.emit("ToggleNav");
     },
     closeNav() {
       this.navbar = false;
@@ -109,12 +112,12 @@ export default {
 
 
     closeBar() {
-      bus.$emit('CloseBar');
+      bus.emit('CloseBar');
       this.toolbar = false;
       this.addToggle();
     },
     openBar() {
-      bus.$emit('OpenBar');
+      bus.emit('OpenBar');
       this.toolbar = true;
     },
     directUrl(page) {

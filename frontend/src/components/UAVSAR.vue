@@ -349,23 +349,32 @@ export default {
     //     e.preventDefault();
     //   }
     // }, false);
-    bus.$on('markPlace', (lat, lon) =>
+    bus.on('markPlace', (lat, lon) =>
         this.pointQuery(lat, lon));
-    bus.$on('showOverview', () =>
+    bus.on('showOverview', () =>
         this.showOverview());
-    bus.$on('getCSV', (entry, latlons) =>
+    bus.on('getCSV', (entry, latlons) =>
         this.getCSV(entry, latlons));
-    bus.$on('chartData', (csv) =>
+    bus.on('chartData', (csv) =>
         this.chartData(csv));
     // bus.$on('polyDrawn', (latlngs)=>
     //     this.polyQuery(latlngs));
     //tool argument for identifying currently active tool
-    bus.$on('uavsarDrawQuery', (maxLat, minLon, minLat, maxLon, centerLat, centerLng) =>
+    bus.on('uavsarDrawQuery', (maxLat, minLon, minLat, maxLon, centerLat, centerLng) =>
         this.rectQuery(maxLat, minLon, minLat, maxLon, centerLat, centerLng));
-    bus.$on('uavsarHighRes', (entry) =>
+    bus.on('uavsarHighRes', (entry) =>
         this.uavsarHighRes(entry));
-    bus.$on('resetPlot', () =>
+    bus.on('resetPlot', () =>
         this.resetPlot());
+  },
+  beforeUnmount() {
+    bus.off('markPlace');
+    bus.off('showOverview');
+    bus.off('getCSV');
+    bus.off('chartData');
+    bus.off('uavsarDrawQuery');
+    bus.off('uavsarHighRes');
+    bus.off('resetPlot');
   },
   methods: {
     uavsarDrawRect() {
@@ -516,7 +525,7 @@ export default {
 //      console.log(csv_final);
       this.csv_final = csv_final;
       this.LosPlotAvailable = true;
-      bus.$emit('activatePlot', csv_final);
+      bus.emit('activatePlot', csv_final);
       // });
     },
     getCSV(entry, latlon) {

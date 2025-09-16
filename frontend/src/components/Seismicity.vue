@@ -262,7 +262,7 @@ export default {
     clearUsgs() {
       this.geoUri = '';
       this.kmlUri = '';
-      bus.$emit('ClearUsgs', 'usgs_layer');
+      bus.emit('ClearUsgs', 'usgs_layer');
       let vm = this;
       if (vm.areaLayer != null) {
         vm.globalMap.removeLayer(vm.areaLayer);
@@ -303,7 +303,7 @@ export default {
           "fullUri": timeUrl,
         }
       }).then(function (response) {
-        bus.$emit('filterCat', response.data, dFilter, mFilter, 1, startD, endD)
+        bus.emit('filterCat', response.data, dFilter, mFilter, 1, startD, endD)
       })
     },
     runSeismicity() {
@@ -331,7 +331,7 @@ export default {
           "fullUri": fullUri,
         }
       }).then(function (response) {
-        bus.$emit('filterCat', response.data, '', '', iconScale, startD, endD)
+        bus.emit('filterCat', response.data, '', '', iconScale, startD, endD)
       })
     },
     seisDrawRect() {
@@ -360,7 +360,7 @@ export default {
     },
     // eslint-disable-next-line no-unused-vars
     setRect(maxLat, minLon, minLat, maxLon, centerLat, centerLng) {
-      bus.$emit('drawListenerOff')
+      bus.emit('drawListenerOff')
       this.maxLat = maxLat;
       this.minLon = minLon;
       this.minLat = minLat;

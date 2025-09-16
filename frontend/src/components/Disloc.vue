@@ -172,10 +172,13 @@ export default {
   },
 
   mounted() {
-    bus.$on('updateDisloc', (html) =>
+    bus.on('updateDisloc', (html) =>
         this.fileInfo = html);
 
 
+  },
+  beforeUnmount() {
+    bus.off('updateDisloc');
   },
   methods: {
     handleFileUpload(event) {
