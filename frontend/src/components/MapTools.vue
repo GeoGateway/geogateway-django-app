@@ -360,8 +360,12 @@ export default {
   mounted() {
 
     bus.on('currentLocation', () => {
-      this.globalMap.addLayer(this.userLocationCirc);
-      this.globalMap.addLayer(this.userLocationPin);
+      if (this.userLocationCirc) {
+        this.globalMap.addLayer(this.userLocationCirc);
+      }
+      if (this.userLocationPin) {
+        this.globalMap.addLayer(this.userLocationPin);
+      }
       this.locActive = true;
     });
 
@@ -393,7 +397,9 @@ export default {
         this.globalMap.locate({setView: false, watch: false})
         this.locActive = true;
       } else {
-        this.userLocationPin.remove();
+        if (this.userLocationPin) {
+          this.userLocationPin.remove();
+        }
         this.locActive = false;
       }
     },
@@ -424,8 +430,9 @@ export default {
       if (this.qfaults_selected.length > 1 && this.qfaults_selected.length < 7) {
         filterstr = "age IN " + "('" + this.qfaults_selected.join("','") + "')";
       }
-      if (this.globalMap.hasLayer(this.layers['qfaultsWMS'])) {
-        this.layers['qfaultsWMS'].remove();
+      const qfaultsLayer = this.layers['qfaultsWMS'];
+      if (qfaultsLayer && this.globalMap.hasLayer(qfaultsLayer)) {
+        qfaultsLayer.remove();
       }
       if (this.qfaults_selected.length == 0) {
         return;
@@ -481,7 +488,10 @@ export default {
           if (this.qfaults) {
             this.updateqfaults();
           } else {
-            this.layers['qfaultsWMS'].remove();
+            const qfaultsLayer = this.layers['qfaultsWMS'];
+            if (qfaultsLayer && this.globalMap.hasLayer(qfaultsLayer)) {
+              qfaultsLayer.remove();
+            }
           }
           break;
       }

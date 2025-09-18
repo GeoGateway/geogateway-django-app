@@ -154,8 +154,12 @@ export default {
     bus.on('addExisting', (layerName) =>
         this.globalMap.addLayer(this.layers[layerName]));
 
-    bus.on('RemoveLayer', (name) =>
-        this.globalMap.removeLayer(this.layers[name]));
+    bus.on('RemoveLayer', (name) => {
+        const layer = this.layers[name];
+        if (layer && this.globalMap.hasLayer(layer)) {
+            this.globalMap.removeLayer(layer);
+        }
+    });
 
     bus.on('nowcast', (data, lat, lon) =>
         this.seismicityPlots(data, lat, lon));

@@ -607,7 +607,9 @@ export default {
     },
     extendEntry(entry) {
       var vm = this;
-      this.overviewLegend.remove();
+      if (this.overviewLegend) {
+        this.overviewLegend.remove();
+      }
       //Reset any previously extended entries.
       for (let i = 0; i < this.uavsarLayersFiltered.length; i++) {
         this.uavsarLayersFiltered[i].extended = false;
@@ -617,7 +619,9 @@ export default {
       }
       if (this.uavsarHighResLayer !== null) {
         this.globalMap.removeLayer(this.uavsarHighResLayer);
-        this.uavsarLegend.remove();
+        if (this.uavsarLegend) {
+          this.uavsarLegend.remove();
+        }
         // this.headingLegend.remove();
       }
       //Now handle the selected entry
@@ -877,7 +881,9 @@ export default {
       if (this.uavsarHighResLayer !== null) {
         this.globalMap.removeLayer(this.uavsarHighResLayer);
         this.uavsarHighResLayer = null;
-        this.uavsarLegend.remove();
+        if (this.uavsarLegend) {
+          this.uavsarLegend.remove();
+        }
       }
       //added from showOverview:
       this.tempFilter = [];
@@ -940,9 +946,14 @@ export default {
         this.tempFilter = _.cloneDeep(this.uavsarLayersFiltered);
         this.uavsarLayers = [];
         this.uavsarLayersFiltered = [];
-        this.layers['uavsarWMS'].remove();
+        const uavsarLayer = this.layers['uavsarWMS'];
+        if (uavsarLayer) {
+          uavsarLayer.remove();
+        }
         this.LosPlotAvailable = false;
-        this.overviewLegend.remove();
+        if (this.overviewLegend) {
+          this.overviewLegend.remove();
+        }
         this.overviewLegend = null;
         this.hidePinLayer();
       }

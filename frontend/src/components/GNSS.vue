@@ -367,9 +367,15 @@ export default {
     showHideLayers(active, layer) {
       let name = layer.pre + layer.type;
       if (active) {
-        this.globalMap.addLayer(this.layers[name])
+        const layer = this.layers[name];
+        if (layer) {
+          this.globalMap.addLayer(layer);
+        }
       } else {
-        this.globalMap.removeLayer(this.layers[name]);
+        const layer = this.layers[name];
+        if (layer && this.globalMap.hasLayer(layer)) {
+          this.globalMap.removeLayer(layer);
+        }
       }
 
     },
