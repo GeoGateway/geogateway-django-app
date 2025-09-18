@@ -1,6 +1,6 @@
 # GeoGateway Django App
 
-A standalone Django application for geospatial data visualization and analysis tools, built with Django backend and Vue 3 + Quasar frontend.
+An application for geospatial data visualization and analysis tools, built with Django backend and Vue 3 + Quasar frontend.
 
 ## Requirements
 
@@ -12,7 +12,7 @@ A standalone Django application for geospatial data visualization and analysis t
 
 This application uses a **three-project architecture** for separation of concerns and standalone deployment:
 
-- **Backend**: Django 4.2+ with REST API endpoints for geospatial data services
+- **Backend**: Django 5.2.6+ with REST API endpoints for geospatial data services
 - **Frontend**: Vue 3.5+ with Quasar UI framework for responsive components
 - **Integration**: webpack-bundle-tracker for Django + Vue 3 integration
 - **Data Sources**: GPS/GNSS, UAVSAR, seismicity, and emergency alert services
@@ -21,20 +21,20 @@ This application uses a **three-project architecture** for separation of concern
 
 ```
 geogateway-django-app/
-├── frontend/                    # Vue 3 + Quasar Frontend Project
-│   ├── src/components/          # Vue components (GNSS, UAVSAR, MapTools, etc.)
+├── frontend/                   # Vue 3 + Quasar Frontend Project
+│   ├── src/components/         # Vue components (GNSS, UAVSAR, MapTools, etc.)
 │   ├── src/store/              # Vuex state management
 │   ├── package.json            # Frontend dependencies
 │   └── vue.config.js           # Vue CLI configuration
 │
-├── geogateway_django_app/       # Django Application (Business Logic)
+├── geogateway_django_app/      # Django Application (Business Logic)
 │   ├── GeoGatewayData.py       # External API integrations
 │   ├── views.py                # REST API endpoints
 │   ├── models.py               # Data models
 │   ├── urls.py                 # URL routing
 │   └── migrations/             # Database migrations
 │
-├── geogateway_project/          # Django Project (Configuration)
+├── geogateway_project/         # Django Project (Configuration)
 │   ├── settings.py             # Django settings & configuration
 │   ├── urls.py                 # Root URL configuration
 │   ├── wsgi.py                 # WSGI application entry point
@@ -68,20 +68,12 @@ Static Files (from frontend/)
 
 ### Why Three Projects?
 
-This architecture evolved from the **Airavata migration** to create a standalone application:
-
-**Before (2-Project Plugin)**:
-- `frontend/` - Vue.js interface
-- `geogateway_django_app/` - Django app plugin for Airavata portal
-
-**After (3-Project Standalone)**:
 - `frontend/` - Vue 3 + Quasar interface
 - `geogateway_django_app/` - Django app (business logic)
 - `geogateway_project/` - Django project (standalone configuration)
 
 **Benefits**:
 - **Separation of Concerns**: Clear boundaries between configuration, business logic, and UI
-- **Standalone Deployment**: No longer requires Airavata portal infrastructure
 - **Maintainability**: Independent project components with defined responsibilities
 - **Reusability**: Django app can be installed in other projects if needed
 
@@ -140,8 +132,6 @@ npm run serve  # or yarn serve
 - Django API: http://localhost:8000/
 - Vue 3 frontend: http://localhost:9000/
 - Main app: http://localhost:8000/ (Django serves the built frontend in production)
-
-**Note**: The frontend uses Vue 3.5+ with Quasar UI framework for modern, secure components and enhanced performance.
 
 ## Production Build
 
@@ -247,10 +237,3 @@ For detailed deployment instructions and troubleshooting, see `CLAUDE.md`.
 - **GPS/GNSS Data**: Real-time positioning data from data.geo-gateway.org
 - **UAVSAR**: Radar interferometry data for ground deformation analysis
 - **Seismicity APIs**: Earthquake data and emergency alerts (GDACS)
-
-## Security & Performance
-
-- ✅ **Security Updates**: Vue 3 migration resolved ReDoS and XSS vulnerabilities
-- ✅ **Modern Dependencies**: All packages updated to latest secure versions
-- ✅ **Performance**: Vue 3 provides improved bundle sizes and rendering speed
-- ✅ **Mobile-Responsive**: Quasar UI ensures cross-device compatibility
