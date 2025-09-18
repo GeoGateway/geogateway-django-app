@@ -33,7 +33,7 @@
           <!--            <div id="dygraph-LOS"></div>-->
           <!--        </div>-->
 
-          <div id="map" class="flex-fill overflow-auto">
+          <div id="map" class="flex-fill overflow-auto" v-on="{}">
           </div>
         </div>
       </q-page>

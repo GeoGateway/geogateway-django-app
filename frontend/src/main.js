@@ -1,5 +1,5 @@
 import { createApp, configureCompat } from 'vue';
-import { Quasar, QBtn, QIcon, QTable, QTd, QTh, QTr, QCard, QCardSection, QCardActions, QBanner, QCheckbox, QDialog, QOptionGroup, QSlideTransition, QDrawer, QList, QItem, QItemSection, QToolbar, QToolbarTitle, QSpace, QInput, QFile, QSpinner, QSelect, QDate, QSlider, QLayout, QPage, QPageContainer, QHeader } from 'quasar';
+import { Quasar, QBtn, QIcon, QTable, QTd, QTh, QTr, QCard, QCardSection, QCardActions, QBanner, QCheckbox, QDialog, QOptionGroup, QSlideTransition, QDrawer, QList, QItem, QItemSection, QToolbar, QToolbarTitle, QSpace, QInput, QFile, QSpinner, QSelect, QDate, QSlider, QLayout, QPage, QPageContainer, QHeader, ClosePopup } from 'quasar';
 import quasarLang from 'quasar/lang/en-US';
 import quasarIconSet from 'quasar/icon-set/material-icons';
 import '@quasar/extras/material-icons/material-icons.css';
@@ -111,6 +111,9 @@ app.use(Quasar, {
     QPage,
     QPageContainer,
     QHeader
+  },
+  directives: {
+    ClosePopup
   }
 });
 

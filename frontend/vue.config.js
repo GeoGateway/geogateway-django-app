@@ -49,7 +49,6 @@ module.exports = {
             .host('0.0.0.0')
             .port(9000)
             .hot(true)
-            .https(false)
             .headers({"Access-Control-Allow-Origin": ["*"]})
         
         // Simplified watchFiles configuration
