@@ -7,7 +7,6 @@ geogateway_django_app/static
 *.pyc
 .idea
 
-CLAUDE.md
 MIGRATION.md
 TEST_PLAN.md
 VUE_MIGRATION.md

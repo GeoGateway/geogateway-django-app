@@ -87,67 +87,126 @@ This architecture evolved from the **Airavata migration** to create a standalone
 
 ## Setting up the development environment
 
-### 1. Clone the repository
+### Prerequisites
+- Python 3.8 or later
+- Node.js 14 or later
+- npm or yarn package manager
+
+### 1. Clone and Setup
 ```bash
 git clone <repository-url>
 cd geogateway-django-app
-```
 
-### 2. Backend Setup (Django)
-```bash
-# Create virtual environment
+# Create and activate virtual environment
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install Python dependencies
 pip install -r requirements.txt
+```
 
+### 2. Database Setup
+```bash
 # Run database migrations
 python manage.py migrate
 
 # Create superuser (optional)
 python manage.py createsuperuser
-
-# Start Django development server
-python manage.py runserver
 ```
 
-### 3. Frontend Setup (Vue 3 + Quasar)
-Open a new terminal window:
+### 3. Frontend Setup
+```bash
+# Install Node.js dependencies
+cd frontend
+npm install  # or yarn install
+cd ..
+```
+
+### 4. Development Workflow
+**Terminal 1: Django Backend**
+```bash
+python manage.py runserver
+# Django API available at http://localhost:8000/
+```
+
+**Terminal 2: Vue 3 Frontend**
 ```bash
 cd frontend
-
-# Install dependencies (includes Vue 3, Quasar, and all required packages)
-yarn install
-# or: npm install
-
-# Start development server (Vue 3 with hot module replacement)
-yarn serve
-# or: npm run serve
+npm run serve  # or yarn serve
+# Vue development server at http://localhost:9000/
 ```
 
-**Note**: The frontend now uses Vue 3.5+ with Quasar UI framework instead of Bootstrap-Vue for enhanced performance and security.
-
-### 4. Access the application
+### 5. Access the application
 - Django API: http://localhost:8000/
 - Vue 3 frontend: http://localhost:9000/
 - Main app: http://localhost:8000/ (Django serves the built frontend in production)
+
+**Note**: The frontend uses Vue 3.5+ with Quasar UI framework for modern, secure components and enhanced performance.
 
 ## Production Build
 
 ```bash
 # Build Vue 3 frontend for production (generates optimized bundles)
 cd frontend
-yarn build
+npm run build  # or yarn build
 
 # Collect static files (includes Vue 3 bundles and assets)
+cd ..
 python manage.py collectstatic
 
-# Run Django with production settings
-python manage.py runserver --settings=geogateway_project.settings_prod
+# Run Django in production mode
+python manage.py runserver --settings=geogateway_project.settings
 ```
 
 **Vue 3 Build Output**: The build process generates optimized JavaScript and CSS bundles in `frontend/dist/` which are automatically integrated with Django via webpack-bundle-tracker.
+
+## Deployment
+
+### Production Deployment
+
+1. **Server Requirements**
+   - Python 3.8+ with pip
+   - Node.js 14+ with npm
+   - Web server (nginx/Apache) for static file serving
+   - Database (SQLite for development, PostgreSQL/MySQL for production)
+
+2. **Deployment Steps**
+```bash
+# Clone and setup
+git clone <repository-url>
+cd geogateway-django-app
+
+# Python environment
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+# Build frontend
+cd frontend
+npm install
+npm run build
+
+# Django setup
+cd ..
+python manage.py migrate
+python manage.py collectstatic --noinput
+python manage.py createsuperuser
+```
+
+3. **Environment Configuration**
+```bash
+export DJANGO_SETTINGS_MODULE=geogateway_project.settings
+export DEBUG=False
+export SECRET_KEY=<your-production-secret-key>
+export DATABASE_URL=<your-database-url>  # if using PostgreSQL
+```
+
+4. **Web Server Setup**
+   - Configure nginx/Apache to serve static files from Django's STATIC_ROOT
+   - Proxy requests to Django application (typically port 8000)
+   - Set up SSL certificates for HTTPS
+
+For detailed deployment instructions and troubleshooting, see `CLAUDE.md`.
 
 ## Available Commands
 
@@ -158,9 +217,9 @@ python manage.py runserver --settings=geogateway_project.settings_prod
 - `python manage.py collectstatic` - Collect static files
 
 ### Frontend
-- `yarn serve` - Start Vue 3 development server with hot module replacement
-- `yarn build` - Build Vue 3 + Quasar for production (optimized bundles)
-- `yarn lint` - Run ESLint for Vue 3 and JavaScript code quality
+- `npm run serve` - Start Vue 3 development server with hot module replacement
+- `npm run build` - Build Vue 3 + Quasar for production (optimized bundles)
+- `npm run lint` - Run ESLint for Vue 3 and JavaScript code quality
 
 ## Technology Stack
 
