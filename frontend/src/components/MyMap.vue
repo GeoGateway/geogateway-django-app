@@ -15,7 +15,7 @@
           <ToolBar/>
           <DraggableDiv v-resize @resize="resizeLOS" class="col-11" v-if="plotActive" id="plot-window">
 
-            <template slot="header">
+            <template #header>
               <p style="color: #000000">Line of Sight Displacement</p>
             </template>
             <template>
@@ -23,7 +23,7 @@
             </template>
             <div id="losLegend">
             </div>
-            <template slot="main">
+            <template #main>
               <div id="dygraph-LOS" v-bind:style="losStyle"></div>
             </template>
 

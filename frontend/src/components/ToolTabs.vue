@@ -3,7 +3,7 @@
     <div class="w-100 overflow-auto">
       <ul class="w-100">
         <li v-for="(menu, menuIndex) in menus" :key="menuIndex">
-          <router-link :to="menu.to" v-slot="{href, navigate, isActive, isExactActive}">
+          <router-link :to="menu.to" v-slot="{href, navigate, isExactActive}">
             <a :href="href" @click="navigate" :class="{'active': isExactActive}">
               {{ menu.label }}
             </a>
@@ -171,7 +171,7 @@ export default {
 
 <style scoped lang="scss">
 @use "sass:color";
-@import "../styles.scss";
+@use "../styles.scss" as *;
 // Bootstrap imports removed for Quasar migration
 
 ul {

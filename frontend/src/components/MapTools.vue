@@ -533,7 +533,7 @@ export default {
 
 <style scoped lang="scss">
 @use "sass:color";
-@import "../styles.scss";
+@use "../styles.scss" as *;
 
 .fileEntry {
   width: auto;
