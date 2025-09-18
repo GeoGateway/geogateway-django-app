@@ -10,10 +10,80 @@ A standalone Django application for geospatial data visualization and analysis t
 
 ## Architecture
 
+This application uses a **three-project architecture** for separation of concerns and standalone deployment:
+
 - **Backend**: Django 4.2+ with REST API endpoints for geospatial data services
 - **Frontend**: Vue 3.5+ with Quasar UI framework for responsive components
 - **Integration**: webpack-bundle-tracker for Django + Vue 3 integration
 - **Data Sources**: GPS/GNSS, UAVSAR, seismicity, and emergency alert services
+
+### Project Structure
+
+```
+geogateway-django-app/
+├── frontend/                    # Vue 3 + Quasar Frontend Project
+│   ├── src/components/          # Vue components (GNSS, UAVSAR, MapTools, etc.)
+│   ├── src/store/              # Vuex state management
+│   ├── package.json            # Frontend dependencies
+│   └── vue.config.js           # Vue CLI configuration
+│
+├── geogateway_django_app/       # Django Application (Business Logic)
+│   ├── GeoGatewayData.py       # External API integrations
+│   ├── views.py                # REST API endpoints
+│   ├── models.py               # Data models
+│   ├── urls.py                 # URL routing
+│   └── migrations/             # Database migrations
+│
+├── geogateway_project/          # Django Project (Configuration)
+│   ├── settings.py             # Django settings & configuration
+│   ├── urls.py                 # Root URL configuration
+│   ├── wsgi.py                 # WSGI application entry point
+│   └── asgi.py                 # ASGI application entry point
+│
+├── manage.py                   # Django management commands
+├── requirements.txt            # Python dependencies
+└── setup.py                    # Package installation & frontend build
+```
+
+### Architecture Flow
+
+```
+Browser Request
+    ↓
+Django Project (geogateway_project/)
+    ├── settings.py (webpack_loader, static files config)
+    ├── urls.py (routes to geogateway_django_app.urls)
+    └── WSGI/ASGI servers
+    ↓
+Django App (geogateway_django_app/)
+    ├── REST API endpoints (/api/gnss, /api/uavsar, etc.)
+    ├── File upload handlers
+    └── External service integrations
+    ↓
+Static Files (from frontend/)
+    ├── Vue 3 + Quasar compiled bundles
+    ├── webpack-bundle-tracker integration
+    └── Single-page application
+```
+
+### Why Three Projects?
+
+This architecture evolved from the **Airavata migration** to create a standalone application:
+
+**Before (2-Project Plugin)**:
+- `frontend/` - Vue.js interface
+- `geogateway_django_app/` - Django app plugin for Airavata portal
+
+**After (3-Project Standalone)**:
+- `frontend/` - Vue 3 + Quasar interface
+- `geogateway_django_app/` - Django app (business logic)
+- `geogateway_project/` - Django project (standalone configuration)
+
+**Benefits**:
+- **Separation of Concerns**: Clear boundaries between configuration, business logic, and UI
+- **Standalone Deployment**: No longer requires Airavata portal infrastructure
+- **Maintainability**: Independent project components with defined responsibilities
+- **Reusability**: Django app can be installed in other projects if needed
 
 ## Setting up the development environment
 
@@ -94,18 +164,25 @@ python manage.py runserver --settings=geogateway_project.settings_prod
 
 ## Technology Stack
 
-### Frontend (Vue 3 Ecosystem)
+### Frontend Project (`frontend/`)
 - **Vue 3.5+**: Modern reactive framework with Composition API support
 - **Quasar UI**: Material Design components (replaces Bootstrap-Vue)
 - **Vue Router 4**: Client-side routing for single-page application
 - **Vuex 4**: State management for complex application state
 - **Leaflet**: Interactive maps for geospatial data visualization
-- **Webpack**: Module bundler with Django integration
+- **Webpack**: Module bundler with Django integration via webpack-bundle-tracker
 
-### Backend (Django)
-- **Django 4.2+**: Web framework with REST API endpoints
+### Django Project (`geogateway_project/`)
+- **Django 4.2+**: Web framework configuration and project settings
+- **webpack-loader**: Integration with Vue 3 frontend bundles
+- **Static Files**: Serves production Vue 3 builds
+- **WSGI/ASGI**: Production deployment interfaces
+
+### Django App (`geogateway_django_app/`)
 - **Django REST Framework**: API development for frontend integration
 - **GeoPy/GDAL**: Geospatial data processing libraries
+- **File Upload**: Handles KML/KMZ file processing
+- **External APIs**: Integration layer for geospatial services
 
 ### External Services
 - **GPS/GNSS Data**: Real-time positioning data from data.geo-gateway.org
