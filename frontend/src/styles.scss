@@ -31,7 +31,82 @@ hr {
   margin: 12px 0px 0px 5px;
 }
 
+// Bootstrap-style utility classes for Quasar compatibility
+.w-100 { width: 100% !important; }
+.h-100 { height: 100% !important; }
+.p-2 { padding: 0.5rem !important; }
+.pt-2 { padding-top: 0.5rem !important; }
+.pb-2 { padding-bottom: 0.5rem !important; }
+.mb-2 { margin-bottom: 0.5rem !important; }
+.bg-light { background-color: $light !important; }
+.text-left { text-align: left !important; }
+.text-center { text-align: center !important; }
+.text-right { text-align: right !important; }
+.text-secondary { color: $secondary !important; }
+.text-dark { color: $dark !important; }
+.d-flex { display: flex !important; }
+.flex-column { flex-direction: column !important; }
+.flex-row { flex-direction: row !important; }
+.flex-fill { flex: 1 1 auto !important; }
+.overflow-auto { overflow: auto !important; }
+.align-items-center { align-items: center !important; }
+
+// Grid system
+.container { width: 100%; padding-right: 15px; padding-left: 15px; margin-right: auto; margin-left: auto; }
+.row { display: flex; flex-wrap: wrap; margin-right: -15px; margin-left: -15px; }
+.col { flex-basis: 0; flex-grow: 1; max-width: 100%; position: relative; width: 100%; padding-right: 15px; padding-left: 15px; }
+.col-auto { flex: 0 0 auto; width: auto; max-width: 100%; position: relative; padding-right: 15px; padding-left: 15px; }
+.col-11 { flex: 0 0 91.666667%; max-width: 91.666667%; position: relative; width: 100%; padding-right: 15px; padding-left: 15px; }
+
+// Form controls
+.form-control {
+  display: block;
+  width: 100%;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+// Visibility utilities
+.invisible { visibility: hidden !important; }
+
+// Collapse utilities
 .collapsed > .when-open,
 .not-collapsed > .when-closed {
   display: none;
+}
+
+// Custom application styles
+.btn_blue {
+  background-color: $primary;
+  border-color: $primary;
+  color: $white;
+}
+
+.btn_white {
+  background-color: $white;
+  border-color: #ccc;
+  color: $dark;
+}
+
+.inputLabel {
+  font-weight: bold;
+  color: $dark;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.sectionLine {
+  border: 0;
+  height: 1px;
+  background-color: #ccc;
+  margin: 0.5rem 0;
 }

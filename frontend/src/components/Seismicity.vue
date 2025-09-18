@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100 p-2 bg-light text-left">
+  <div class="full-width q-pa-sm bg-grey-2 text-left">
     <q-banner class="bg-info text-white q-mb-md">
       <q-btn 
         flat 

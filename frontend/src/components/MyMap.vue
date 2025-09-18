@@ -9,7 +9,7 @@
 
     <q-page-container>
       <q-page class="no-padding">
-        <div class="w-100 h-100 d-flex overflow-auto">
+        <div class="full-width full-height flex scroll">
           <ToolTabs/>
 
           <ToolBar/>
@@ -33,7 +33,7 @@
           <!--            <div id="dygraph-LOS"></div>-->
           <!--        </div>-->
 
-          <div id="map" class="flex-fill overflow-auto" v-on="{}">
+          <div id="map" class="col scroll" v-on="{}">
           </div>
         </div>
       </q-page>

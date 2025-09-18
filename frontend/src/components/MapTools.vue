@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100 p-2 bg-light text-left">
+  <div class="full-width q-pa-sm bg-grey-2 text-left">
     <q-banner class="bg-info text-white q-mb-md">
       <q-btn 
         flat 
@@ -12,7 +12,7 @@
       About Maptools
     </q-banner>
 
-    <div class="w-100 pt-2 pb-2 d-flex flex-row text-secondary">
+    <div class="full-width q-pt-sm q-pb-sm flex row text-grey-6">
       <div>Functions</div>
       <hr class="flex-fill"/>
     </div>

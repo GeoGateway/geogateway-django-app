@@ -1,5 +1,5 @@
 <template>
-  <div style="max-width: 300px;" class="h-100 d-flex flex-column">
+  <div style="max-width: 300px; height: 100vh;" class="flex column">
     <div class="text-right bg-light">
       <q-btn 
         flat 
@@ -11,7 +11,7 @@
       />
     </div>
     <q-slide-transition>
-      <div v-show="toolbarVisible" ref="toolbarToggle" class="w-100 flex-fill bg-light p-2 overflow-auto">
+      <div v-show="toolbarVisible" ref="toolbarToggle" class="full-width col bg-grey-2 q-pa-sm" style="overflow-y: auto; max-height: calc(100vh - 50px);">
         <router-view></router-view>
       </div>
     </q-slide-transition>
