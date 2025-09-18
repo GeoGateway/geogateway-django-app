@@ -81,6 +81,7 @@
         <br>
         <center><strong>M 6.4 products</strong></center>
         <table class="uavsar-table">
+          <tbody>
           <tr class="uavar-tr">
             <td>2019/07/09</td>
             <td><a target=_
@@ -172,11 +173,13 @@
             <td colspan=2><a target=_ href="https://data.geo-gateway.org/3dimaging/Ridgecrest_2019/pointcloudviewer/RC20190709.html"><strong>View
               Point Clouds</strong></a></td>
           </tr>
+          </tbody>
         </table>
 
         <br>
         <center><strong>M 7.1 products</strong></center>
         <table class="uavsar-table">
+          <tbody>
           <tr class="uavar-tr">
             <td>2019/07/09</td>
             <td><a target=_
@@ -263,6 +266,7 @@
             <td colspan=2><a target=_ href="https://data.geo-gateway.org/3dimaging/Ridgecrest_2019/pointcloudviewer/SV20190711.html"><strong>View
               Point Clouds</strong></a></td>
           </tr>
+          </tbody>
         </table>
         <a target="_blank" href="https://data.geo-gateway.org/3dimaging/Ridgecrest_2019/animation/M7.1RAB4v2.gif"><strong>View
           Animated Gif</strong></a> <br>
