@@ -4330,12 +4330,12 @@ leaflet-easybutton@^2.4.0:
   dependencies:
     leaflet "^1.0.1"
 
-leaflet-geometryutil@^0.9.3:
-  version "0.9.3"
-  resolved "https://registry.npmjs.org/leaflet-geometryutil/-/leaflet-geometryutil-0.9.3.tgz"
-  integrity sha512-Wi6YvfNx/Xu9q35AEfXpsUXmIFLen/MO+C2qimxHRnjyeyOxBhdcZa6kSiReaOX0cGK7yQInqrzz0dkIqZ8Dpg==
+leaflet-geometryutil@^0.10.3:
+  version "0.10.3"
+  resolved "https://registry.npmjs.org/leaflet-geometryutil/-/leaflet-geometryutil-0.10.3.tgz"
+  integrity sha512-Qeas+KsnenE0Km/ydt8km3AqFe7kJhVwuLdbCYM2xe2epsxv5UFEaVJiagvP9fnxS8QvBNbm7DJlDA0tkKo9VA==
   dependencies:
-    leaflet ">=0.7.0"
+    leaflet "^1.6.0"
 
 "leaflet-kml@git+https://github.com/webgisdeveloper/leaflet-kml.git":
   version "1.1.0"
@@ -4355,7 +4355,7 @@ leaflet.awesome-markers@^2.0.5:
   resolved "https://registry.npmjs.org/leaflet.awesome-markers/-/leaflet.awesome-markers-2.0.5.tgz"
   integrity sha512-Ne/xDjkGyaujwNVVkv2tyXQUV0ZW7gZ0Mo0FuQY4jp2qWrvXi0hwDBvmZyF/8YOvybyMabTMM/mFWCTd1jZIQA==
 
-leaflet@^1.0.1, leaflet@^1.6.0, leaflet@^1.9.4, leaflet@>=0.7.0:
+leaflet@^1.0.1, leaflet@^1.6.0, leaflet@^1.9.4:
   version "1.9.4"
   resolved "https://registry.npmjs.org/leaflet/-/leaflet-1.9.4.tgz"
   integrity sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==
