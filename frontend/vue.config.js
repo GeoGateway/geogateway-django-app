@@ -3,7 +3,7 @@ const BundleTracker = require("webpack-bundle-tracker");
 module.exports = {
     publicPath:
         process.env.NODE_ENV === "development"
-            ? "http://127.0.0.1:9000/static/geogateway_django_app/bundles/" : "/static/geogateway_django_app/bundles/",
+            ? "http://127.0.0.1:9001/static/geogateway_django_app/bundles/" : "/static/geogateway_django_app/bundles/",
     outputDir: '../geogateway_django_app/static/geogateway_django_app/bundles',
 
     devServer: {
@@ -13,6 +13,16 @@ module.exports = {
         resolve: {
             alias: {
                 vue: '@vue/compat'
+            },
+            fallback: {
+                "http": false,
+                "https": false,
+                "url": false,
+                "util": false,
+                "zlib": false,
+                "stream": false,
+                "crypto": false,
+                "assert": false
             }
         },
         optimization: {
@@ -47,7 +57,7 @@ module.exports = {
 
         config.devServer
             .host('0.0.0.0')
-            .port(9000)
+            .port(9001)
             .hot(true)
             .headers({"Access-Control-Allow-Origin": ["*"]})
         
