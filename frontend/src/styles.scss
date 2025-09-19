@@ -53,10 +53,10 @@ hr {
 
 // Grid system
 .container { width: 100%; padding-right: 15px; padding-left: 15px; margin-right: auto; margin-left: auto; }
-.row { display: flex; flex-wrap: wrap; margin-right: -15px; margin-left: -15px; }
-.col { flex-basis: 0; flex-grow: 1; max-width: 100%; position: relative; width: 100%; padding-right: 15px; padding-left: 15px; }
-.col-auto { flex: 0 0 auto; width: auto; max-width: 100%; position: relative; padding-right: 15px; padding-left: 15px; }
-.col-11 { flex: 0 0 91.666667%; max-width: 91.666667%; position: relative; width: 100%; padding-right: 15px; padding-left: 15px; }
+.row { display: flex; flex-wrap: wrap; /*margin-right: -15px; margin-left: -15px;*/ }
+.col { flex-basis: 0; flex-grow: 1; max-width: 100%; position: relative; width: 100%; /*padding-right: 15px; padding-left: 15px;*/ }
+.col-auto { flex: 0 0 auto; width: auto; max-width: 100%; position: relative; /*padding-right: 15px; padding-left: 15px;*/ }
+.col-11 { flex: 0 0 91.666667%; max-width: 91.666667%; position: relative; width: 100%; /*padding-right: 15px; padding-left: 15px;*/ }
 
 // Form controls
 .form-control {

@@ -149,13 +149,14 @@
         <span class="section">We integrate map data from different sources</span> 
     <div class="section-content">
         <div class="row">
-            <q-table 
-                class="tbl" 
-                :rows="items.slice(0, perPage)" 
+            <q-table
+                class="tbl"
+                :rows="items"
                 :columns="columns"
                 hide-header
                 flat
                 :pagination="{ rowsPerPage: 0 }"
+                hide-bottom
             >
                 <template v-slot:body-cell-source="props">
                   <q-td :props="props">
@@ -163,10 +164,7 @@
                   </q-td>
                 </template>
             </q-table>
-        </div><br>
-            <q-btn @click="toggleRows()">
-                {{rowButtonText()}}
-            </q-btn>
+        </div>
         </div>
     </div>
 </div>
@@ -182,7 +180,6 @@ export default {
   },
   data() {
       return {
-          perPage: 6,
           columns: [
           {
             name: 'tool',
@@ -220,20 +217,6 @@ export default {
     },
     goToMap(feature){
         bus.emit('switchPage', feature);
-    },
-    toggleRows(){
-        if(this.perPage<this.items.length){
-            this.perPage=this.items.length;
-        }else{
-            this.perPage=6;
-        }
-    },
-    rowButtonText(){
-        if(this.perPage<this.items.length){
-            return "See All";
-        }else{
-            return "See Less";
-        }
     }
   },
 }

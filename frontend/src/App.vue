@@ -42,8 +42,12 @@ export default {
   width: 100%;
   height: calc(100% - 33px);
   position: fixed;
-  top: 33px;
+  /*top: 33px;*/
   left: 0px;
+}
+
+.leaflet-control {
+  text-align: left;
 }
 
 .toolInfo {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Header within QLayout -->
-    <q-header class="navbar-custom" id="top">
+    <q-header class="bg-white text-dark" id="top" style="height: 50px">
       <q-toolbar>
         <!-- Logo always visible -->
         <q-toolbar-title class="pl-3">
