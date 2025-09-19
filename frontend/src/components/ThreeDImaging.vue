@@ -79,7 +79,7 @@
           </q-checkbox>
         </div>
         <br>
-        <center><strong>M 6.4 products</strong></center>
+        <div class="text-center text-weight-bold">M 6.4 products</div>
         <table class="uavsar-table">
           <tbody>
           <tr class="uavar-tr">
@@ -177,7 +177,7 @@
         </table>
 
         <br>
-        <center><strong>M 7.1 products</strong></center>
+        <div class="text-center text-weight-bold">M 7.1 products</div>
         <table class="uavsar-table">
           <tbody>
           <tr class="uavar-tr">
@@ -347,8 +347,17 @@ export default {
       var vp = parseInt(val);
       var rlayerName = 'ridge' + val + "L";
       if (this.ridgecrest_checkbox.includes(val)) {
-        bus.emit('UrlAddLayer', this.ridgecresturls[vp], rlayerName);
-      } else bus.emit('RemoveLayer', rlayerName);
+        // Already checked - remove from array and remove layer
+        const index = this.ridgecrest_checkbox.indexOf(val);
+        if (index > -1) {
+          this.ridgecrest_checkbox.splice(index, 1);
+        }
+        bus.emit('RemoveLayer', rlayerName);
+      } else {
+        // Not checked - add to array and add layer
+        this.ridgecrest_checkbox.push(val);
+        bus.emit('UrlAddLayer', {url: this.ridgecresturls[vp], layerName: rlayerName});
+      }
     },
 
   }
