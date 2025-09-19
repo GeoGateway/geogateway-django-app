@@ -69,7 +69,8 @@ const router = createRouter({
 configureCompat({
   COMPONENT_V_MODEL: false,
   INSTANCE_ATTRS_CLASS_STYLE: false,
-  WATCH_ARRAY: false
+  WATCH_ARRAY: false,
+  ATTR_FALSE_VALUE: false
 });
 
 // Create and mount Vue app
