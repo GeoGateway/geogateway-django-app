@@ -322,10 +322,14 @@ export default {
 
     },
     clearUsgsLayers() {
-      this.layers['usgs_layer'].remove();
-      this.layers['usgs_layer'] = null;
-      this.usgsLegend.remove();
-      this.usgsLegend = null;
+      if (this.layers['usgs_layer']) {
+        this.layers['usgs_layer'].remove();
+        this.layers['usgs_layer'] = null;
+      }
+      if (this.usgsLegend) {
+        this.usgsLegend.remove();
+        this.usgsLegend = null;
+      }
     },
     showPlot(csv_final) {
       this.losPlot = new Dygraph(
@@ -500,7 +504,9 @@ export default {
       this.kmlText(file, type.concat(prefix));
     },
     removePlotGnss() {
-      console.log(this.layers['gnssPlotPt'].remove());
+      if (this.layers['gnssPlotPt']) {
+        console.log(this.layers['gnssPlotPt'].remove());
+      }
     },
     kmlUrl(url, layerName) {
       fetch(url).then(res => res.text())
