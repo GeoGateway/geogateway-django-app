@@ -469,19 +469,19 @@ export default {
             } else if (color === 'yellow') {
               url = this.ucerfUrlYellow;
             } else url = this.ucerfUrlGrey;
-            bus.emit('UrlAddLayer', url, 'ucerfL');
+            bus.emit('UrlAddLayer', {url: url, layerName: 'ucerfL'});
           } else bus.emit('RemoveLayer', 'ucerfL');
           break;
         case 'kml':
           break;
         case 'boundaries':
           if (this.boundaries) {
-            bus.emit('UrlAddLayer', this.boundariesUrl, 'boundariesL');
+            bus.emit('UrlAddLayer', {url: this.boundariesUrl, layerName: 'boundariesL'});
           } else bus.emit('RemoveLayer', 'boundariesL');
           break;
         case 'coasts':
           if (this.coasts) {
-            bus.emit('UrlAddLayer', this.coastsUrl, 'coastsL');
+            bus.emit('UrlAddLayer', {url: this.coastsUrl, layerName: 'coastsL'});
           } else bus.emit('RemoveLayer', 'coastsL');
           break;
         case 'qfaults':
@@ -530,7 +530,7 @@ export default {
       this.kmlLayers.push({name: fileName, active: true})
       await axios.post(uploadUrl, formData
       ).then(function (response) {
-        bus.emit('addkmlUploadLayer', response.data, fileName);
+        bus.emit('addkmlUploadLayer', {url: response.data, layerName: fileName});
       })
           .catch(function (response) {
             console.log(response)
