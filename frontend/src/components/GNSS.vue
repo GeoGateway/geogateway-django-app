@@ -55,7 +55,7 @@
 
     <div v-if="kmltype_sel!=null">
       <q-btn style="margin-top: 10px; margin-bottom: 10px;" v-if="!geometryActive" id="sp_windowpicker"
-                class="btn_blue" color="primary" @click="gnssDrawRect()">
+                class="btn_blue" color="primary" @click="startDrawing()">
         Draw an area on the map
       </q-btn>
       <q-btn v-if="gnssLayers.length>0 || areaLayer!=null" class="btn_white" color="secondary" @click="clearGnss()">
@@ -65,7 +65,7 @@
 
       <div v-if="geometryActive">
         <br/>
-        <q-btn class="btn_white" color="secondary" @click="drawListenerOff">
+        <q-btn class="btn_white" color="secondary" @click="stopDrawing()">
           Unselect 'Draw an Area'
         </q-btn>
         <br/>
@@ -355,8 +355,9 @@ export default {
 
   },
   mounted() {
-    bus.on('gnssDrawQuery', (maxLat, minLon, minLat, maxLon, centerLat, centerLng) =>
-        this.setRect(maxLat, minLon, minLat, maxLon, centerLat, centerLng));
+    bus.on('gnssDrawQuery', (coords) => {
+        this.setRect(coords.maxLat, coords.minLon, coords.minLat, coords.maxLon, coords.centerLat, coords.centerLng);
+    });
     this.kmltype_sel = null;
   },
   beforeUnmount() {
@@ -542,44 +543,15 @@ export default {
       this.globalMap.addLayer(this.layers[layerName]);
 
     },
-    drawToolbar() {
+    startDrawing() {
       this.geometryActive = true;
-
-      new L.Draw.Rectangle(this.globalMap, this.drawControl.options.rectangle).enable();
-
-      this.drawListener('gnss');
+      // Emit event to trigger centralized drawing system in MyMap
+      bus.emit('gnssDraw');
     },
-    gnssDrawRect() {
-      this.geometryActive = true;
-      let vm = this;
-      vm.rectDraw = new L.Draw.Rectangle(vm.globalMap, vm.drawControl.options.rectangle);
-      vm.rectDraw.enable();
-      vm.globalMap.on('draw:created', function (e) {
-        if (vm.areaLayer != null) {
-          vm.globalMap.removeLayer(vm.areaLayer)
-        }
-        var type = e.layerType;
-        if (type === 'rectangle') {
-          var layer = e.layer;
-          vm.globalMap.addLayer(layer);
-          vm.centerLat = layer.getCenter().lat;
-          vm.centerLng = layer.getCenter().lng;
-          vm.maxLat = layer.getLatLngs()[0][1].lat;
-          vm.maxLon = layer.getLatLngs()[0][2].lng;
-          vm.minLat = layer.getLatLngs()[0][3].lat;
-          vm.minLon = layer.getLatLngs()[0][0].lng;
-          vm.areaLayer = layer;
-          vm.rectDraw = null;
-          bus.emit('gnssDrawQuery', vm.maxLat, vm.minLon, vm.minLat, vm.maxLon, vm.centerLat, vm.centerLng)
-          vm.geometryActive = false;
-        }
-      });
-
-    },
-    drawListenerOff() {
+    stopDrawing() {
       this.geometryActive = false;
-
-      this.rectDraw.disable();
+      // Emit event to stop the centralized drawing system
+      bus.emit('drawListenerOff');
     },
     clearGnss() {
       let vm = this;
@@ -607,6 +579,22 @@ export default {
       this.gs_longitude = centerLng.toFixed(5);
       this.gs_height = Math.abs(maxLat - minLat).toFixed(5);
       this.gs_width = Math.abs(maxLon - minLon).toFixed(5);
+
+      // Create a persistent rectangle layer to show the selected area
+      if (this.areaLayer != null) {
+        this.globalMap.removeLayer(this.areaLayer);
+      }
+
+      const bounds = [[minLat, minLon], [maxLat, maxLon]];
+      this.areaLayer = L.rectangle(bounds, {
+        color: '#0066ff',
+        weight: 2,
+        fillOpacity: 0.1
+      });
+      this.globalMap.addLayer(this.areaLayer);
+
+      // Turn off drawing mode
+      this.geometryActive = false;
     }
 
   },

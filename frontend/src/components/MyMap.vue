@@ -53,6 +53,7 @@ import TopNav from "./TopNav";
 import {bus} from '../main'
 import 'leaflet-draw'
 import "leaflet-draw/dist/leaflet.draw.css";
+import { markRaw } from 'vue';
 
 import {circleMaker, gdacsPopup, popupMaker} from '../assets/mapMethods'
 import Dygraph from "dygraphs";
@@ -87,6 +88,9 @@ export default {
       maxLon: null,
       minLat: null,
       minLon: null,
+
+      // Use null initially, will use markRaw when assigning Leaflet objects
+      currentRectangleHandler: null,
       plotResize: null,
       losPlot: null,
       losStyle: {
@@ -198,8 +202,13 @@ export default {
         this.addGnssLayer(file, type, prefix));
     bus.on('seisDraw', () =>
         this.seismicityDraw());
-    bus.on('drawListenerOff', () =>
-        this.globalMap.off('draw:created'));
+    bus.on('drawListenerOff', () => {
+        this.globalMap.off('draw:created');
+        if (this.currentRectangleHandler) {
+          this.currentRectangleHandler.disable();
+          this.currentRectangleHandler = null;
+        }
+    });
     bus.on('gnssDraw', () =>
         this.gnssDraw());
   },
@@ -248,45 +257,68 @@ export default {
       this.drawListener('seismicity');
     },
     gnssDraw() {
-      new L.Draw.Rectangle(this.globalMap, this.drawControl.options.rectangle).enable();
+      // Store reference for proper cleanup using markRaw to prevent Vue reactivity
+      this.currentRectangleHandler = markRaw(new L.Draw.Rectangle(this.globalMap, this.drawControl.options.rectangle));
+      this.currentRectangleHandler.enable();
 
       this.drawListener('gnss');
     },
     drawListener(tool) {
-      this.globalMap.on('draw:created', function (e) {
+      const vm = this;
+      // Remove any existing draw:created listeners to prevent accumulation
+      this.globalMap.off('draw:created');
+
+      const drawCreatedHandler = function (e) {
         var type = e.layerType;
         if (type === 'rectangle') {
           var layer = e.layer;
-          this.addLayer(layer);
-          this.centerLat = layer.getCenter().lat;
-          this.centerLng = layer.getCenter().lng;
-          this.maxLat = layer.getLatLngs()[0][1].lat;
-          this.maxLon = layer.getLatLngs()[0][2].lng;
-          this.minLat = layer.getLatLngs()[0][3].lat;
-          this.minLon = layer.getLatLngs()[0][0].lng;
-          this.removeLayer(layer)
+          // Temporarily add layer to get coordinates, then remove it
+          vm.globalMap.addLayer(layer);
+          var centerLat = layer.getCenter().lat;
+          var centerLng = layer.getCenter().lng;
+          var maxLat = layer.getLatLngs()[0][1].lat;
+          var maxLon = layer.getLatLngs()[0][2].lng;
+          var minLat = layer.getLatLngs()[0][3].lat;
+          var minLon = layer.getLatLngs()[0][0].lng;
+          vm.globalMap.removeLayer(layer)
 
 
           if (tool === 'uavsar') {
-            bus.emit('uavsarDrawQuery', this.maxLat, this.minLon, this.minLat, this.maxLon, this.centerLat, this.centerLng);
+            bus.emit('uavsarDrawQuery', maxLat, minLon, minLat, maxLon, centerLat, centerLng);
           } else if (tool === 'seismicity') {
-            bus.emit('seisDrawQuery', this.maxLat, this.minLon, this.minLat, this.maxLon, this.centerLat, this.centerLng);
+            bus.emit('seisDrawQuery', maxLat, minLon, minLat, maxLon, centerLat, centerLng);
           } else if (tool === 'gnss') {
-            bus.emit('gnssDrawQuery', this.maxLat, this.minLon, this.minLat, this.maxLon, this.centerLat, this.centerLng);
+            bus.emit('gnssDrawQuery', {maxLat, minLon, minLat, maxLon, centerLat, centerLng});
+
+            // Properly finish the drawing by calling completeShape
+            if (vm.currentRectangleHandler) {
+              try {
+                vm.currentRectangleHandler.completeShape();
+              } catch (e) {
+                // Fallback: disable the handler
+                vm.currentRectangleHandler.disable();
+              }
+              vm.currentRectangleHandler = null;
+            }
           }
 
           //control which tool hears bus event for drawing rect
         } else if (type === 'marker') {
-          this.markerLayer = e.layer;
-          var lat = this.markerLayer.getLatLng().lat;
-          var lng = this.markerLayer.getLatLng().lng;
+          vm.markerLayer = e.layer;
+          var lat = vm.markerLayer.getLatLng().lat;
+          var lng = vm.markerLayer.getLatLng().lng;
           bus.emit('markPlace', lat, lng, tool);
         } else if (type === 'polygon') {
           var placedPolygon = e.layer;
           var arrLatLon = placedPolygon.getLatLngs();
           bus.emit('polyDrawn', arrLatLon);
         }
-      });
+
+        // Remove this specific event listener after use to prevent accumulation
+        vm.globalMap.off('draw:created', drawCreatedHandler);
+      };
+
+      this.globalMap.on('draw:created', drawCreatedHandler);
 
     },
     clearUsgsLayers() {

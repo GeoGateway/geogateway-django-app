@@ -131,7 +131,6 @@ export const store = createStore({
             layersActive: false,
             activeGnssQuery: false,
             geometryActive: false,
-            rectDraw: null,
             interpolationLegend: null,
         },
         seismicity: {
