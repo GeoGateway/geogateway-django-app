@@ -392,28 +392,40 @@ export default {
       }
     },
     getLocation() {
-      if (!this.locActive) {
+      if (this.currLoc && !this.locActive) {
         this.globalMap.on('locationfound', this.onLocationFound);
-        this.globalMap.locate({setView: false, watch: false})
+        this.globalMap.on('locationerror', this.onLocationError);
+        this.globalMap.locate({setView: false, watch: false, enableHighAccuracy: true})
         this.locActive = true;
       } else {
         if (this.userLocationPin) {
           this.userLocationPin.remove();
+          this.userLocationPin = null;
         }
+        this.globalMap.off('locationfound', this.onLocationFound);
+        this.globalMap.off('locationerror', this.onLocationError);
         this.locActive = false;
       }
     },
     onLocationFound(e) {
       this.userLocationPin = L.marker([e.latitude, e.longitude]).bindPopup('You are here').addTo(this.globalMap);
+      this.globalMap.setView([e.latitude, e.longitude], 13);
       // this.userLocationCirc = L.circle([e.latitude, e.longitude], e.accuracy / 2, {
       //   weight: 1,
       //   color: 'blue',
       //   fillColor: '#cacaca',
       //   fillOpacity: 0.2
       // }).addTo(this.globalMap);
-      // console.log(userLocationPin, userLocationCirc);
-      this.globalMap.off('locationfound');
-
+      this.globalMap.off('locationfound', this.onLocationFound);
+      this.globalMap.off('locationerror', this.onLocationError);
+    },
+    onLocationError(e) {
+      console.error('Location access denied or failed:', e.message);
+      alert('Location access denied or failed: ' + e.message);
+      this.currLoc = false;
+      this.locActive = false;
+      this.globalMap.off('locationfound', this.onLocationFound);
+      this.globalMap.off('locationerror', this.onLocationError);
     },
     updateColor(selected) {
       //this.selected = selected;
