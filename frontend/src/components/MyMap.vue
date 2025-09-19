@@ -149,8 +149,9 @@ export default {
     });
     this.globalMap.addControl(this.drawControl);
 
-    bus.on('UrlAddLayer', (url, layerName) =>
-        this.kmlUrl(url, layerName));
+    bus.on('UrlAddLayer', (params) => {
+        this.kmlUrl(params.url, params.layerName);
+    });
 
     bus.on('TextAddLayer', (text, layerName) =>
         this.kmlText(text, layerName));
@@ -162,6 +163,7 @@ export default {
         const layer = this.layers[name];
         if (layer && this.globalMap.hasLayer(layer)) {
             this.globalMap.removeLayer(layer);
+            this.layers[name] = null; // Clear the reference
         }
     });
 
@@ -515,6 +517,9 @@ export default {
             var kml = parser.parseFromString(kmltext, "text/xml");
             this.layers[layerName] = new L.KML(kml);
             this.globalMap.addLayer(this.layers[layerName]);
+          })
+          .catch(err => {
+            console.error('Error loading layer:', layerName, err);
           });
 
     },

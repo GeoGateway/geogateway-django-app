@@ -27,8 +27,8 @@
         <q-card-section v-show="this.woolseyfire">
           <p>Southern California's Woolsey Fire on Nov. 15 observed with UAVSAR</p>
           <div class="q-pl-md">
-            <q-checkbox 
-              :model-value="woof_checkbox.includes(0)" 
+            <q-checkbox
+              :model-value="woof_checkbox.includes('0')"
               @update:model-value="updatewoof('0')"
               class="q-mb-sm"
             >
@@ -38,8 +38,8 @@
                 </a>
               </span>
             </q-checkbox>
-            <q-checkbox 
-              :model-value="woof_checkbox.includes(1)" 
+            <q-checkbox
+              :model-value="woof_checkbox.includes('1')"
               @update:model-value="updatewoof('1')"
               class="q-mb-sm"
             >
@@ -49,8 +49,8 @@
                 </a>
               </span>
             </q-checkbox>
-            <q-checkbox 
-              :model-value="woof_checkbox.includes(2)" 
+            <q-checkbox
+              :model-value="woof_checkbox.includes('2')"
               @update:model-value="updatewoof('2')"
               class="q-mb-sm"
             >
@@ -60,8 +60,8 @@
                 </a>
               </span>
             </q-checkbox>
-            <q-checkbox 
-              :model-value="woof_checkbox.includes(3)" 
+            <q-checkbox
+              :model-value="woof_checkbox.includes('3')"
               @update:model-value="updatewoof('3')"
               class="q-mb-sm"
             >
@@ -89,8 +89,8 @@
         <q-card-section v-show="this.wildfire">
           <p>Montecito debris flows observed with UAVSAR</p>
           <div class="q-pl-md">
-            <q-checkbox 
-              :model-value="wilf_checkbox.includes(0)" 
+            <q-checkbox
+              :model-value="wilf_checkbox.includes('0')"
               @update:model-value="updatewilf('0')"
               class="q-mb-sm"
             >
@@ -100,8 +100,8 @@
                 </a>
               </span>
             </q-checkbox>
-            <q-checkbox 
-              :model-value="wilf_checkbox.includes(1)" 
+            <q-checkbox
+              :model-value="wilf_checkbox.includes('1')"
               @update:model-value="updatewilf('1')"
               class="q-mb-sm"
             >
@@ -111,8 +111,8 @@
                 </a>
               </span>
             </q-checkbox>
-            <q-checkbox 
-              :model-value="wilf_checkbox.includes(2)" 
+            <q-checkbox
+              :model-value="wilf_checkbox.includes('2')"
               @update:model-value="updatewilf('2')"
               class="q-mb-sm"
             >
@@ -190,17 +190,21 @@ export default {
     loadwoolfire() {
       if (this.woolseyfire) {
         this.globalMap.setView([34.14773, -118.84833], 10);
+        // Load default layers directly without relying on updatewoof toggle logic
         this.woof_checkbox.push("0");
-        this.updatewoof("0");
+        bus.emit('UrlAddLayer', {url: this.woofurls[0], layerName: 'wool0L'});
         this.woof_checkbox.push("1");
-        this.updatewoof("1");
+        bus.emit('UrlAddLayer', {url: this.woofurls[1], layerName: 'wool1L'});
       } else {
+        // Remove all layers directly when unchecking main section
         var i = this.woof_checkbox.length;
         while (i--) {
           var code = this.woof_checkbox[i];
-          this.woof_checkbox.splice(i, 1);
-          this.updatewoof(code);
+          var wlayerName = 'wool' + code + "L";
+          bus.emit('RemoveLayer', wlayerName);
         }
+        // Clear the checkbox array
+        this.woof_checkbox = [];
       }
     },
 
@@ -210,31 +214,53 @@ export default {
       var vp = parseInt(val);
       var wlayerName = 'wool' + val + "L";
       if (this.woof_checkbox.includes(val)) {
-        bus.emit('UrlAddLayer', this.woofurls[vp], wlayerName);
-      } else bus.emit('RemoveLayer', wlayerName);
+        // Already checked - remove from array and remove layer
+        const index = this.woof_checkbox.indexOf(val);
+        if (index > -1) {
+          this.woof_checkbox.splice(index, 1);
+        }
+        bus.emit('RemoveLayer', wlayerName);
+      } else {
+        // Not checked - add to array and add layer
+        this.woof_checkbox.push(val);
+        bus.emit('UrlAddLayer', {url: this.woofurls[vp], layerName: wlayerName});
+      }
     },
 
 
     loadwildfire() {
       if (this.wildfire) {
         this.globalMap.setView([34.440, -119.61328], 13);
+        // Load default layer directly without relying on updatewilf toggle logic
         this.wilf_checkbox.push("0");
-        this.updatewilf("0");
+        bus.emit('UrlAddLayer', {url: this.wilfurls[0], layerName: 'wilf0L'});
       } else {
+        // Remove all layers directly when unchecking main section
         var i = this.wilf_checkbox.length;
         while (i--) {
           var code = this.wilf_checkbox[i];
-          this.wilf_checkbox.splice(i, 1);
-          this.updatewilf(code);
+          var wlayerName = 'wilf' + code + "L";
+          bus.emit('RemoveLayer', wlayerName);
         }
+        // Clear the checkbox array
+        this.wilf_checkbox = [];
       }
     },
     updatewilf(val) {
       var vp = parseInt(val);
       var wlayerName = 'wilf' + val + "L";
       if (this.wilf_checkbox.includes(val)) {
-        bus.emit('UrlAddLayer', this.wilfurls[vp], wlayerName);
-      } else bus.emit('RemoveLayer', wlayerName);
+        // Already checked - remove from array and remove layer
+        const index = this.wilf_checkbox.indexOf(val);
+        if (index > -1) {
+          this.wilf_checkbox.splice(index, 1);
+        }
+        bus.emit('RemoveLayer', wlayerName);
+      } else {
+        // Not checked - add to array and add layer
+        this.wilf_checkbox.push(val);
+        bus.emit('UrlAddLayer', {url: this.wilfurls[vp], layerName: wlayerName});
+      }
     },
   },
 
