@@ -32,8 +32,8 @@ urlpatterns = [
     re_path(r"^UAVSAR_flight/", GeoGatewayData.uavsarFlight),
     re_path(r'^kmz_upload/$', GeoGatewayData.kmz_upload),
     re_path(r'^seismicity/$', GeoGatewayData.seismicity),
-    re_path(r'^los_download/$', GeoGatewayData.losDownload)
+    re_path(r'^los_download/$', GeoGatewayData.losDownload),
 
-
-
+    # Catch-all route for Vue Router (must be last)
+    re_path(r'^.*$', views.frontend, name="frontend_catchall"),
 ]
