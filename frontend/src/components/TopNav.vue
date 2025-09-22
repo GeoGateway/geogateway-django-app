@@ -5,7 +5,7 @@
       <q-toolbar>
         <!-- Logo always visible -->
         <q-toolbar-title class="pl-3" style="text-align: left; padding-left: 15px; padding-top: 11px;">
-          <img id="logo" src="../assets/LogoDark.png" alt="GeoGateway Logo" @click="move_logo_right">
+          <img id="logo" src="../assets/LogoDark.png" alt="GeoGateway Logo" @click="goToHome" style="cursor: pointer;">
         </q-toolbar-title>
 
         <q-space />
@@ -95,13 +95,10 @@ export default {
   },
   methods: {
     loginRoute() {
-    }//,
-//    move_logo_right: function () {
-//      var step = 50;
-//      var y = document.getElementById('logo').offsetLeft;
-//      y = y + step;
-//      document.getElementById('logo').style.left = y + "px";
-//    }
+    },
+    goToHome() {
+      this.$router.push({ name: 'home' });
+    }
   }
 }
 </script>
