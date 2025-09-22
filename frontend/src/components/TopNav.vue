@@ -1,10 +1,10 @@
 <template>
   <div>
     <!-- Header within QLayout -->
-    <q-header class="bg-white text-dark" id="top" style="height: 50px">
+    <q-header class="bg-white text-dark" id="top" style="border-bottom: 2px solid grey; height: 53px">
       <q-toolbar>
         <!-- Logo always visible -->
-        <q-toolbar-title class="pl-3">
+        <q-toolbar-title class="pl-3" style="text-align: left; padding-left: 15px; padding-top: 11px;">
           <img id="logo" src="../assets/LogoDark.png" alt="GeoGateway Logo" @click="move_logo_right">
         </q-toolbar-title>
 
@@ -95,41 +95,26 @@ export default {
   },
   methods: {
     loginRoute() {
-
-    },
-    move_logo_right: function () {
-      var step = 50;
-      var y = document.getElementById('logo').offsetLeft;
-      y = y + step;
-      document.getElementById('logo').style.left = y + "px";
-    }
+    }//,
+//    move_logo_right: function () {
+//      var step = 50;
+//      var y = document.getElementById('logo').offsetLeft;
+//      y = y + step;
+//      document.getElementById('logo').style.left = y + "px";
+//    }
   }
 }
 </script>
 
 <style scoped lang="scss">
 
-//.navbar-custom {
-//  height: 40px;
-//  background: $white;
-//  justify-content: right;
-//}
-//
 .window {
   background: white;
   box-shadow: 1px 1px 1px 1px rgba(108, 117, 125, 0.3);
   z-index: 99999;
 }
 
-//
 #logo {
-  //  position: absolute;
-  //  left: 0%;
-  //  right: 0%;
-  //  top: 0%;
-  //  bottom: 0%;
-  //
-  //  float: left;
   height: 30px;
   width: 100px;
 }
@@ -151,22 +136,5 @@ export default {
 //  display: flex;
 //  align-items: center;
 //
-//}
-//
-//.miscButton {
-//  background: none;
-//  border: none;
-//  font-style: normal;
-//  font-weight: 600;
-//  font-size: 16px;
-//  line-height: 19px;
-//  display: flex;
-//  align-items: center;
-//  margin-left: 20px;
-//  margin-right: 20px;
-//  float: right;
-//  /* Primary text colour */
-//
-//  color: #283237;
 //}
 </style>

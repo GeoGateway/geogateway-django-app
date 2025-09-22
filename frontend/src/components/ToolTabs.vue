@@ -186,7 +186,7 @@ ul li a {
   background-color: $white;
   padding: 10px 15px;
   border-left: 4px solid $white;
-  border-right: 2px solid color.scale($secondary, $lightness: 48%);
+  /*border-right: 2px solid color.scale($secondary, $lightness: 48%);*/
   font-size: 1rem;
   font-weight: 500;
   display: block;

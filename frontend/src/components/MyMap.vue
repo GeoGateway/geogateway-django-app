@@ -629,6 +629,8 @@ export default {
   /*margin-bottom: auto;*/
   /*float: right;*/
 
+  height: calc(100vh - 53px); /* Adjust height to accommodate custom controls */ /* header-height: 53px */
+  width: 100%;
 }
 
 .no-padding {
@@ -648,7 +650,6 @@ export default {
   background: black !important;
 }
 
-
 .leaflet-draw-toolbar a {
   background-image: url('../assets/spritesheet.png');
   background-repeat: no-repeat;
@@ -661,6 +662,7 @@ export default {
 /*    width: 500px;*/
 /*    z-index: 400;*/
 /*}*/
+
 #dygraph-LOS {
   /*position: absolute;*/
   /*left: 1px;*/
@@ -702,7 +704,5 @@ export default {
 .overlay {
   background-color: transparent;
 }
-
-
 </style>
 
