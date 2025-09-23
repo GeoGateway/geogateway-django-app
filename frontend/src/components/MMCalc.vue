@@ -17,26 +17,35 @@
       v-model="mm_length"
       label="Length"
       placeholder="12.5"
-      suffix="km"
       outlined
       class="q-mb-md"
-    />
+    >
+      <template v-slot:append>
+        <span class="text-caption">km</span>
+      </template>
+    </q-input>
     <q-input
       v-model="mm_width"
       label="Width"  
       placeholder="10"
-      suffix="km"
       outlined
       class="q-mb-md"
-    />
+    >
+      <template v-slot:append>
+        <span class="text-caption">km</span>
+      </template>
+    </q-input>
     <q-input
       v-model="mm_slip"
       label="Slip"
       placeholder="0.45"
-      suffix="m"
       outlined
       class="q-mb-md"
-    />
+    >
+      <template v-slot:append>
+        <span class="text-caption">m</span>
+      </template>
+    </q-input>
     <q-input
       v-model="mm_shear"
       label="Shear Modulus"
