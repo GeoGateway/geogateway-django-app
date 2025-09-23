@@ -143,7 +143,7 @@ python manage.py runserver --settings=geogateway_project.settings
 
 1. **Server Requirements**
    - Python 3.8+ with pip
-   - Node.js 14+ with npm
+   - Node.js 22+ LTS with npm
    - Web server (nginx/Apache) for static files
    - Database (SQLite for development, PostgreSQL/MySQL for production)
 
@@ -185,26 +185,82 @@ export SECRET_KEY=<your-secret-key>
 export DATABASE_URL=<your-database-url>  # if using PostgreSQL
 ```
 
-### Docker Deployment (Optional)
-```dockerfile
-# Example Dockerfile structure
-FROM python:3.11
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-RUN apt-get install -y nodejs
+## Docker Deployment
 
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+### Quick Start with Docker Compose
 
-COPY frontend/package*.json frontend/
-RUN cd frontend && npm install
+The easiest way to run the application is using Docker Compose, which will set up the entire stack including the Django app, PostgreSQL database, and Nginx reverse proxy.
 
-COPY . .
-RUN cd frontend && npm run build
-RUN python manage.py collectstatic --noinput
+```bash
+# Clone repository
+git clone <repository-url>
+cd geogateway-django-app
 
-EXPOSE 8000
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Start the entire stack
+docker-compose up -d
+
+# The application will be available at:
+# - http://localhost (via Nginx)
+# - http://localhost:8000 (direct Django access)
+```
+
+### Docker Services
+
+The Docker setup includes three services:
+
+1. **web**: Django application with Vue.js frontend
+2. **db**: PostgreSQL database
+3. **nginx**: Reverse proxy and static file server
+
+### Environment Configuration
+
+Before deploying, update the environment variables in `docker-compose.yml`:
+
+```yaml
+environment:
+  - DEBUG=0  # Set to 0 for production
+  - SECRET_KEY=your-production-secret-key
+  - ALLOWED_HOSTS=yourdomain.com,localhost
+```
+
+### Production Docker Deployment
+
+For production deployment:
+
+```bash
+# Build and start services
+docker-compose up -d
+
+# Run database migrations
+docker-compose exec web python manage.py migrate
+
+# Create superuser (optional)
+docker-compose exec web python manage.py createsuperuser
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+```
+
+### Docker Commands
+
+```bash
+# Build only the web service
+docker-compose build web
+
+# Run a specific command in the web container
+docker-compose exec web python manage.py shell
+
+# Access the PostgreSQL database
+docker-compose exec db psql -U geogateway -d geogateway
+
+# View real-time logs
+docker-compose logs -f web
+
+# Scale the web service (if needed)
+docker-compose up -d --scale web=3
 ```
 
 ## Troubleshooting

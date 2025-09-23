@@ -1,11 +1,56 @@
 # GeoGateway Django App
 
-An application for geospatial data visualization and analysis tools, built with Django backend and Vue 3 + Quasar frontend.
+A search and analysis gateway to geodetic imaging data for scientific discovery, field use and disaster response
+
+## Table of Contents
+
+- [Requirements](#requirements)
+  - [Option 1: Docker (Recommended)](#option-1-docker-recommended-for-quick-setup)
+  - [Option 2: Local Development](#option-2-local-development)
+- [Architecture](#architecture)
+  - [Project Structure](#project-structure)
+  - [Architecture Flow](#architecture-flow)
+  - [Why Three Projects?](#why-three-projects)
+- [Setting up the development environment](#setting-up-the-development-environment)
+  - [Prerequisites](#prerequisites)
+  - [1. Clone and Setup](#1-clone-and-setup)
+  - [2. Database Setup](#2-database-setup)
+  - [3. Frontend Setup](#3-frontend-setup)
+  - [4. Development Workflow](#4-development-workflow)
+  - [5. Access the application](#5-access-the-application)
+- [🐳 Docker Setup (Recommended)](#-docker-setup-recommended)
+  - [Quick Start with Docker](#quick-start-with-docker)
+  - [What Gets Started](#what-gets-started)
+  - [Docker Commands](#docker-commands)
+  - [Environment Configuration](#environment-configuration)
+  - [Production Docker Deployment](#production-docker-deployment)
+  - [Building Custom Images](#building-custom-images)
+  - [Docker Troubleshooting](#docker-troubleshooting)
+    - [Common Issues and Solutions](#common-issues-and-solutions)
+    - [Performance Tips](#performance-tips)
+    - [Getting Help](#getting-help)
+- [Production Build (Local Development)](#production-build-local-development)
+- [Deployment](#deployment)
+  - [Recommended: Docker Production Deployment](#recommended-docker-production-deployment)
+  - [Alternative: Manual Production Deployment](#alternative-manual-production-deployment)
+- [Available Commands](#available-commands)
+  - [Backend](#backend)
+  - [Frontend](#frontend)
+- [Technology Stack](#technology-stack)
+  - [Frontend Project](#frontend-project-frontend)
+  - [Django Project](#django-project-geogateway_project)
+  - [Django App](#django-app-geogateway_django_app)
+  - [External Services](#external-services)
 
 ## Requirements
 
+### Option 1: Docker (Recommended for quick setup)
+- Docker 20.10+ and Docker Compose v2
+- 4GB+ RAM available for containers
+
+### Option 2: Local Development
 - Python 3.8 or later
-- Node.js 14 or later (required for Vue 3 + Quasar)
+- Node.js 22+ LTS (required for Vue 3 + Quasar)
 - yarn or npm
 
 ## Architecture
@@ -133,7 +178,204 @@ npm run serve  # or yarn serve
 - Vue 3 frontend: http://localhost:9000/
 - Main app: http://localhost:8000/ (Django serves the built frontend in production)
 
-## Production Build
+## 🐳 Docker Setup (Recommended)
+
+### Quick Start with Docker
+
+The fastest way to get the application running is with Docker Compose:
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd geogateway-django-app
+
+# Start the entire application stack
+docker-compose up -d
+
+# Wait for services to be ready (about 30-60 seconds)
+# Check status
+docker-compose ps
+
+# Access the application
+# - Full app: http://localhost (via Nginx)
+# - Django API: http://localhost:8000 (direct access)
+# - Database: localhost:5432 (PostgreSQL)
+```
+
+### What Gets Started
+
+The Docker setup includes:
+- **Web Service**: Django app with Vue.js frontend built-in
+- **Database**: PostgreSQL 15 with persistent data storage
+- **Nginx**: Reverse proxy for static files and load balancing
+- **Volumes**: Persistent storage for database, static files, and media
+
+### Docker Commands
+
+```bash
+# View logs from all services
+docker-compose logs -f
+
+# View logs from specific service
+docker-compose logs -f web
+docker-compose logs -f db
+
+# Run Django management commands
+docker-compose exec web python manage.py migrate
+docker-compose exec web python manage.py createsuperuser
+docker-compose exec web python manage.py collectstatic --noinput
+
+# Access the web container shell
+docker-compose exec web bash
+
+# Access PostgreSQL database
+docker-compose exec db psql -U geogateway -d geogateway
+
+# Stop all services
+docker-compose down
+
+# Stop and remove all data (⚠️ destructive)
+docker-compose down -v
+```
+
+### Environment Configuration
+
+For production or custom configuration, copy and modify the environment file:
+
+```bash
+# Copy environment template
+cp .env.example .env
+
+# Edit configuration (optional)
+nano .env
+```
+
+Key environment variables:
+- `DEBUG=0` - Disable debug mode for production
+- `SECRET_KEY=your-secret-key` - Django secret key
+- `ALLOWED_HOSTS=yourdomain.com,localhost` - Allowed hostnames
+
+### Production Docker Deployment
+
+For production environments, use the production Docker Compose file:
+
+```bash
+# Production deployment with SSL and optimized settings
+docker-compose -f docker-compose.prod.yml up -d
+
+# Run initial setup
+docker-compose -f docker-compose.prod.yml exec web python manage.py migrate
+docker-compose -f docker-compose.prod.yml exec web python manage.py createsuperuser
+
+# View production logs
+docker-compose -f docker-compose.prod.yml logs -f
+```
+
+### Building Custom Images
+
+If you need to modify the Docker image:
+
+```bash
+# Build only the web service
+docker-compose build web
+
+# Build with no cache (fresh build)
+docker-compose build --no-cache web
+
+# Build and start
+docker-compose up --build -d
+```
+
+### Docker Troubleshooting
+
+#### Common Issues and Solutions
+
+**1. Port Already in Use**
+```bash
+# Check what's using the port
+sudo lsof -i :8000
+sudo lsof -i :80
+
+# Stop conflicting services or change ports in docker-compose.yml
+# Kill specific processes
+sudo kill -9 <PID>
+```
+
+**2. Database Connection Issues**
+```bash
+# Wait for database to be ready
+docker-compose logs db
+
+# Check database status
+docker-compose exec db pg_isready -U geogateway
+
+# Reset database (⚠️ loses all data)
+docker-compose down -v
+docker-compose up -d
+```
+
+**3. Frontend Build Failures**
+```bash
+# Check Node.js version in container
+docker-compose exec web node --version
+
+# Clear npm cache and rebuild
+docker-compose down
+docker-compose build --no-cache web
+docker-compose up -d
+```
+
+**4. Permission Issues**
+```bash
+# Fix file permissions (Linux/Mac)
+sudo chown -R $USER:$USER .
+
+# On Windows with WSL2, ensure proper line endings
+git config --global core.autocrlf false
+```
+
+**5. Container Health Issues**
+```bash
+# Check container health
+docker-compose ps
+docker-compose top
+
+# Restart specific service
+docker-compose restart web
+
+# View detailed logs
+docker-compose logs --details web
+```
+
+**6. Out of Disk Space**
+```bash
+# Clean up Docker resources
+docker system prune -a
+
+# Remove unused volumes
+docker volume prune
+
+# Check disk usage
+docker system df
+```
+
+#### Performance Tips
+
+- **Increase Memory**: Ensure Docker has at least 4GB RAM allocated
+- **Use SSD**: Store Docker volumes on SSD for better database performance
+- **Disable Antivirus**: Exclude project directory from real-time scanning
+- **Update Docker**: Use latest Docker Desktop version for performance improvements
+
+#### Getting Help
+
+If you encounter issues:
+
+1. Check the container logs: `docker-compose logs -f`
+2. Verify all services are running: `docker-compose ps`
+3. Test database connectivity: `docker-compose exec db pg_isready`
+4. Ensure all required ports are available: `netstat -tulpn | grep :80`
+
+## Production Build (Local Development)
 
 ```bash
 # Build Vue 3 frontend for production (generates optimized bundles)
@@ -152,11 +394,36 @@ python manage.py runserver --settings=geogateway_project.settings
 
 ## Deployment
 
-### Production Deployment
+### Recommended: Docker Production Deployment
+
+**The easiest production deployment method is using Docker:**
+
+```bash
+# Clone repository on your server
+git clone <repository-url>
+cd geogateway-django-app
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your production settings
+
+# Deploy with production configuration
+docker-compose -f docker-compose.prod.yml up -d
+
+# Run initial setup
+docker-compose -f docker-compose.prod.yml exec web python manage.py migrate
+docker-compose -f docker-compose.prod.yml exec web python manage.py createsuperuser
+```
+
+**Production URLs:**
+- Application: https://yourdomain.com (via Nginx with SSL)
+- Admin: https://yourdomain.com/admin
+
+### Alternative: Manual Production Deployment
 
 1. **Server Requirements**
    - Python 3.8+ with pip
-   - Node.js 14+ with npm
+   - Node.js 22+ LTS with npm
    - Web server (nginx/Apache) for static file serving
    - Database (SQLite for development, PostgreSQL/MySQL for production)
 
