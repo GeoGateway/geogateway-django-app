@@ -11,7 +11,7 @@
       />
     </div>
     <q-slide-transition>
-      <div v-show="toolbarVisible" ref="toolbarToggle" class="full-width col bg-grey-2 q-pa-sm" style="overflow-y: auto; max-height: calc(100vh - 50px);">
+      <div v-show="toolbarVisible" ref="toolbarToggle" class="full-width col bg-grey-2 q-pa-sm" style="overflow-y: auto; max-height: calc(100vh - 50px); padding-bottom: 100px;">
         <router-view></router-view>
       </div>
     </q-slide-transition>
