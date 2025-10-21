@@ -145,7 +145,6 @@ python manage.py runserver --settings=geogateway_project.settings
    - Python 3.8+ with pip
    - Node.js 22+ LTS with npm
    - Web server (nginx/Apache) for static files
-   - Database (SQLite for development, PostgreSQL/MySQL for production)
 
 2. **Application Deployment**
 ```bash
@@ -182,14 +181,13 @@ python manage.py createsuperuser
 export DJANGO_SETTINGS_MODULE=geogateway_project.settings
 export DEBUG=False
 export SECRET_KEY=<your-secret-key>
-export DATABASE_URL=<your-database-url>  # if using PostgreSQL
 ```
 
 ## Docker Deployment
 
 ### Quick Start with Docker Compose
 
-The easiest way to run the application is using Docker Compose, which will set up the entire stack including the Django app, PostgreSQL database, and Nginx reverse proxy.
+The easiest way to run the application is using Docker Compose, which will set up the entire stack including the Django app and Nginx reverse proxy.
 
 ```bash
 # Clone repository
@@ -206,11 +204,10 @@ docker-compose up -d
 
 ### Docker Services
 
-The Docker setup includes three services:
+The Docker setup includes two services:
 
 1. **web**: Django application with Vue.js frontend
-2. **db**: PostgreSQL database
-3. **nginx**: Reverse proxy and static file server
+2. **nginx**: Reverse proxy and static file server
 
 ### Environment Configuration
 
@@ -252,9 +249,6 @@ docker-compose build web
 
 # Run a specific command in the web container
 docker-compose exec web python manage.py shell
-
-# Access the PostgreSQL database
-docker-compose exec db psql -U geogateway -d geogateway
 
 # View real-time logs
 docker-compose logs -f web

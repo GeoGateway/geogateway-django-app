@@ -2,29 +2,17 @@ services:
   web:
     build: .
     volumes:
+      - .:/app
       - static_volume:/app/staticfiles
       - media_volume:/app/media
     environment:
       - DEBUG=0
       - SECRET_KEY=${SECRET_KEY}
       - ALLOWED_HOSTS=${ALLOWED_HOSTS:-localhost,127.0.0.1}
-      - DATABASE_URL=postgresql://geogateway:geogateway123@db:5432/geogateway
-    depends_on:
-      - db
     command: >
       sh -c "python manage.py migrate &&
              python manage.py collectstatic --noinput &&
              gunicorn geogateway_project.wsgi:application --bind 0.0.0.0:8000 --workers 3"
-    restart: unless-stopped
-
-  db:
-    image: postgres:15
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    environment:
-      - POSTGRES_DB=geogateway
-      - POSTGRES_USER=geogateway
-      - POSTGRES_PASSWORD=geogateway123
     restart: unless-stopped
 
   nginx:
@@ -41,11 +29,6 @@ services:
       - web
     restart: unless-stopped
 
-  redis:
-    image: redis:alpine
-    restart: unless-stopped
-
 volumes:
-  postgres_data:
   static_volume:
   media_volume:

@@ -199,16 +199,14 @@ docker-compose ps
 # Access the application
 # - Full app: http://localhost (via Nginx)
 # - Django API: http://localhost:8000 (direct access)
-# - Database: localhost:5432 (PostgreSQL)
 ```
 
 ### What Gets Started
 
 The Docker setup includes:
 - **Web Service**: Django app with Vue.js frontend built-in
-- **Database**: PostgreSQL 15 with persistent data storage
 - **Nginx**: Reverse proxy for static files and load balancing
-- **Volumes**: Persistent storage for database, static files, and media
+- **Volumes**: Persistent storage for SQLite database, static files, and media
 
 ### Docker Commands
 
@@ -218,7 +216,6 @@ docker-compose logs -f
 
 # View logs from specific service
 docker-compose logs -f web
-docker-compose logs -f db
 
 # Run Django management commands
 docker-compose exec web python manage.py migrate
@@ -227,9 +224,6 @@ docker-compose exec web python manage.py collectstatic --noinput
 
 # Access the web container shell
 docker-compose exec web bash
-
-# Access PostgreSQL database
-docker-compose exec db psql -U geogateway -d geogateway
 
 # Stop all services
 docker-compose down
@@ -425,7 +419,6 @@ docker-compose -f docker-compose.prod.yml exec web python manage.py createsuperu
    - Python 3.8+ with pip
    - Node.js 22+ LTS with npm
    - Web server (nginx/Apache) for static file serving
-   - Database (SQLite for development, PostgreSQL/MySQL for production)
 
 2. **Deployment Steps**
 ```bash
@@ -455,7 +448,6 @@ python manage.py createsuperuser
 export DJANGO_SETTINGS_MODULE=geogateway_project.settings
 export DEBUG=False
 export SECRET_KEY=<your-production-secret-key>
-export DATABASE_URL=<your-database-url>  # if using PostgreSQL
 ```
 
 4. **Web Server Setup**
