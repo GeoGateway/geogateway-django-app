@@ -1,6 +1,9 @@
 frontend/node_modules
 staticfiles/
 
+# Environment variables (keep secrets out of git)
+.env
+
 yarn.lock
 geogateway_django_app.egg-info
 geogateway_django_app/apps.py

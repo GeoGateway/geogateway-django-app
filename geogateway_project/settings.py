@@ -1,16 +1,28 @@
+from dotenv import load_dotenv
 import os
 from pathlib import Path
+from socket import gethostbyname, gethostname
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load environment variables from .env file
+load_dotenv(BASE_DIR / '.env')
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-change-me-in-production'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', '0') == '1'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.4', 'django.seagrid.org']
+# Parse ALLOWED_HOSTS from environment variable (comma-separated)
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS if host.strip()]
+
+# Add the container's IP address
+container_ip = gethostbyname(gethostname())
+if container_ip not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append(container_ip)
 
 # Application definition
 INSTALLED_APPS = [
@@ -56,10 +68,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'geogateway_project.wsgi.application'
 
 # Database
+# Use DB_PATH environment variable if set (for Kubernetes), otherwise use default
+db_path = os.environ.get('DB_PATH', str(BASE_DIR / 'db.sqlite3'))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': db_path,
     }
 }
 
